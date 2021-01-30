@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Train Lines</title>
+
+        <style>
+            th, td { border: 1px solid black; padding: 10px;}
+            button, input {padding: 10px;}
+        </style>
+    
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    </head>
+
+
+    <body>
+
+        <h1>Train Lines</h1>
+        <br>
+
+        <h2>Register a Company Train Line</h2>
+
+        <form id="addInputsTrainlines">
+            Trainline Name:     <input type="text" name="trainline" /> <br>
+            Train Stops: <br>
+
+
+            <input type="checkbox" id="akihabara" name="akihabara" value="akihabara">
+            <label for="akihabara"> Akihabara station</label><br>
+
+            <input type="checkbox" id="ebisu" name="ebisu" value="ebisu">
+            <label for="ebisu"> Ebisu station</label><br>
+
+            <input type="checkbox" id="ikebukuro" name="ikebukuro" value="ikebukuro">
+            <label for="ikebukuro"> Ikebukuro station</label><br>
+
+            <input type="checkbox" id="roppongi" name="roppongi" value="roppongi">
+            <label for="roppongi"> Roppongi station</label><br>
+
+            <input type="checkbox" id="shibuya" name="shibuya" value="shibuya">
+            <label for="shibuya"> Shibuya station</label><br>
+
+            <input type="checkbox" id="shinjuku" name="shinjuku" value="shinjuku">
+            <label for="shinjuku"> Shinjuku station</label><br>
+
+            <input type="checkbox" id="tsukiji" name="tsukiji" value="tsukiji">
+            <label for="tsukiji"> Tsukiji station</label><br>
+
+            <input type="checkbox" id="ueno" name="ueno" value="ueno">
+            <label for="ueno"> Ueno station</label><br>
+
+            <input type="checkbox" id="waseda" name="waseda" value="waseda">
+            <label for="waseda"> Waseda station</label><br>
+
+            <input type="checkbox" id="yoyogi" name="yoyogi" value="yoyogi">
+            <label for="yoyogi"> Yoyogi station</label><br>
+            <br>
+    
+            <input type="submit" value="Add" />
+        </form>
+        <br>
+        <br>
+    
+    
+    
+    
+        <h3>Registered Trainlines:</h3>
+    
+        <table id="searchResultsTrainlines">
+            <tr class="header">
+    
+                <th>Trainline ID</th>
+                <th>Trainline Name</th>
+    
+            </tr>
+    
+    
+            <tr class="header" id="sampleSearchTrainlines">
+
+                <td>0001</td>
+                <td>Yamanote Line</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+    
+            <tr class="header" id="sampleSearchTrainlines2">
+    
+                <td>0002</td>
+                <td>Hibiya Line</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+    
+            <tr class="header" id="sampleSearchTrainlines3">
+    
+                <td>0003</td>
+                <td>Ginza Line</td>
+
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+    
+        </table>
+    
+        <br>
+    
+
+        
+
+
+
+
+
+
+
+
+
+        <script src="Trainlines.js"></script>
+    </body>
+
+</html>
