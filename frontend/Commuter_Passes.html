@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commuter Passes</title>
+
+    <style>
+        th, td { border: 1px solid black; padding: 10px;}
+        button, input {padding: 10px;}
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+
+
+<body>
+
+    <h1>Commuter Passes</h1>
+    <br>
+
+
+    <h2>Add a Commuter Pass</h2>
+
+    <form id="addInputsCommuterPasses">
+        Passenger ID:     <input type="text" name="passenger_id" /> <br>
+        Cost Paid:        <input type="number" name="cost" /> <br>
+        Start Date:       <input type="date" name="start_date" /> <br>
+        End Date:       <input type="date" name="end_date" /> <br>
+        Access to: <br>
+
+        <input type="checkbox" id="yamanote" name="yamanote" value="yamanote">
+        <label for="yamanote"> Yamanote line</label><br>
+
+        <input type="checkbox" id="hibiya" name="hibiya" value="hibiya">
+        <label for="hibiya"> Hibiya line</label><br>
+
+        <input type="checkbox" id="ginza" name="ginza" value="ginza">
+        <label for="ginza"> Ginza line</label><br>
+        <br>
+
+        <input type="submit" value="Add" />
+    </form>
+    <br>
+    <br>
+
+
+
+    <h2>List All of a Passenger's Active Commuter Passes (not expired)</h2>
+
+    <form id="searchCommuterPasses">
+
+        By Passenger's ID:          <input type="number" name="passenger_id" /> <br>
+        <br>
+
+        <input type="submit" value="Search" />
+    </form>
+    <br>
+    <br>
+
+
+
+
+    <h3>Search Results</h3>
+
+    <table id="searchResultsCommuterPasses">
+        <tr class="header">
+
+            <th>Commuter Pass ID</th>
+            <th>Cost Paid</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Trainlines Access</th>
+            
+
+        </tr>
+
+
+        <tr class="header" id="sampleSearchCommuterPasses">
+
+            <td>0001</td>
+            <td>$100</td>
+            <td>2020-10-01</td>
+            <td>2021-11-11</td>
+            <td>Yamanote, Hibiya</td>
+
+            <td><button>Update</button></td>
+            <td><button>Delete</button></td>
+
+        </tr>
+
+        <tr class="header" id="sampleSearchCommuterPasses2">
+
+            <td>0002</td>
+            <td>$90</td>
+            <td>2021-1-11</td>
+            <td>2021-5-25</td>
+            <td>Ginza</td>
+
+            <td><button>Update</button></td>
+            <td><button>Delete</button></td>
+
+        </tr>
+
+        <tr class="header" id="sampleSearchCommuterPasses3">
+
+            <td>0003</td>
+            <td>$150</td>
+            <td>2021-1-20</td>
+            <td>2021-4-20</td>
+            <td>Yamanote, Hibiya, Ginza</td>
+
+            <td><button>Update</button></td>
+            <td><button>Delete</button></td>
+
+        </tr>
+
+    </table>
+
+    <br>
+
+
+    
+
+
+
+
+
+
+
+
+
+    <script src="Commuter_Passes.js"></script>
+</body>
+
+</html>
