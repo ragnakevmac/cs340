@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Stations</title>
+
+        <style>
+            th, td { border: 1px solid black; padding: 10px;}
+            button, input {padding: 10px;}
+        </style>
+    
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    </head>
+
+
+    <body>
+
+        <h1>Stations</h1>
+        <br>
+        
+        <h2>Register a Station</h2>
+
+        <form id="addInputsStations">
+            Station Name:     <input type="text" name="station" /> <br><br>
+
+            <label for="prefecture">Prefecture Jurisdiction:</label>
+            <select name="prefecture" id="prefecture">
+              <option value="tokyo">Tokyo</option>
+              <option value="kanagawa">Kanagawa</option>
+              <option value="chiba">Chiba</option>
+              <option value="saitama">Saitama</option>
+              <option value="gunma">Gunma</option>
+              <option value="tochigi">Tochigi</option>
+              <option value="ibaraki">Ibaraki</option>
+            </select><br><br>
+
+            Train Lines: <br>
+
+            <input type="checkbox" id="yamanote" name="yamanote" value="yamanote">
+            <label for="yamanote"> Yamanote Line</label><br>
+
+            <input type="checkbox" id="hibiya" name="hibiya" value="hibiya">
+            <label for="hibiya"> Hibiya Line</label><br>
+
+            <input type="checkbox" id="ginza" name="ginza" value="ginza">
+            <label for="ginza"> Ginza Line</label><br>
+            <br>
+    
+            <input type="submit" value="Add" />
+        </form>
+        <br>
+        <br>
+    
+    
+    
+    
+        <h3>Registered Stations:</h3>
+    
+        <table id="searchResultsStations">
+            <tr class="header">
+    
+                <th>Station ID</th>
+                <th>Station Name</th>
+                <th>Prefecture Jurisdiction</th>
+    
+            </tr>
+    
+    
+            <tr class="header" id="sampleSearchStations">
+
+                <td>0001</td>
+                <td>Shinjuku Station</td>
+                <td>Tokyo Prefecture</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+    
+            <tr class="header" id="sampleSearchStations2">
+    
+                <td>0002</td>
+                <td>Yokohama Station</td>
+                <td>Kanagawa Prefecture</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+    
+            <tr class="header" id="sampleSearchStations3">
+    
+                <td>0003</td>
+                <td>Maihama Station</td>
+                <td>Chiba Prefecture</td>
+
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+    
+        </table>
+    
+        <br>
+    
+
+
+
+
+
+
+
+
+        <script src="Stations.js"></script>
+    </body>
+
+</html>
