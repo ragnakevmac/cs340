@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Prefectures</title>
+
+        <style>
+            th, td { border: 1px solid black; padding: 10px;}
+            button, input {padding: 10px;}
+        </style>
+    
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    </head>
+
+
+    <body>
+
+        <h1>Prefectures</h1>
+        <br>
+        
+        <h2>Add a Prefecture in Japan</h2>
+
+        <form id="addInputsPrefecture">
+            Prefecture Name:     <input type="text" name="prefecture" /> <br><br>
+    
+            <input type="submit" value="Add" />
+        </form>
+        <br>
+        <br>
+    
+    
+    
+    
+        <h3>Participating Prefectures:</h3>
+    
+        <table id="searchResultsPrefectures">
+            <tr class="header">
+    
+                <th>Prefecture ID</th>
+                <th>Prefecture Name</th>
+    
+            </tr>
+    
+    
+            <tr class="header" id="sampleSearchPrefectures">
+
+                <td>0001</td>
+                <td>Tokyo Prefecture</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+    
+            <tr class="header" id="sampleSearchPrefectures2">
+    
+                <td>0002</td>
+                <td>Kanagawa Prefecture</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+    
+            <tr class="header" id="sampleSearchPrefectures3">
+    
+                <td>0003</td>
+                <td>Chiba Prefecture</td>
+
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+    
+        </table>
+    
+        <br><br>
+    
+        <h3>
+            
+            List all the Passengers who can come to 
+
+            <label for="prefecture"></label>
+            <select name="prefecture" id="prefecture">
+              <option value="tokyo">Tokyo</option>
+              <option value="kanagawa">Kanagawa</option>
+              <option value="chiba">Chiba</option>
+              <option value="saitama">Saitama</option>
+              <option value="gunma">Gunma</option>
+              <option value="tochigi">Tochigi</option>
+              <option value="ibaraki">Ibaraki</option>
+            </select>
+
+            via their Commuter Passes. </h3>
+
+
+            <table id="searchResultsPassengers">
+                <tr class="header">
+        
+                    <th>Passenger ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Birthdate</th>
+                    <th>Occupation</th>
+                    <th>Home Station</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+        
+                </tr>
+        
+                <tr class="header" id="sampleSearchPassengers">
+
+                    <td>001</td>
+                    <td>Kevin</td>
+                    <td>Macandog</td>
+                    <td>2020-20-01</td>
+                    <td>Student</td>
+                    <td>Shinjuku</td>
+                    <td>777-777-7777</td>
+                    <td>kevin_macandog@gmail.com</td>
+                    <td><button>Update</button></td>
+                    <td><button>Delete</button></td>
+        
+                </tr>
+        
+                <tr class="header" id="sampleSearchPassengers2">
+        
+                    <td>002</td>
+                    <td>Pedro</td>
+                    <td>Varo</td>
+                    <td>2020-20-02</td>
+                    <td>Student</td>
+                    <td>Yokohama</td>
+                    <td>555-555-5555</td>
+                    <td>pedro_varo@gmail.com</td>
+                    <td><button>Update</button></td>
+                    <td><button>Delete</button></td>
+        
+                </tr>
+        
+                <tr class="header" id="sampleSearchPassengers3">
+        
+                    <td>003</td>
+                    <td>John</td>
+                    <td>Smith</td>
+                    <td>2020-20-03</td>
+                    <td>Employee</td>
+                    <td>Maihama</td>
+                    <td>333-333-3333</td>
+                    <td>john_smith@gmail.com</td>
+                    <td><button>Update</button></td>
+                    <td><button>Delete</button></td>
+        
+                </tr>
+        
+            </table>
+        
+            <br>
+        
+
+
+
+
+
+
+
+
+        <script src="Prefectures.js"></script>
+    </body>
+
+</html>
