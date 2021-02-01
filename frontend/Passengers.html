@@ -10,17 +10,39 @@
     <style>
         th, td { border: 1px solid black; padding: 10px;}
         button, input {padding: 10px;}
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+        }
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        h1 {text-align: center;}
     </style>
-
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 </head>
 
-
-
-
-
 <body>
+
+    <div class="tab">
+        <button class="home"><a href="index.html">Home</a></button>
+        <button><a href="Passengers.html">Passengers</a></button>
+        <button><a href="Commuter_Passes.html">Commuter Passes</a></button>
+        <button><a href="Trainlines.html">Train Lines</a></button>
+        <button><a href="Stations.html">Stations</a></button>
+        <button><a href="Prefectures.html">Prefectures</a></button>
+    </div>
 
     <h1>Passengers</h1>
     <br>
@@ -123,13 +145,6 @@
     </table>
 
     <br>
-
-
-
-
-
-
-
 
     <script src="Passengers.js"></script>
 </body>
