@@ -57,16 +57,12 @@
         Cost Paid:        <input type="number" name="cost" /> <br>
         Start Date:       <input type="date" name="start_date" /> <br>
         End Date:       <input type="date" name="end_date" /> <br><br>
-        Trainline Access: <br>
-
-        <input type="checkbox" id="yamanote" name="yamanote" value="yamanote">
-        <label for="yamanote"> Yamanote line</label><br>
-
-        <input type="checkbox" id="hibiya" name="hibiya" value="hibiya">
-        <label for="hibiya"> Hibiya line</label><br>
-
-        <input type="checkbox" id="ginza" name="ginza" value="ginza">
-        <label for="ginza"> Ginza line</label><br>
+        <label for="trainline">Trainline Access:</label>
+        <select name="trainline" id="trainline">
+          <option value="yamanote">Yamanote</option>
+          <option value="hibiya">Hibiya</option>
+          <option value="ginza">Ginza</option>
+        </select><br><br>
         <br>
 
         <input type="submit" value="Add" />
@@ -100,7 +96,8 @@
             <th>Cost Paid</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Trainlines Access</th>
+            <th>Trainline Access</th>
+            <th>Trainline ID</th>
             <th>Passenger Owner's ID</th>
             
 
@@ -113,7 +110,8 @@
             <td>$100</td>
             <td>2020-10-01</td>
             <td>2021-11-11</td>
-            <td>Yamanote, Hibiya</td>
+            <td>Yamanote</td>
+            <td>001</td>
             <td>004</td>
 
             <td><button>Update</button></td>
@@ -128,6 +126,7 @@
             <td>2021-1-11</td>
             <td>2021-5-25</td>
             <td>Ginza</td>
+            <td>003</td>
             <td>004</td>
 
             <td><button>Update</button></td>
@@ -141,7 +140,8 @@
             <td>$150</td>
             <td>2021-1-20</td>
             <td>2021-4-20</td>
-            <td>Yamanote, Hibiya, Ginza</td>
+            <td>Hibiya</td>
+            <td>002</td>
             <td>004</td>
 
             <td><button>Update</button></td>
