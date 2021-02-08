@@ -27,7 +27,7 @@
         .tab button:hover {
             background-color: #ddd;
         }
-        h1 {text-align: center;}
+        h1, h2, h3 {text-align: center;}
 
 
 
@@ -43,7 +43,26 @@
 
 
 
+        .container form  label {
+            width: 100px;
+            display: inline-block;
+            text-align: left;
+            margin: 2px;
+        }
 
+        .container form  input {
+            width: 200px;
+            display: inline-block;
+            text-align: left;
+            margin: 2px
+        }
+
+        #inputButton {
+            text-align: center;
+            width: 80px;
+        }
+
+        
 
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -67,16 +86,18 @@
 
     <h2>Add a Passenger</h2>
 
-    <form id="addInputsPassengers">
-        First Name:     <input type="text" name="first_name" /> <br>
-        Last Name:      <input type="text" name="last_name" /> <br>
-        Birthdate:      <input type="date" name="birthdate" /> <br>
-        Occupation:     <input type="text" name="occupation" /> <br>
-        Email:          <input type="text" name="email" /> <br>
-        <br>
+    <div class="container">
+        <form id="addInputsPassengers">
+            <label>Last Name:  </label>    <input type="text" name="last_name" />    <br>
+            <label>First Name: </label>    <input type="text" name="first_name" />   <br>
+            <label>Birthdate:  </label>    <input type="date" name="birthdate" />    <br>
+            <label>Occupation: </label>    <input type="text" name="occupation" />   <br>
+            <label>Email:      </label>    <input type="text" name="email" />        <br>
+            <br>
 
-        <input type="submit" value="Add" />
-    </form>
+            <input id="inputButton" type="submit" value="Add" />
+        </form>
+    </div>
     <br>
     <br>
 
@@ -90,7 +111,6 @@
 
         <input type="submit" value="Search" />
     </form>
-    <br>
     <br>
 
 
