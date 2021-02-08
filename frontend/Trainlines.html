@@ -27,6 +27,23 @@
                 background-color: #ddd;
             }
             h1 {text-align: center;}
+            
+
+
+
+
+        body {text-align: center;}
+        table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+
+
+
+
+
         </style>
     
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -37,13 +54,13 @@
     <body>
 
         <div class="tab">
-            <button class="home"><a href="index.html">Home</a></button>
-            <button><a href="Passengers.html">Passengers</a></button>
-            <button><a href="Commuter_Passes.html">Commuter Passes</a></button>
-            <button><a href="Trainlines.html">Train Lines</a></button>
-            <button><a href="Stations.html">Stations</a></button>
-            <button><a href="Prefectures.html">Prefectures</a></button>
-            <button><a href="Trainlines_and_Stations.html">Trainlines and Stations</a></button>
+            <a href="index.html"> <button class="home">Home</button> </a>
+            <a href="Passengers.html"> <button>Passengers</button> </a>
+            <a href="Commuter_Passes.html"> <button>Commuter Passes</button> </a>
+            <a href="Trainlines.html"> <button>Train Lines</button> </a>
+            <a href="Stations.html"> <button>Stations</button> </a>
+            <a href="Prefectures.html"> <button>Prefectures</button> </a>
+            <a href="Trainlines_and_Stations.html"> <button>Trainlines and Stations</button> </a>
         </div>
 
         <h1>Train Lines</h1>
@@ -52,7 +69,7 @@
         <h2>Register a Company Train Line</h2>
 
         <form id="addInputsTrainlines">
-            Trainline Name:     <input type="text" name="trainline" /> <br>
+            Trainline Name:     <input type="text" name="trainline" />
     
             <input type="submit" value="Add" />
         </form>
