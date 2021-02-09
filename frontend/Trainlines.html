@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Train Lines</title>
+
+        <style>
+            th, td { border: 1px solid black; padding: 10px;}
+            button, input {padding: 10px;}
+            .tab {
+                overflow: hidden;
+                border: 1px solid #ccc;
+                background-color: #f1f1f1;
+            }
+            .tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+            }
+            .tab button:hover {
+                background-color: #ddd;
+            }
+            h1 {text-align: center;}
+            
+
+
+
+
+        body {text-align: center;}
+        table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+
+
+
+
+
+        </style>
+    
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    </head>
+
+
+    <body>
+
+        <div class="tab">
+            <a href="index.html"> <button class="home">Home</button> </a>
+            <a href="Passengers.html"> <button>Passengers</button> </a>
+            <a href="Commuter_Passes.html"> <button>Commuter Passes</button> </a>
+            <a href="Trainlines.html"> <button>Train Lines</button> </a>
+            <a href="Stations.html"> <button>Stations</button> </a>
+            <a href="Prefectures.html"> <button>Prefectures</button> </a>
+            <a href="Trainlines_and_Stations.html"> <button>Trainlines and Stations</button> </a>
+        </div>
+
+        <h1>Train Lines</h1>
+        <br>
+
+        <h2>Register a Company Train Line</h2>
+
+        <form id="addInputsTrainlines">
+            Trainline Name:     <input type="text" name="trainline" />
+    
+            <input type="submit" value="Add" />
+        </form>
+        <br>
+        <br>
+    
+    
+    
+    
+        <h3>Registered Trainlines:</h3>
+    
+        <table id="searchResultsTrainlines">
+            <tr class="header">
+    
+                <th>Trainline ID</th>
+                <th>Trainline Name</th>
+                <th>Number of Active Commuters</th>
+    
+            </tr>
+    
+    
+            <tr class="header" id="sampleSearchTrainlines">
+
+                <td>0001</td>
+                <td>Yamanote Line</td>
+                <td>100</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+    
+            <tr class="header" id="sampleSearchTrainlines2">
+    
+                <td>0002</td>
+                <td>Hibiya Line</td>
+                <td>50</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+    
+            <tr class="header" id="sampleSearchTrainlines3">
+    
+                <td>0003</td>
+                <td>Ginza Line</td>
+                <td>30</td>
+
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+
+            <tr class="header" id="sampleSearchTrainlines4">
+    
+                <td>0004</td>
+                <td>Pre-Release New Line</td>
+                <td>0 or NULL</td>
+
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+
+            <tr class="header" id="sampleSearchTrainlines5">
+    
+                <td>0005</td>
+                <td>Broken Line</td>
+                <td>0 or NULL</td>
+
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+    
+        </table>
+    
+        <br>
+    
+
+        
+
+
+
+
+
+
+
+
+
+        <script src="Trainlines.js"></script>
+    </body>
+
+</html>

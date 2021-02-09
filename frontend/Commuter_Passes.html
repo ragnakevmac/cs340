@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commuter Passes</title>
+
+    <style>
+        th, td { border: 1px solid black; padding: 10px;}
+        button, input {padding: 10px;}
+        .tab {
+                overflow: hidden;
+                border: 1px solid #ccc;
+                background-color: #f1f1f1;
+            }
+            .tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+            }
+            .tab button:hover {
+                background-color: #ddd;
+            }
+            h1 {text-align: center;}
+            
+
+
+
+
+        body {text-align: center;}
+        table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+
+
+
+        .container form  label {
+            width: 100px;
+            display: inline-block;
+            text-align: left;
+            margin: 2px;
+        }
+
+        .container form  input {
+            width: 200px;
+            display: inline-block;
+            text-align: left;
+            margin: 2px
+        }
+
+        #inputButton {
+            text-align: center;
+            width: 80px;
+        }
+
+
+
+        #dropDownLabel {
+            width: 131px;
+            text-align: left;
+        }
+
+        #dropDownSelect {
+            width: 191px;
+            text-align: right;
+        }
+
+
+
+        
+
+
+
+
+
+
+
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+
+
+<body>
+
+    <div class="tab">
+        <a href="index.html"> <button class="home">Home</button> </a>
+        <a href="Passengers.html"> <button>Passengers</button> </a>
+        <a href="Commuter_Passes.html"> <button>Commuter Passes</button> </a>
+        <a href="Trainlines.html"> <button>Train Lines</button> </a>
+        <a href="Stations.html"> <button>Stations</button> </a>
+        <a href="Prefectures.html"> <button>Prefectures</button> </a>
+        <a href="Trainlines_and_Stations.html"> <button>Trainlines and Stations</button> </a>
+    </div>
+
+    <h1>Commuter Passes</h1>
+    <br>
+
+
+    <h2>Add a Commuter Pass</h2>
+
+    <div class="container">
+        <form id="addInputsCommuterPasses">
+            <label>Passenger ID: </label>  <input type="text" name="passenger_id" />    <br>
+            <label>Cost Paid:    </label>  <input type="number" name="cost" />          <br>
+            <label>Start Date:   </label>  <input type="date" name="start_date" />      <br>
+            <label>End Date:     </label>  <input type="date" name="end_date" />        <br><br><br>
+            <label id="dropDownLabel" for="trainline">Trainline Access:</label>
+            <select id="dropDownSelect" name="trainline" id="trainline">
+                <option value="yamanote">Yamanote</option>
+                <option value="hibiya">Hibiya</option>
+                <option value="ginza">Ginza</option>
+            </select><br><br>
+            <br>
+
+            <input id="inputButton" type="submit" value="Add" />
+        </form>
+    </div>
+    <br>
+    <br>
+    <br>
+
+
+
+    <h2>List All of a Passenger's Active Commuter Passes (not expired)</h2>
+
+    <form id="searchCommuterPasses">
+
+        By Passenger's ID:          <input type="number" name="passenger_id" />
+
+        <input type="submit" value="Search" />
+    </form>
+    <br>
+
+
+
+
+    <h3>Search Results</h3>
+
+    <table id="searchResultsCommuterPasses">
+        <tr class="header">
+
+            <th>Commuter Pass ID</th>
+            <th>Cost Paid</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Trainline Access</th>
+            <th>Trainline ID</th>
+            <th>Passenger Owner's First Name</th>
+            <th>Passenger Owner's Last Name</th>
+            <th>Passenger Owner's ID</th>
+            
+
+        </tr>
+
+
+        <tr class="header" id="sampleSearchCommuterPasses">
+
+            <td>0001</td>
+            <td>$100</td>
+            <td>2020-10-01</td>
+            <td>2021-11-11</td>
+            <td>Yamanote</td>
+            <td>001</td>
+            <td>Risa</td>
+            <td>Oribe</td>
+            <td>004</td>
+
+            <td><button>Update</button></td>
+            <td><button>Delete</button></td>
+
+        </tr>
+
+        <tr class="header" id="sampleSearchCommuterPasses2">
+
+            <td>0002</td>
+            <td>$90</td>
+            <td>2021-1-11</td>
+            <td>2021-5-25</td>
+            <td>Ginza</td>
+            <td>003</td>
+            <td>Risa</td>
+            <td>Oribe</td>
+            <td>004</td>
+
+            <td><button>Update</button></td>
+            <td><button>Delete</button></td>
+
+        </tr>
+
+        <tr class="header" id="sampleSearchCommuterPasses3">
+
+            <td>0003</td>
+            <td>$150</td>
+            <td>2021-1-20</td>
+            <td>2021-4-20</td>
+            <td>Hibiya</td>
+            <td>002</td>
+            <td>Risa</td>
+            <td>Oribe</td>
+            <td>004</td>
+
+            <td><button>Update</button></td>
+            <td><button>Delete</button></td>
+
+        </tr>
+
+    </table>
+
+    <br>
+
+
+    <script src="Commuter_Passes.js"></script>
+</body>
+
+</html>

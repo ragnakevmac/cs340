@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Stations</title>
+
+        <style>
+            th, td { border: 1px solid black; padding: 10px;}
+            button, input {padding: 10px;}
+            .tab {
+                overflow: hidden;
+                border: 1px solid #ccc;
+                background-color: #f1f1f1;
+            }
+            .tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+            }
+            .tab button:hover {
+                background-color: #ddd;
+            }
+            h1 {text-align: center;}
+
+        
+
+
+
+
+            body {text-align: center;}
+        table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+
+
+
+
+
+        </style>
+    
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    </head>
+
+
+    <body>
+
+        <div class="tab">
+            <a href="index.html"> <button class="home">Home</button> </a>
+            <a href="Passengers.html"> <button>Passengers</button> </a>
+            <a href="Commuter_Passes.html"> <button>Commuter Passes</button> </a>
+            <a href="Trainlines.html"> <button>Train Lines</button> </a>
+            <a href="Stations.html"> <button>Stations</button> </a>
+            <a href="Prefectures.html"> <button>Prefectures</button> </a>
+            <a href="Trainlines_and_Stations.html"> <button>Trainlines and Stations</button> </a>
+        </div>
+
+        <h1>Stations</h1>
+        <br>
+        
+        <h2>Register a Station</h2>
+
+        <form id="addInputsStations">
+            Station Name:     <input type="text" name="station" /> <br><br>
+
+            <label for="prefecture">Prefecture Jurisdiction:</label>
+            <select name="prefecture" id="prefecture">
+              <option value="tokyo">Tokyo</option>
+              <option value="kanagawa">Kanagawa</option>
+              <option value="chiba">Chiba</option>
+              <option value="saitama">Saitama</option>
+              <option value="gunma">Gunma</option>
+              <option value="tochigi">Tochigi</option>
+              <option value="ibaraki">Ibaraki</option>
+            </select><br><br>
+    
+            <input type="submit" value="Add" />
+        </form>
+        <br>
+        <br>
+    
+    
+    
+    
+        <h3>Registered Stations:</h3>
+    
+        <table id="searchResultsStations">
+            <tr class="header">
+    
+                <th>Station ID</th>
+                <th>Station Name</th>
+                <th>Prefecture Jurisdiction</th>
+                <th>Prefecture ID</th>
+    
+            </tr>
+    
+            <tr class="header" id="sampleSearchStations1">
+    
+                <td>0001</td>
+                <td>Maihama Station</td>
+                <td>Chiba Prefecture</td>
+                <td>03</td>
+
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+
+            <tr class="header" id="sampleSearchStation2">
+
+                <td>0002</td>
+                <td>Shinjuku Station</td>
+                <td>Tokyo Prefecture</td>
+                <td>01</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+
+            <tr class="header" id="sampleSearchStations3">
+    
+                <td>0003</td>
+                <td>Yokohama Station</td>
+                <td>Kanagawa Prefecture</td>
+                <td>02</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+    
+        </table>
+    
+        <br>
+    
+
+
+
+
+
+
+
+
+        <script src="Stations.js"></script>
+    </body>
+
+</html>
