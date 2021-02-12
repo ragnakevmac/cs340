@@ -9,10 +9,14 @@ CREATE TABLE Passengers (
 	last_name varchar(255) NOT NULL,
     birthdate date NOT NULL,
     occupation varchar(255) NOT NULL,
-    home_station varchar(255) NOT NULL,
-    phone_number varchar(255),
     email varchar(255) NOT NULL
     );
+
+-- Query to create Trainlines table.
+CREATE TABLE Trainlines (
+	trainline_id int NOT NULL PRIMARY KEY auto_increment,
+	trainline_company text NOT NULL
+);
 
 -- Query to create Commuter_Passes table.
 CREATE TABLE Commuter_Passes (
@@ -22,13 +26,10 @@ CREATE TABLE Commuter_Passes (
 	end_date date NOT NULL,
 	passenger_id int, 
 	FOREIGN KEY (passenger_id) REFERENCES Passengers (passenger_id)
+	ON UPDATE CASCADE ON DELETE CASCADE,
+	trainline_id int,
+	FOREIGN KEY (trainline_id) REFERENCES Trainlines (trainline_id)
 	ON UPDATE CASCADE ON DELETE CASCADE
-);
-
--- Query to create Trainlines table.
-CREATE TABLE Trainlines (
-	trainlines_id int NOT NULL PRIMARY KEY auto_increment,
-	trainline_company text NOT NULL
 );
 
 -- Query to create Prefectures table.
@@ -46,22 +47,11 @@ CREATE TABLE Stations (
 	ON UPDATE CASCADE ON DELETE CASCADE
 );
 
--- Query to create Commuter_Passes_and_Trainlines relationship table.
-CREATE TABLE Commuter_Passes_and_Trainlines (
-	commuter_pass_and_trainline_id int NOT NULL PRIMARY KEY auto_increment,
-	commuter_pass_id int,
-	FOREIGN KEY (commuter_pass_id) REFERENCES Commuter_Passes (commuter_pass_id)
-	ON UPDATE CASCADE ON DELETE CASCADE,
-	trainlines_id int,
-	FOREIGN KEY (trainlines_id) REFERENCES Trainlines (trainlines_id)
-	ON UPDATE CASCADE ON DELETE CASCADE
-);
-
 -- Query to create Trainlines_and_Stations relationship table.
 CREATE TABLE Trainlines_and_Stations (
 	trainline_and_station_id int NOT NULL PRIMARY KEY auto_increment,
-	trainlines_id int,
-	FOREIGN KEY (trainlines_id) REFERENCES Trainlines (trainlines_id)
+	trainline_id int,
+	FOREIGN KEY (trainline_id) REFERENCES Trainlines (trainline_id)
 	ON UPDATE CASCADE ON DELETE CASCADE,
 	station_id int,
 	FOREIGN KEY (station_id) REFERENCES Stations (station_id)
@@ -110,6 +100,25 @@ VALUES ("Shinjuku Sation"),
 ("Omiya Station"),
 ("Akihabara Station"),
 ("Kita-Senju Station");
+
+-- Query to insert data into the Passengers table.
+INSERT INTO Passengers (first_name, last_name, birthdate, occupation, email)
+VALUES ("Taru", "Honda", "1994-4-10", "Office Worker", "taru@gmail.com"),
+("Hiro", "Yamanoto", "1987-9-11", "Chef", "hiro@gmail.com");
+
+-- Query to insert data into the Commuter_Passes table.
+INSERT INTO Commuter_Passes (cost, start_date, end_date)
+VALUES (40.50, "2021-2-10", "2021-6-20"),
+(33.20, "2021-2-12", "2021-4-11");
+
+-------------------------------------------------------------------------------------------
+-- Queries to insert foreing keys.
+-------------------------------------------------------------------------------------------
+
+
+
+
+
 
 
 
