@@ -1,13 +1,17 @@
+-------------------------------------------------------------------------------------------
+-- Queries to create tables.
+-------------------------------------------------------------------------------------------
+
 -- Query to create Passengers table.
 CREATE TABLE Passengers (
-    passenger_id int not null primary key auto_increment,
-    first_name varchar(255) not null,
-	last_name varchar(255) not null,
-    birthdate date not null,
-    occupation varchar(255) not null,
-    home_station varchar(255) not null,
+    passenger_id int NOT NULL PRIMARY KEY auto_increment,
+    first_name varchar(255) NOT NULL,
+	last_name varchar(255) NOT NULL,
+    birthdate date NOT NULL,
+    occupation varchar(255) NOT NULL,
+    home_station varchar(255) NOT NULL,
     phone_number varchar(255),
-    email varchar(255) not null
+    email varchar(255) NOT NULL
     );
 
 -- Query to create Commuter_Passes table.
@@ -63,3 +67,51 @@ CREATE TABLE Trainlines_and_Stations (
 	FOREIGN KEY (station_id) REFERENCES Stations (station_id)
 	ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+-------------------------------------------------------------------------------------------
+-- Queries to insert data.
+-------------------------------------------------------------------------------------------
+
+-- Query to insert data into the Trailines table.
+-- Data from: https://en.wikipedia.org/wiki/East_Japan_Railway_Company#Lines
+INSERT INTO Trainlines (trainline_company)
+VALUES ("Yokosuka Line"),
+("Yamanote Line"),
+("Tokaido Line"),
+("Nambu Line"),
+("Narita Line"),
+("Negishi Line"),
+("Ito Line"),
+("Ome Line"),
+("Yokohama Line"),
+("Shonan-Shinjuku Line");
+
+-- Query to insert data into the Prefectures table.
+-- Data from: https://en.wikipedia.org/wiki/Kant%C5%8D_region
+INSERT INTO Prefectures (prefecture_name)
+VALUES ("Ibaraki"),
+("Tochigi"),
+("Gunma"),
+("Saitamal"),
+("Chiba"),
+("Kanagawa"),
+("Tokyo");
+
+-- Querty to insert data into the Stations table.
+-- Data from: https://en.wikipedia.org/wiki/East_Japan_Railway_Company#Lines
+INSERT INTO Stations (station_name)
+VALUES ("Shinjuku Sation"),
+("Ikebukuro Sation"),
+("Tokyo Sation"),
+("Yokohama Sation"),
+("Shinagawa Station"),
+("Shibuya Station"),
+("Shimbashi Station"),
+("Omiya Station"),
+("Akihabara Station"),
+("Kita-Senju Station");
+
+
+
+
+
