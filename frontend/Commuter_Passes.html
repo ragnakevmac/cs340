@@ -42,7 +42,7 @@
         }
 
         .container form  label {
-            width: 100px;
+            width: 200px;
             display: inline-block;
             text-align: left;
             margin: 2px;
@@ -60,13 +60,23 @@
             width: 80px;
         }
 
+        #inputButton1 {
+            text-align: center;
+            width: 80px;
+        }
+
+        #inputButton2 {
+            text-align: center;
+            width: 80px;
+        }
+
         #dropDownLabel {
-            width: 131px;
+            width: 135px;
             text-align: left;
         }
 
         #dropDownSelect {
-            width: 191px;
+
             text-align: right;
         }
 
@@ -97,15 +107,15 @@
 
     <div class="container">
         <form id="addInputsCommuterPasses">
-            <label>Passenger ID: </label>  <input type="text" name="passenger_id" />    <br>
+            <label>Passenger ID: </label>  <input type="text" name="passenger_id" placeholder="Optional (NULLable)" />    <br>
             <label>Cost Paid:    </label>  <input type="number" name="cost" />          <br>
             <label>Start Date:   </label>  <input type="date" name="start_date" />      <br>
             <label>End Date:     </label>  <input type="date" name="end_date" />        <br><br><br>
             <label id="dropDownLabel" for="trainline">Trainline Access:</label>
             <select id="dropDownSelect" name="trainline" id="trainline">
-                <option value="yamanote">Yamanote</option>
-                <option value="hibiya">Hibiya</option>
-                <option value="ginza">Ginza</option>
+                <option value="yamanote">Yamanote Line</option>
+                <option value="hibiya">Hibiya Line</option>
+                <option value="ginza">Ginza Line</option>
             </select><br><br>
             <br>
 
@@ -120,12 +130,16 @@
 
     <h2>List All of a Passenger's Active Commuter Passes (not expired)</h2>
 
-    <form id="searchCommuterPasses">
+    <div class="container">
+        <form id="searchCommuterPasses">
 
-        By Passenger's ID:          <input type="number" name="passenger_id" />
 
-        <input type="submit" value="Search" />
-    </form>
+            <label> By Passenger's ID: </label>         <input type="number" name="passenger_id" /> <input id="inputButton1" type="submit" value="Search" /> <br>
+            <label> By Commuter Pass ID: </label>         <input type="number" name="commuter_pass_id" /> <input id="inputButton2" type="submit" value="Search" />
+
+
+        </form>
+    </div>
     <br>
 
 
@@ -195,6 +209,59 @@
             <td>Risa</td>
             <td>Oribe</td>
             <td>004</td>
+
+            <td><button>Update</button></td>
+            <td><button>Delete</button></td>
+
+        </tr>
+
+
+
+        <tr class="header" id="sampleSearchCommuterPasses4">
+
+            <td>9999</td>
+            <td>$0</td>
+            <td>2021-2-11</td>
+            <td>2031-2-11</td>
+            <td>Yamanote</td>
+            <td>001</td>
+            <td>Attendant</td>
+            <td>Employee</td>
+            <td>NULL</td>
+
+            <td><button>Update</button></td>
+            <td><button>Delete</button></td>
+
+        </tr>
+
+        <tr class="header" id="sampleSearchCommuterPasses5">
+
+            <td>9998</td>
+            <td>$0</td>
+            <td>2021-2-11</td>
+            <td>2031-2-11</td>
+            <td>Ginza</td>
+            <td>003</td>
+            <td>Driver</td>
+            <td>Employee</td>
+            <td>NULL</td>
+
+            <td><button>Update</button></td>
+            <td><button>Delete</button></td>
+
+        </tr>
+
+        <tr class="header" id="sampleSearchCommuterPasses6">
+
+            <td>9997</td>
+            <td>$0</td>
+            <td>2021-2-11</td>
+            <td>2021-2-11</td>
+            <td>Hibiya</td>
+            <td>002</td>
+            <td>Temporary</td>
+            <td>Visitor</td>
+            <td>NULL</td>
 
             <td><button>Update</button></td>
             <td><button>Delete</button></td>
