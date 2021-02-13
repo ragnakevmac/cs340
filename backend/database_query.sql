@@ -103,19 +103,26 @@ VALUES ("Shinjuku Sation"),
 
 -- Query to insert data into the Passengers table.
 INSERT INTO Passengers (first_name, last_name, birthdate, occupation, email)
-VALUES ("Taru", "Honda", "1994-4-10", "Office Worker", "taru@gmail.com"),
-("Hiro", "Yamanoto", "1987-9-11", "Chef", "hiro@gmail.com");
+VALUES ("Hiro", "Honda", "1994-4-10", "Office Worker", "taru@pmail.com"),
+("Yasu", "Yamanoto", "1987-9-11", "Chef", "hiro@pmail.com"),
+("Pancho", "Villa", "1985-3-11", "Handyman", "pancho@pmail.com"),
+("Mario", "Bross", "1970-1-1", "Comedian", "mario@pmail.com");
 
 -- Query to insert data into the Commuter_Passes table.
 INSERT INTO Commuter_Passes (cost, start_date, end_date)
-VALUES (40.50, "2021-2-10", "2021-6-20"),
-(33.20, "2021-2-12", "2021-4-11");
+VALUES (132.00, "2021-2-10", "2021-6-10"),
+(66.00, "2021-2-12", "2021-4-12"),
+(33.00, "2021-2-20", "2021-3-20"),
+(198.00, "2021-2-25", "2021-8-25");
 
--------------------------------------------------------------------------------------------
--- Queries to insert foreing keys.
--------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------
+-- Queries to insert foreign keys.
+-----------------------------------------------------------------------------------------------------
 
-
+-- Querty to insert Commuter_Passes foreign keys.
+INSERT INTO Commuter_Passes (passenger_id, trainline_id)
+VALUES ((SELECT passenger_id FROM Passengers WHERE first_name = "Hiro" AND last_name = "Honda"), 
+	(SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yokohama Line"));
 
 
 
