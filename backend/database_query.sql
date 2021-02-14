@@ -58,9 +58,9 @@ CREATE TABLE Trainlines_and_Stations (
 	ON UPDATE CASCADE ON DELETE CASCADE
 );
 
--------------------------------------------------------------------------------------------
--- Queries to insert data.
--------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+-- Queries to insert data into the tables.
+------------------------------------------------------------------------------------------------
 
 -- Query to insert data into the Trailines table.
 -- Data from: https://en.wikipedia.org/wiki/East_Japan_Railway_Company#Lines
@@ -82,24 +82,24 @@ INSERT INTO Prefectures (prefecture_name)
 VALUES ("Ibaraki"),
 ("Tochigi"),
 ("Gunma"),
-("Saitamal"),
+("Saitama"),
 ("Chiba"),
 ("Kanagawa"),
 ("Tokyo");
 
 -- Querty to insert data into the Stations table.
 -- Data from: https://en.wikipedia.org/wiki/East_Japan_Railway_Company#Lines
-INSERT INTO Stations (station_name)
-VALUES ("Shinjuku Sation"),
-("Ikebukuro Sation"),
-("Tokyo Sation"),
-("Yokohama Sation"),
-("Shinagawa Station"),
-("Shibuya Station"),
-("Shimbashi Station"),
-("Omiya Station"),
-("Akihabara Station"),
-("Kita-Senju Station");
+INSERT INTO Stations (station_name, prefecture_id)
+VALUES ("Shinjuku Station", (SELECT prefecture_id FROM Prefectures WHERE prefecture_name = "Tokyo")),
+("Ikebukuro Station", (SELECT prefecture_id FROM Prefectures WHERE prefecture_name = "Tokyo")),
+("Tokyo Station", (SELECT prefecture_id FROM Prefectures WHERE prefecture_name = "Tokyo")),
+("Yokohama Station", (SELECT prefecture_id FROM Prefectures WHERE prefecture_name = "Kanagawa")),
+("Shinagawa Station", (SELECT prefecture_id FROM Prefectures WHERE prefecture_name = "Kanagawa")),
+("Shibuya Station", (SELECT prefecture_id FROM Prefectures WHERE prefecture_name = "Tokyo")),
+("Shimbashi Station", (SELECT prefecture_id FROM Prefectures WHERE prefecture_name = "Tokyo")),
+("Omiya Station", (SELECT prefecture_id FROM Prefectures WHERE prefecture_name = "Saitama")),
+("Akihabara Station", (SELECT prefecture_id FROM Prefectures WHERE prefecture_name = "Tokyo")),
+("Kita-Senju Station", (SELECT prefecture_id FROM Prefectures WHERE prefecture_name = "Tokyo"));
 
 -- Query to insert data into the Passengers table.
 INSERT INTO Passengers (first_name, last_name, birthdate, occupation, email)
@@ -109,25 +109,30 @@ VALUES ("Hiro", "Honda", "1994-4-10", "Office Worker", "taru@pmail.com"),
 ("Mario", "Bross", "1970-1-1", "Comedian", "mario@pmail.com");
 
 -- Query to insert data into the Commuter_Passes table.
-INSERT INTO Commuter_Passes (cost, start_date, end_date)
-VALUES (132.00, "2021-2-10", "2021-6-10"),
-(66.00, "2021-2-12", "2021-4-12"),
-(33.00, "2021-2-20", "2021-3-20"),
-(198.00, "2021-2-25", "2021-8-25");
+INSERT INTO Commuter_Passes (cost, start_date, end_date, passenger_id, trainline_id)
+VALUES (132.00, "2021-2-10", "2021-6-10", 
+(SELECT passenger_id FROM Passengers WHERE first_name = "Hiro" AND last_name = "Honda"),
+(SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yokohama Line")),
+(66.00, "2021-2-12", "2021-4-12", 
+(SELECT passenger_id FROM Passengers WHERE first_name = "Yasu" AND last_name = "Yamanoto"),
+(SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yamanote Line")),
+(33.00, "2021-2-20", "2021-3-20", 
+(SELECT passenger_id FROM Passengers WHERE first_name = "Pancho" AND last_name = "Villa"),
+(SELECT trainline_id FROM Trainlines WHERE trainline_company = "Ome Line")),
+(198.00, "2021-2-25", "2021-8-25", 
+(SELECT passenger_id FROM Passengers WHERE first_name = "Mario" AND last_name = "Bross"),
+(SELECT trainline_id FROM Trainlines WHERE trainline_company = "Shonan-Shinjuku Line"));
 
 -----------------------------------------------------------------------------------------------------
--- Queries to insert foreign keys.
+-- Queries to insert foreign keys into the relationships table.
 -----------------------------------------------------------------------------------------------------
 
--- Querty to insert Commuter_Passes foreign keys.
-INSERT INTO Commuter_Passes (passenger_id, trainline_id)
-VALUES ((SELECT passenger_id FROM Passengers WHERE first_name = "Hiro" AND last_name = "Honda"), 
-	(SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yokohama Line"));
-
-
-
-
-
-
-
-
+INSERT INTO Trainlines_and_Stations (trainline_id, station_id)
+VALUES ((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yamanote Line"),
+(SELECT station_id FROM Stations WHERE station_name = "Tokyo Station")),
+((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yokosuka Line"),
+(SELECT station_id FROM Stations WHERE station_name = "Yokohama Station")),
+((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Narita Line"),
+(SELECT station_id FROM Stations WHERE station_name = "Shinagawa Station")),
+((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Shonan-Shinjuku Line"),
+(SELECT station_id FROM Stations WHERE station_name = "Shimbashi Station"));
