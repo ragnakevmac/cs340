@@ -22,6 +22,11 @@ INSERT INTO Commuter_Passes (passenger_id, cost, start_date, end_date, trainline
 INSERT INTO Trainlines (trainline_company) VALUES 
 (:trainline_company_input)
 
+-- get all registered trainlines grouped by commuter_pass_id
+SELECT tl.trainline_id, tl.trainline_company, COUNT(cp.commuter_pass_id)
+FROM Trainlines tl INNER JOIN Commuter_Passes cp ON tl.trainline_id = cp.trainline_id
+GROUP BY cp.commuter_pass_id; 
+
 -- add a new Station
 INSERT INTO Stations (station_name, prefecture_id) VALUES 
 (:station_name_input, :prefecture_id_from_dropdown_input)
