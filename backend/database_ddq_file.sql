@@ -190,7 +190,7 @@ INSERT INTO `Stations` (`station_name`, `prefecture_id`) VALUES
 
 INSERT INTO `Passengers` (`first_name`, `last_name`, `birthdate`, `occupation`, `email`) VALUES
 ('John', 'Smith', '2020-03-20', 'student', 'john_smith@gmail.com'),
-('Pedro', 'Varo', '2020-02-20', 'student', 'pedro_varo@gmail.com'),
+('Gachapin', 'Mukku', '2020-02-20', 'student', 'gachapin_mukku@gmail.com'),
 ('Kevin', 'Macandog', '2020-01-20', 'student', 'Kevin_Macandog@gmail.com'),
 ('Risa', 'Oribe', '2020-01-20', 'student', 'Risa_Oribe@gmail.com'),
 ("Hiro", "Honda", "1994-4-10", "Office Worker", "taru@pmail.com"),
