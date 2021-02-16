@@ -204,16 +204,16 @@ INSERT INTO `Passengers` (`first_name`, `last_name`, `birthdate`, `occupation`, 
 --
 
 INSERT INTO `Commuter_Passes` (`cost`, `start_date`, `end_date`, `passenger_id`, `trainline_id`) VALUES
-('100.00', '2020-10-01', '2021-11-11', (SELECT passenger_id FROM Passengers WHERE first_name = "Risa" AND last_name = "Oribe"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yamanote Line")),
+('100.00', '2020-01-10', '2021-11-11', (SELECT passenger_id FROM Passengers WHERE first_name = "Risa" AND last_name = "Oribe"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yamanote Line")),
 ('90.00', '2021-01-11', '2021-05-25', (SELECT passenger_id FROM Passengers WHERE first_name = "Risa" AND last_name = "Oribe"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Ginza Line")),
 ('150.00', '2021-01-20', '2021-04-20', (SELECT passenger_id FROM Passengers WHERE first_name = "Risa" AND last_name = "Oribe"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Hibiya Line")),
 ('0.00', '2021-02-11', '2031-02-11', NULL, (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yamanote Line")),
 ('0.00', '2021-02-11', '2031-02-11', NULL, (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Ginza Line")),
-('0.00', '2021-02-11', '2021-02-11', NULL, (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Hibiya Line")),
-('132.00', "2021-02-10", "2021-06-10", (SELECT passenger_id FROM Passengers WHERE first_name = "Hiro" AND last_name = "Honda"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yokohama Line")),
-('66.00', "2021-02-12", "2021-04-12", (SELECT passenger_id FROM Passengers WHERE first_name = "Yasu" AND last_name = "Yamanoto"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yamanote Line")),
-('33.00', "2021-02-20", "2021-03-20", (SELECT passenger_id FROM Passengers WHERE first_name = "Pancho" AND last_name = "Villa"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Ome Line")),
-('198.00', "2021-02-25", "2021-08-25", (SELECT passenger_id FROM Passengers WHERE first_name = "Mario" AND last_name = "Bross"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Shonan-Shinjuku Line"));
+('0.00', '2021-01-11', '2021-04-11', NULL, (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Hibiya Line")),
+('132.00', "2018-02-10", "2019-06-10", (SELECT passenger_id FROM Passengers WHERE first_name = "Hiro" AND last_name = "Honda"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yokohama Line")),
+('66.00', "2018-02-12", "2019-04-12", (SELECT passenger_id FROM Passengers WHERE first_name = "Yasu" AND last_name = "Yamanoto"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yamanote Line")),
+('33.00', "2031-02-20", "2032-03-20", (SELECT passenger_id FROM Passengers WHERE first_name = "Pancho" AND last_name = "Villa"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Ome Line")),
+('198.00', "2031-02-25", "2032-08-25", (SELECT passenger_id FROM Passengers WHERE first_name = "Mario" AND last_name = "Bross"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Shonan-Shinjuku Line"));
 
 
 --

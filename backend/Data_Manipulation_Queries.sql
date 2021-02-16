@@ -3,20 +3,39 @@ INSERT INTO Passengers (first_name, last_name, birthdate, occupation, email) VAL
 (:first_name_input, :last_name_input, :birthdate_input, :occupation_input, :email_input)
 
 -- get all passengers by occupation
-SELECT * FROM Passengers WHERE occupation = :person_occupation_selected_from_passegers_page;
+SELECT * FROM Passengers WHERE occupation = :occupation_input;
+
+
+
+
 
 -- add a new Commuter Pass
 INSERT INTO Commuter_Passes (passenger_id, cost, start_date, end_date, trainline_id) VALUES 
-(:passenger_id_input, :cost_input, :start_date_input, :end_date_input, :trainline_id_from_dropdown_input)
+(:passenger_email_input, :cost_input, :start_date_input, :end_date_input, :trainline_id_from_dropdown_input)
 
--- get all commuters passes by passengers ID or by commuter pass ID
- SELECT * FROM (SELECT cp.commuter_pass_id, cp.cost, cp.start_date, cp.end_date, tl.trainline_company, tl.trainline_id, pa.first_name, pa.last_name, pa.passenger_id
- FROM Passengers pa INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.commuter_pass_id 
- INNER JOIN Trainlines tl ON cp.trainline_id = tl.trainline_id) AS fq WHERE fq.passenger_id = :passenger_id_input_from_commuter_passes_page;
+-- get all of active commuters passes (not expired) (and including those with null passenger ID's)
+select d1.commuter_pass_id AS "Commuter Pass ID", d1.cost AS "Cost Paid", d1.start_date AS "Start Date", d1.end_date AS "End Date", d3.trainline_company AS "Trainline Access", d3.trainline_id AS "Trainline ID", d2.email AS "Passenger's Email", d2.passenger_id AS "Passenger's ID" from
 
- SELECT * FROM (SELECT cp.commuter_pass_id, cp.cost, cp.start_date, cp.end_date, tl.trainline_company, tl.trainline_id, pa.first_name, pa.last_name, pa.passenger_id
- FROM Passengers pa INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.commuter_pass_id 
- INNER JOIN Trainlines tl ON cp.trainline_id = tl.trainline_id) AS fq WHERE fq.commuter_pass_id = :commuter_pass_id_input_from_commuter_passes_page;
+(SELECT cp.commuter_pass_id, cp.cost, cp.start_date, cp.end_date, cp.passenger_id, cp.trainline_id from Commuter_Passes cp) d1
+
+LEFT JOIN
+
+(select pa.email, pa.passenger_id from Passengers pa) as d2
+
+on d1.passenger_id = d2.passenger_id
+
+INNER JOIN
+
+(select tl.trainline_id, tl.trainline_company from Trainlines tl) as d3
+
+on d3.trainline_id = d1.trainline_id
+
+where d1.start_date < now() AND d1.end_date > now()
+
+order by d1.commuter_pass_id
+
+
+
 
 -- add a new Train Line
 INSERT INTO Trainlines (trainline_company) VALUES 
@@ -27,19 +46,27 @@ SELECT tl.trainline_id, tl.trainline_company, COUNT(cp.commuter_pass_id)
 FROM Trainlines tl INNER JOIN Commuter_Passes cp ON tl.trainline_id = cp.trainline_id
 GROUP BY cp.commuter_pass_id; 
 
+
+
+
+
 -- add a new Station
 INSERT INTO Stations (station_name, prefecture_id) VALUES 
 (:station_name_input, :prefecture_id_from_dropdown_input)
 
 -- get all registered stations
-SELECT st.station_id, st.station_name, pf.prefecture_name, pf.prefecture_id
+SELECT st.station_id AS "Station ID", st.station_name AS "Station Name", pf.prefecture_name AS "Prefecture Jurisdiction", pf.prefecture_id AS "Prefecture ID"
 FROM Stations st INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id;
+
+
+
+
 
 -- add a new Prefecture
 INSERT INTO Prefectures (prefecture_name) VALUES 
 (:prefecture_name_input)
 
--- get all participatin prefectures
+-- get all participating prefectures
 SELECT * from Prefectures;
 
 -- get all passengers who can come to the selected prefecture via their commuter passes
@@ -51,6 +78,10 @@ SELECT * from Prefectures;
  INNER JOIN Stations st ON ts.station_id = st.station_id
  INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
  AS fq WHERE fq.prefecture_name = :prefecture_name_from_dropdown_input;
+
+
+
+
 
 -- associate a trainline with a station (M-to-M relationship addition)
 INSERT INTO Trainlines_and_Stations (trainline_id, station_id) VALUES 
@@ -73,6 +104,12 @@ INNER JOIN Stations st ON ts.station_id = st.station_id
 GROUP BY st.station_name ORDER BY st.station_name DESC;
 
 
+
+
+
+
+
+
 -- update a Passenger's data based on submission of the Update Passenger input form 
 UPDATE Passengers SET first_name = :first_name_input, last_name = :last_name_input, birthdate = :birthdate_input, occupation = :occupation_input, email = :email_input WHERE id = :passenger_id_from_the_update_form
 
@@ -87,6 +124,8 @@ UPDATE Stations SET station_name = :station_name_input, prefecture_id = :prefect
 
 -- update a Prefecture's data based on submission of the Update Prefecture input form 
 UPDATE Prefectures SET prefecture_name = :prefecture_name_input WHERE id = :prefecture_id_from_the_update_form
+
+
 
 
 -- delete a Passenger
