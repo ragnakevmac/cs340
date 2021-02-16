@@ -1,19 +1,11 @@
--- add a new Passenger
-INSERT INTO Passengers (first_name, last_name, birthdate, occupation, email) VALUES 
-(:first_name_input, :last_name_input, :birthdate_input, :occupation_input, :email_input)
-
 -- get all passengers by occupation
-SELECT * FROM Passengers WHERE occupation = :occupation_input;
+SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS "Last Name", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email"  FROM Passengers where occupation = :occupation_input;
 
 
 
 
 
--- add a new Commuter Pass
-INSERT INTO Commuter_Passes (passenger_id, cost, start_date, end_date, trainline_id) VALUES 
-(:passenger_email_input, :cost_input, :start_date_input, :end_date_input, :trainline_id_from_dropdown_input)
-
--- get all of active commuters passes (not expired) (and including those with null passenger ID's)
+-- get all of active commuters passes (not expired) (and including those with null passenger IDs)
 select d1.commuter_pass_id AS "Commuter Pass ID", d1.cost AS "Cost Paid", d1.start_date AS "Start Date", d1.end_date AS "End Date", d3.trainline_company AS "Trainline Access", d3.trainline_id AS "Trainline ID", d2.email AS "Passenger's Email", d2.passenger_id AS "Passenger's ID" from
 
 (SELECT cp.commuter_pass_id, cp.cost, cp.start_date, cp.end_date, cp.passenger_id, cp.trainline_id from Commuter_Passes cp) d1
@@ -32,29 +24,45 @@ on d3.trainline_id = d1.trainline_id
 
 where d1.start_date < now() AND d1.end_date > now()
 
-order by d1.commuter_pass_id
-
-
-
-
--- add a new Train Line
-INSERT INTO Trainlines (trainline_company) VALUES 
-(:trainline_company_input)
-
--- get all registered trainlines grouped by commuter_pass_id
-SELECT tl.trainline_id, tl.trainline_company, COUNT(cp.commuter_pass_id)
-FROM Trainlines tl INNER JOIN Commuter_Passes cp ON tl.trainline_id = cp.trainline_id
-GROUP BY cp.commuter_pass_id; 
+order by d1.commuter_pass_id;
 
 
 
 
 
--- add a new Station
-INSERT INTO Stations (station_name, prefecture_id) VALUES 
-(:station_name_input, :prefecture_id_from_dropdown_input)
+-- get all registered trainlines and their active commuters
+select tl.trainline_id, tl.trainline_company, IFNULL(COUNT(x.trainline_id), 0) from
 
--- get all registered stations
+
+Trainlines tl
+
+
+LEFT JOIN
+
+
+(select d3.trainline_id, d3.trainline_company, d1.start_date, d1.end_date from
+
+(SELECT cp.commuter_pass_id, cp.start_date, cp.end_date, cp.trainline_id from Commuter_Passes cp
+where cp.start_date < now() AND now() < cp.end_date) d1
+
+LEFT JOIN
+
+(select tl.trainline_id, tl.trainline_company from Trainlines tl) as d3
+
+on d3.trainline_id = d1.trainline_id) as x
+
+
+on tl.trainline_id = x.trainline_id
+
+
+
+group by tl.trainline_id;
+
+
+
+
+
+-- get all registered stations and their respective prefecture jurisdiction
 SELECT st.station_id AS "Station ID", st.station_name AS "Station Name", pf.prefecture_name AS "Prefecture Jurisdiction", pf.prefecture_id AS "Prefecture ID"
 FROM Stations st INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id;
 
@@ -62,26 +70,71 @@ FROM Stations st INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_i
 
 
 
--- add a new Prefecture
-INSERT INTO Prefectures (prefecture_name) VALUES 
-(:prefecture_name_input)
-
--- get all participating prefectures
+-- get all participating prefectures in this database program
 SELECT * from Prefectures;
 
--- get all passengers who can come to the selected prefecture via their commuter passes
- SELECT fq.passenger_id, fq.first_name, fq.last_name, fq.birthdate, fq.occupation, fq.email
- FROM (SELECT pa.passenger_id, pa.first_name, pa.last_name, pa.birthdate, pa.occupation, pa.email, pf.prefecture_name
- FROM Passengers pa INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.commuter_pass_id 
+
+-- get all passengers who can come to or might have been to the selected prefecture via their commuter passes
+SELECT fq.passenger_id AS "Passenger ID", fq.first_name AS "First Name", fq.last_name AS "Last Name", fq.birthdate AS "Birthdate", fq.occupation AS "Occupation", fq.email AS "Email"
+ 
+ FROM 
+ 
+ (SELECT pa.passenger_id, pa.first_name, pa.last_name, pa.birthdate, pa.occupation, pa.email, pf.prefecture_name
+ FROM Passengers pa 
+ INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.passenger_id
  INNER JOIN Trainlines tl ON cp.trainline_id = tl.trainline_id
  INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
  INNER JOIN Stations st ON ts.station_id = st.station_id
  INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
- AS fq WHERE fq.prefecture_name = :prefecture_name_from_dropdown_input;
+ AS fq 
+ 
+ WHERE fq.prefecture_name = :prefecture_name_input;
+ 
 
 
 
 
+
+
+-- get all train line and statons relationship
+
+-- sort by trainline
+SELECT tl.trainline_id AS "Trainline ID", tl.trainline_company AS "Trainline Name", st.station_name AS "Station Name", st.station_id AS "Station ID"
+FROM Trainlines tl INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
+INNER JOIN Stations st ON ts.station_id = st.station_id
+ORDER BY tl.trainline_id;
+
+-- sort by station
+SELECT st.station_id AS "Station ID", st.station_name AS "Station Name", tl.trainline_company AS "Trainline Name", tl.trainline_id AS "Trainline ID" 
+FROM Trainlines tl INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
+INNER JOIN Stations st ON ts.station_id = st.station_id
+ORDER BY st.station_id;
+
+
+
+
+
+
+
+-- add a new Passenger
+INSERT INTO Passengers (first_name, last_name, birthdate, occupation, email) VALUES 
+(:first_name_input, :last_name_input, :birthdate_input, :occupation_input, :email_input)
+
+-- add a new Commuter Pass
+INSERT INTO Commuter_Passes (passenger_id, cost, start_date, end_date, trainline_id) VALUES 
+(:passenger_email_input, :cost_input, :start_date_input, :end_date_input, :trainline_id_from_dropdown_input)
+
+-- add a new Train Line
+INSERT INTO Trainlines (trainline_company) VALUES 
+(:trainline_company_input)
+
+-- add a new Station
+INSERT INTO Stations (station_name, prefecture_id) VALUES 
+(:station_name_input, :prefecture_id_from_dropdown_input)
+
+-- add a new Prefecture
+INSERT INTO Prefectures (prefecture_name) VALUES 
+(:prefecture_name_input)
 
 -- associate a trainline with a station (M-to-M relationship addition)
 INSERT INTO Trainlines_and_Stations (trainline_id, station_id) VALUES 
@@ -90,22 +143,6 @@ INSERT INTO Trainlines_and_Stations (trainline_id, station_id) VALUES
 -- associate a station with a trainline (M-to-M relationship addition)
 INSERT INTO Trainlines_and_Stations (station_id, trainline_id) VALUES 
 (:station_id_from_dropdown_input, :trainline_ids_from_checkbox_inputs)
-
--- get all train line and statons relationship
--- sort by trainline
-SELECT tl.trainline_id, tl.trainline_company, st.station_name, st.station_id
-FROM Trainlines tl INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
-INNER JOIN Stations st ON ts.station_id = st.station_id
-GROUP BY tl.trainline_company ORDER BY tl.trainline_company DESC;
--- sort by station
-SELECT tl.trainline_id, tl.trainline_company, st.station_name, st.station_id
-FROM Trainlines tl INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
-INNER JOIN Stations st ON ts.station_id = st.station_id
-GROUP BY st.station_name ORDER BY st.station_name DESC;
-
-
-
-
 
 
 

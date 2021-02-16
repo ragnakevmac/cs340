@@ -189,12 +189,12 @@ INSERT INTO `Stations` (`station_name`, `prefecture_id`) VALUES
 --
 
 INSERT INTO `Passengers` (`first_name`, `last_name`, `birthdate`, `occupation`, `email`) VALUES
-('John', 'Smith', '2020-03-20', 'student', 'john_smith@gmail.com'),
-('Gachapin', 'Mukku', '2020-02-20', 'student', 'gachapin_mukku@gmail.com'),
-('Kevin', 'Macandog', '2020-01-20', 'student', 'Kevin_Macandog@gmail.com'),
-('Risa', 'Oribe', '2020-01-20', 'student', 'Risa_Oribe@gmail.com'),
+('John', 'Smith', '2020-03-20', 'Student', 'John_Smith@gmail.com'),
+('Gachapin', 'Mukku', '2020-02-20', 'Student', 'Gachapin_Mukku@gmail.com'),
+('Kevin', 'Macandog', '2020-01-20', 'Student', 'Kevin_Macandog@gmail.com'),
+('Risa', 'Oribe', '2020-01-20', 'Student', 'Risa_Oribe@gmail.com'),
 ("Hiro", "Honda", "1994-4-10", "Office Worker", "taru@pmail.com"),
-("Yasu", "Yamanoto", "1987-9-11", "Chef", "hiro@pmail.com"),
+("Yasu", "Yamamoto", "1987-9-11", "Chef", "hiro@pmail.com"),
 ("Pancho", "Villa", "1985-3-11", "Handyman", "pancho@pmail.com"),
 ("Mario", "Bross", "1970-1-1", "Comedian", "mario@pmail.com");
 
@@ -211,7 +211,7 @@ INSERT INTO `Commuter_Passes` (`cost`, `start_date`, `end_date`, `passenger_id`,
 ('0.00', '2021-02-11', '2031-02-11', NULL, (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Ginza Line")),
 ('0.00', '2021-01-11', '2021-04-11', NULL, (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Hibiya Line")),
 ('132.00', "2018-02-10", "2019-06-10", (SELECT passenger_id FROM Passengers WHERE first_name = "Hiro" AND last_name = "Honda"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yokohama Line")),
-('66.00', "2018-02-12", "2019-04-12", (SELECT passenger_id FROM Passengers WHERE first_name = "Yasu" AND last_name = "Yamanoto"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yamanote Line")),
+('66.00', "2018-02-12", "2019-04-12", (SELECT passenger_id FROM Passengers WHERE first_name = "Yasu" AND last_name = "Yamamoto"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yamanote Line")),
 ('33.00', "2031-02-20", "2032-03-20", (SELECT passenger_id FROM Passengers WHERE first_name = "Pancho" AND last_name = "Villa"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Ome Line")),
 ('198.00', "2031-02-25", "2032-08-25", (SELECT passenger_id FROM Passengers WHERE first_name = "Mario" AND last_name = "Bross"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Shonan-Shinjuku Line"));
 
@@ -221,14 +221,10 @@ INSERT INTO `Commuter_Passes` (`cost`, `start_date`, `end_date`, `passenger_id`,
 --
 
 INSERT INTO Trainlines_and_Stations (trainline_id, station_id) VALUES 
-((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yamanote Line"),
-(SELECT station_id FROM Stations WHERE station_name = "Tokyo Station")),
-((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yokosuka Line"),
-(SELECT station_id FROM Stations WHERE station_name = "Yokohama Station")),
-((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Narita Line"),
-(SELECT station_id FROM Stations WHERE station_name = "Shinagawa Station")),
-((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Shonan-Shinjuku Line"),
-(SELECT station_id FROM Stations WHERE station_name = "Shimbashi Station"));
+((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yamanote Line"), (SELECT station_id FROM Stations WHERE station_name = "Tokyo Station")),
+((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yokosuka Line"), (SELECT station_id FROM Stations WHERE station_name = "Yokohama Station")),
+((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Narita Line"), (SELECT station_id FROM Stations WHERE station_name = "Shinagawa Station")),
+((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Shonan-Shinjuku Line"), (SELECT station_id FROM Stations WHERE station_name = "Shimbashi Station"));
 
 
 
