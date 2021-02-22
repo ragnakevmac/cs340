@@ -138,11 +138,7 @@ INSERT INTO Prefectures (prefecture_name) VALUES
 
 -- associate a trainline with a station (M-to-M relationship addition)
 INSERT INTO Trainlines_and_Stations (trainline_id, station_id) VALUES 
-(:trainline_id_from_dropdown_input, :station_ids_from_checkbox_inputs)
-
--- associate a station with a trainline (M-to-M relationship addition)
-INSERT INTO Trainlines_and_Stations (station_id, trainline_id) VALUES 
-(:station_id_from_dropdown_input, :trainline_ids_from_checkbox_inputs)
+(:trainline_id_from_dropdown_input, :station_id_from_dropdown_input)
 
 
 
