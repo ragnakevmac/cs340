@@ -107,7 +107,7 @@
 
     <div class="container">
         <form id="addInputsCommuterPasses">
-            <label>Passenger ID: </label>  <input type="text" name="passenger_id" placeholder="Optional (NULLable)" />    <br>
+            <label>Passenger Email: </label>  <input type="text" name="passenger_id" placeholder="Optional (NULLable)" />    <br>
             <label>Cost Paid:    </label>  <input type="number" name="cost" />          <br>
             <label>Start Date:   </label>  <input type="date" name="start_date" />      <br>
             <label>End Date:     </label>  <input type="date" name="end_date" />        <br><br><br>
@@ -128,24 +128,22 @@
 
 
 
-    <h2>List All of a Passenger's Active Commuter Passes (not expired)</h2>
+    <h2>List of All Active Commuter Passes (not expired) including NULL Passengers:</h2>
 
-    <div class="container">
+    <!-- <div class="container">
         <form id="searchCommuterPasses">
 
 
-            <label> By Passenger's ID: </label>         <input type="number" name="passenger_id" /> <input id="inputButton1" type="submit" value="Search" /> <br>
+            <label> By Passenger's Email: </label>         <input type="number" name="passenger_id" /> <input id="inputButton1" type="submit" value="Search" /> <br>
             <label> By Commuter Pass ID: </label>         <input type="number" name="commuter_pass_id" /> <input id="inputButton2" type="submit" value="Search" />
 
 
         </form>
     </div>
-    <br>
+    <br> -->
 
 
 
-
-    <h3>Search Results</h3>
 
     <table id="searchResultsCommuterPasses">
         <tr class="header">
@@ -156,9 +154,8 @@
             <th>End Date</th>
             <th>Trainline Access</th>
             <th>Trainline ID</th>
-            <th>Passenger Owner's First Name</th>
-            <th>Passenger Owner's Last Name</th>
-            <th>Passenger Owner's ID</th>
+            <th>Passenger's Email</th>
+            <th>Passenger's ID</th>
             
 
         </tr>
@@ -166,15 +163,14 @@
 
         <tr class="header" id="sampleSearchCommuterPasses">
 
-            <td>0001</td>
+            <td>1</td>
             <td>$100</td>
-            <td>2020-1-10</td>
+            <td>2020-01-10</td>
             <td>2021-11-11</td>
-            <td>Yamanote</td>
-            <td>001</td>
-            <td>Risa</td>
-            <td>Oribe</td>
-            <td>004</td>
+            <td>Yamanote Line</td>
+            <td>1</td>
+            <td>Risa_Oribe@pmail.com</td>
+            <td>4</td>
 
             <td><button>Update</button></td>
             <td><button>Delete</button></td>
@@ -183,15 +179,14 @@
 
         <tr class="header" id="sampleSearchCommuterPasses2">
 
-            <td>0002</td>
+            <td>2</td>
             <td>$90</td>
-            <td>2021-1-11</td>
-            <td>2021-5-25</td>
-            <td>Ginza</td>
-            <td>003</td>
-            <td>Risa</td>
-            <td>Oribe</td>
-            <td>004</td>
+            <td>2021-01-11</td>
+            <td>2021-05-25</td>
+            <td>Ginza Line</td>
+            <td>3</td>
+            <td>Risa_Oribe@pmail.com</td>
+            <td>4</td>
 
             <td><button>Update</button></td>
             <td><button>Delete</button></td>
@@ -200,15 +195,14 @@
 
         <tr class="header" id="sampleSearchCommuterPasses3">
 
-            <td>0003</td>
+            <td>3</td>
             <td>$150</td>
-            <td>2021-1-20</td>
-            <td>2021-4-20</td>
-            <td>Hibiya</td>
-            <td>002</td>
-            <td>Risa</td>
-            <td>Oribe</td>
-            <td>004</td>
+            <td>2021-01-20</td>
+            <td>2021-04-20</td>
+            <td>Hibiya Line</td>
+            <td>2</td>
+            <td>Risa_Oribe@pmail.com</td>
+            <td>4</td>
 
             <td><button>Update</button></td>
             <td><button>Delete</button></td>
@@ -219,14 +213,13 @@
 
         <tr class="header" id="sampleSearchCommuterPasses4">
 
-            <td>9999</td>
+            <td>4</td>
             <td>$0</td>
-            <td>2021-2-11</td>
-            <td>2031-2-11</td>
-            <td>Yamanote</td>
-            <td>001</td>
-            <td>Attendant</td>
-            <td>Employee</td>
+            <td>2021-02-11</td>
+            <td>2031-02-11</td>
+            <td>Yamanote Line</td>
+            <td>1</td>
+            <td>NULL (Employee?)</td>
             <td>NULL</td>
 
             <td><button>Update</button></td>
@@ -236,14 +229,13 @@
 
         <tr class="header" id="sampleSearchCommuterPasses5">
 
-            <td>9998</td>
+            <td>5</td>
             <td>$0</td>
-            <td>2021-2-11</td>
-            <td>2031-2-11</td>
-            <td>Ginza</td>
-            <td>003</td>
-            <td>Driver</td>
-            <td>Employee</td>
+            <td>2021-02-11</td>
+            <td>2031-02-11</td>
+            <td>Ginza Line</td>
+            <td>3</td>
+            <td>NULL (Employee?)</td>
             <td>NULL</td>
 
             <td><button>Update</button></td>
@@ -253,14 +245,13 @@
 
         <tr class="header" id="sampleSearchCommuterPasses6">
 
-            <td>9997</td>
+            <td>6</td>
             <td>$0</td>
-            <td>2021-2-11</td>
-            <td>2021-2-11</td>
-            <td>Hibiya</td>
-            <td>002</td>
-            <td>Temporary</td>
-            <td>Visitor</td>
+            <td>2021-01-11</td>
+            <td>2021-04-11</td>
+            <td>Hibiya Line</td>
+            <td>2</td>
+            <td>NULL (Visitor?)</td>
             <td>NULL</td>
 
             <td><button>Update</button></td>
