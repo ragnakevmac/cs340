@@ -6,24 +6,17 @@ SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS 
 
 
 -- get all of active commuters passes (not expired) (and including those with null passenger IDs)
-select d1.commuter_pass_id AS "Commuter Pass ID", d1.cost AS "Cost Paid", d1.start_date AS "Start Date", d1.end_date AS "End Date", d3.trainline_company AS "Trainline Access", d3.trainline_id AS "Trainline ID", d2.email AS "Passenger's Email", d2.passenger_id AS "Passenger's ID" from
-
-(SELECT cp.commuter_pass_id, cp.cost, cp.start_date, cp.end_date, cp.passenger_id, cp.trainline_id from Commuter_Passes cp) d1
-
+select d1.commuter_pass_id, d1.cost, d1.start_date, d1.end_date, d3.trainline_company, 
+d3.trainline_id, d2.email, d2.passenger_id from
+(SELECT cp.commuter_pass_id, cp.cost, cp.start_date, cp.end_date, cp.passenger_id, 
+cp.trainline_id from Commuter_Passes cp) d1
 LEFT JOIN
-
 (select pa.email, pa.passenger_id from Passengers pa) as d2
-
 on d1.passenger_id = d2.passenger_id
-
 INNER JOIN
-
 (select tl.trainline_id, tl.trainline_company from Trainlines tl) as d3
-
 on d3.trainline_id = d1.trainline_id
-
 where d1.start_date < now() AND d1.end_date > now()
-
 order by d1.commuter_pass_id;
 
 
