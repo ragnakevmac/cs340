@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Stations</title>
+
+        <style>
+            th, td { border: 1px solid black; padding: 10px;}
+            button, input {padding: 10px;}
+            .tab {
+                overflow: hidden;
+                border: 1px solid #ccc;
+                background-color: #f1f1f1;
+            }
+            .tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+            }
+            .tab button:hover {
+                background-color: #ddd;
+            }
+            h1 {text-align: center;}
+
+        
+            body {
+                text-align: center;
+                background-color: lightblue;
+                font-family: Verdana, sans-serif;
+            }
+
+            table {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+        </style>
+    
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    </head>
+
+
+<body>
+
+    <div class="tab">
+        <a href="/"> <button class="home">Home</button> </a>
+        <a href="/passengers"> <button>Passengers</button> </a>
+        <a href="/commuter-passes"> <button>Commuter Passes</button> </a>
+        <a href="/trainlines"> <button>Train Lines</button> </a>
+        <a href="/stations"> <button>Stations</button> </a>
+        <a href="/prefectures"> <button>Prefectures</button> </a>
+        <a href="trainlines-and-stations"> <button>Trainlines and Stations</button> </a>
+    </div>
+
+        <h1>Stations</h1>
+        <br>
+        
+        <h2>Register a Station</h2>
+
+        <form id="addInputsStations">
+            Station Name:     <input type="text" name="station" /> <br><br>
+
+            <label for="prefecture">Prefecture Jurisdiction:</label>
+            <select name="prefecture" id="prefecture">
+              <option value="tokyo">Tokyo</option>
+              <option value="kanagawa">Kanagawa</option>
+              <option value="chiba">Chiba</option>
+              <option value="saitama">Saitama</option>
+              <option value="gunma">Gunma</option>
+              <option value="tochigi">Tochigi</option>
+              <option value="ibaraki">Ibaraki</option>
+            </select><br><br>
+    
+            <input type="submit" value="Add" />
+        </form>
+        <br>
+        <br>
+    
+    
+    
+    
+        <h3>Registered Stations and their Prefecture Jurisdiction:</h3>
+
+
+        <table>
+
+            <thead>
+                <tr>
+                    {% for key in Stations[0].keys() %}
+
+                        <th>{{ key }}</th>
+
+                    {% endfor %}
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for station in Stations %}
+
+                    <tr>
+                        {% for key in station.keys() %}
+
+                            <td>{{station[key]}}</td>
+
+                        {% endfor %}
+                        <td><button>Update</button></td>
+                        <td><button>Delete</button></td>
+                    </tr>
+
+                {% endfor %}
+            </tbody>    
+
+        </table>
+
+
+
+
+
+
+
+
+
+
+    
+        {# <table id="searchResultsStations">
+            <tr class="header">
+    
+                <th>Station ID</th>
+                <th>Station Name</th>
+                <th>Prefecture Jurisdiction</th>
+                <th>Prefecture ID</th>
+    
+            </tr>
+    
+            <tr class="header" id="sampleSearchStations1">
+    
+                <td>1</td>
+                <td>Maihama Station</td>
+                <td>Chiba Prefecture</td>
+                <td>3</td>
+
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+
+            <tr class="header" id="sampleSearchStation2">
+
+                <td>2</td>
+                <td>Shinjuku Station</td>
+                <td>Tokyo Prefecture</td>
+                <td>1</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+
+            <tr class="header" id="sampleSearchStations3">
+    
+                <td>3</td>
+                <td>Yokohama Station</td>
+                <td>Kanagawa Prefecture</td>
+                <td>2</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+
+            <tr class="header" id="sampleSearchStations4">
+    
+                <td>4</td>
+                <td>Ikebukuro Station</td>
+                <td>Tokyo Prefecture</td>
+                <td>1</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+
+            <tr class="header" id="sampleSearchStations5">
+    
+                <td>5</td>
+                <td>Tokyo Station</td>
+                <td>Tokyo Prefecture</td>
+                <td>1</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+
+            <tr class="header" id="sampleSearchStations6">
+    
+                <td>6</td>
+                <td>Shinagawa Station</td>
+                <td>Kanagawa Prefecture</td>
+                <td>2</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+
+            <tr class="header" id="sampleSearchStations7">
+    
+                <td>7</td>
+                <td>Shibuya Station</td>
+                <td>Tokyo Prefecture</td>
+                <td>1</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+
+            <tr class="header" id="sampleSearchStations8">
+    
+                <td>8</td>
+                <td>Shimbashi Station</td>
+                <td>Tokyo Prefecture</td>
+                <td>1</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+
+            <tr class="header" id="sampleSearchStations9">
+    
+                <td>9</td>
+                <td>Omiya Station</td>
+                <td>Saitama Prefecture</td>
+                <td>4</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+
+            <tr class="header" id="sampleSearchStations10">
+    
+                <td>10</td>
+                <td>Akihabara Station</td>
+                <td>Tokyo Prefecture</td>
+                <td>1</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+
+            <tr class="header" id="sampleSearchStations11">
+    
+                <td>11</td>
+                <td>Kita-Senju Station</td>
+                <td>Tokyo Prefecture</td>
+                <td>1</td>
+    
+                <td><button>Update</button></td>
+                <td><button>Delete</button></td>
+    
+            </tr>
+    
+        </table>
+    
+        <br> #}
+    
+
+
+
+
+
+
+
+
+        <script src="Stations.js"></script>
+</body>
+
+</html>
