@@ -57,12 +57,14 @@ def passengers():
 
 
 
-    # occupation = "Student"
 
-    # query = '''SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS "Last Name", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email" FROM Passengers where occupation = "''' + occupation + '''";'''
+    # query = '''SELECT last_name AS "Last Name", first_name AS "First Name", passenger_id AS "Passenger ID", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email" FROM Passengers ORDER BY last_name'''
 
 
-    query = '''SELECT last_name AS "Last Name", first_name AS "First Name", passenger_id AS "Passenger ID", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email" FROM Passengers ORDER BY last_name'''
+    occupation = "Student"
+
+    query = '''SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS "Last Name", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email" FROM Passengers where occupation = "''' + occupation + '''";'''
+
 
     cursor = db.execute_query(db_connection = db_connection, query = query)
     results_one = cursor.fetchall()
