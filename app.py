@@ -23,9 +23,21 @@ def root():
 
 
 
+
+
+
+
+
 @app.route('/passengers', methods = ['GET', 'POST', 'PUT', 'DELETE'])
 def passengers():
-    
+
+    query_occupation = '''SELECT occupation FROM Passengers GROUP BY occupation;'''
+
+    cursor_occupation = db.execute_query(db_connection = db_connection, query = query_occupation)
+    results_occupation = cursor_occupation.fetchall()
+
+
+
 
     if request.method == 'POST':
         form = request.form
@@ -34,7 +46,6 @@ def passengers():
         birthdate = form['birthdate']
         occupation = form['occupation']
         email = form['email']
-
 
 
         query_insert = '''INSERT INTO Passengers (first_name, last_name, birthdate, occupation, email) VALUES (%s, %s, %s, %s, %s)'''
@@ -46,11 +57,29 @@ def passengers():
 
 
 
-    query = '''SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS "Last Name", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email"  FROM Passengers where occupation = "Student";'''
+    # occupation = "Student"
+
+    # query = '''SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS "Last Name", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email" FROM Passengers where occupation = "''' + occupation + '''";'''
+
+
+    query = '''SELECT last_name AS "Last Name", first_name AS "First Name", passenger_id AS "Passenger ID", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email" FROM Passengers ORDER BY last_name'''
 
     cursor = db.execute_query(db_connection = db_connection, query = query)
-    results = cursor.fetchall()
+    results_one = cursor.fetchall()
+
+
+
+
+    results = [results_one, results_occupation]
     return render_template("Passengers.jinja", Passengers = results)
+
+
+
+
+
+
+
+
 
 
 
@@ -114,6 +143,10 @@ def commuter_passes():
 
 
 
+
+
+
+
 @app.route('/trainlines', methods = ['GET', 'POST', 'PUT', 'DELETE'])
 def trainlines():
     
@@ -128,9 +161,6 @@ def trainlines():
         cursor_insert = db.execute_query(db_connection = db_connection, query = query_insert, query_params = data_insert)
 
         return redirect("/trainlines")
-
-
-        
 
 
 
@@ -152,6 +182,9 @@ def trainlines():
 
 
 
+
+
+
 @app.route('/stations', methods = ['GET', 'POST', 'PUT', 'DELETE'])
 def stations():
 
@@ -161,6 +194,9 @@ def stations():
     cursor = db.execute_query(db_connection = db_connection, query = query)
     results = cursor.fetchall()
     return render_template("Stations.jinja", Stations = results)
+
+
+
 
 
 
@@ -178,8 +214,6 @@ def prefectures():
         cursor_insert = db.execute_query(db_connection = db_connection, query = query_insert, query_params = data_insert)
 
         return redirect("/prefectures")
-
-
 
 
 
@@ -208,6 +242,9 @@ def prefectures():
 
     results = [results_one, results_two]
     return render_template("Prefectures.jinja", Prefectures = results)
+
+
+
 
 
 

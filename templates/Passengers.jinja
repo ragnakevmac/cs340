@@ -103,26 +103,39 @@
 
 
 
-    <h2>Search for Passengers</h2>
-
-    <form id="searchPassengers">
-
-        By Occupation:          <input type="text" name="email" placeholder="Student" />
-
-        <input type="submit" value="Search" />
-    </form>
-    <br>
+    {# <h2>Search for Passengers</h2>
 
 
+    {% block occupation %}
+        <form id="searchPassengers" method="POST" action="/get-passengers">
+            <label id="dropDownLabel" for="occupation">By Occupation:</label>
+            <select id="dropDownSelect" name="occupation" id="occupation">
+
+                {% for occupation in Passengers[1] %}
+                    <option value="{{occupation.occupation}}">{{occupation.occupation}}</option>
+                {% endfor %}
+
+            </select>
+            <br>
+            <br>
 
 
-    <h3>Search Results</h3>
+            <input id="inputButton" type="submit" value="Search" />
+        </form>
+    {% endblock %}
+
+    <br> #}
+
+
+
+
+    <h3>List Passengers by Last Name (Alphabetically):</h3>
 
     <table>
 
         <thead>
             <tr>
-                {% for key in Passengers[0].keys() %}
+                {% for key in Passengers[0][0].keys() %}
 
                     <th>{{ key }}</th>
 
@@ -131,7 +144,7 @@
         </thead>
 
         <tbody>
-            {% for passenger in Passengers %}
+            {% for passenger in Passengers[0] %}
 
                 <tr>
                     {% for key in passenger.keys() %}
