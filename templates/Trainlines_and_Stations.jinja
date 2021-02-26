@@ -95,44 +95,48 @@
         <h2>Trainline <-> Station</h2>
 
 
-        <form id="addInputsTrainlines-Stations">
-                             
-            <label for="trainline">Choose a Trainline:</label>
-            <select name="trainline" id="trainline">
-              <option value="yamanote">Yamanote Line</option>
-              <option value="hibiya">Hibiya Line</option>
-              <option value="ginza">Ginza Line</option>
-              <option value="yokosuka">Yokosuka Line</option>
-              <option value="tokaido">Tokaido Line</option>
-              <option value="nambu">Nambu Line</option>
-              <option value="narita">Narita Line</option>
-              <option value="negishi">Negishi Line</option>
-              <option value="ito">Ito Line</option>
-              <option value="ome">Ome Line</option>
-              <option value="yokohama">Yokohama Line</option>
-              <option value="shonan-shinjuku">Shonan-Shinjuku Line</option>
-            </select><br>
+        {% block body %}
+            <form id="addInputsTrainlines-Stations" method="POST">
+                                
+                <label for="trainline">Choose a Trainline:</label>
+                <select name="trainline" id="trainline">
+                <option value="yamanote">Yamanote Line</option>
+                <option value="hibiya">Hibiya Line</option>
+                <option value="ginza">Ginza Line</option>
+                <option value="yokosuka">Yokosuka Line</option>
+                <option value="tokaido">Tokaido Line</option>
+                <option value="nambu">Nambu Line</option>
+                <option value="narita">Narita Line</option>
+                <option value="negishi">Negishi Line</option>
+                <option value="ito">Ito Line</option>
+                <option value="ome">Ome Line</option>
+                <option value="yokohama">Yokohama Line</option>
+                <option value="shonan-shinjuku">Shonan-Shinjuku Line</option>
+                </select><br>
 
 
-            <label for="station">Choose a Station:</label>
-            <select name="station" id="station">
-              <option value="maihama">Maihama Station</option>
-              <option value="shinjuku">Shinjuku Station</option>
-              <option value="yokohama">Yokohama Station</option>
-              <option value="ikebukuro">Ikebukuro Station</option>
-              <option value="tokyo">Tokyo Station</option>
-              <option value="shinagawa">Shinagawa Station</option>
-              <option value="shibuya">Shibuya Station</option>
-              <option value="shimbashi">Shimbashi Station</option>
-              <option value="omiya">Omiya Station</option>
-              <option value="akihabara">Akihabara Station</option>
-              <option value="kita-senju">Kita-Senju Station</option>
-            </select><br><br>
+                <label for="station">Choose a Station:</label>
+                <select name="station" id="station">
+                <option value="maihama">Maihama Station</option>
+                <option value="shinjuku">Shinjuku Station</option>
+                <option value="yokohama">Yokohama Station</option>
+                <option value="ikebukuro">Ikebukuro Station</option>
+                <option value="tokyo">Tokyo Station</option>
+                <option value="shinagawa">Shinagawa Station</option>
+                <option value="shibuya">Shibuya Station</option>
+                <option value="shimbashi">Shimbashi Station</option>
+                <option value="omiya">Omiya Station</option>
+                <option value="akihabara">Akihabara Station</option>
+                <option value="kita-senju">Kita-Senju Station</option>
+                </select><br><br>
 
-            
+                
 
-            <input type="submit" value="Add a Relationship" />
-        </form>
+                <input type="submit" value="Add a Relationship" />
+            </form>
+        {% endblock %}
+
+
         <br>
         <br>
         

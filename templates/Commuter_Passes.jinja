@@ -106,21 +106,28 @@
     <h2>Add a Commuter Pass</h2>
 
     <div class="container">
-        <form id="addInputsCommuterPasses">
-            <label>Passenger Email: </label>  <input type="text" name="passenger_id" placeholder="Optional (NULLable)" />    <br>
-            <label>Cost Paid:    </label>  <input type="number" name="cost" />          <br>
-            <label>Start Date:   </label>  <input type="date" name="start_date" />      <br>
-            <label>End Date:     </label>  <input type="date" name="end_date" />        <br><br><br>
-            <label id="dropDownLabel" for="trainline">Trainline Access:</label>
-            <select id="dropDownSelect" name="trainline" id="trainline">
-                <option value="yamanote">Yamanote Line</option>
-                <option value="hibiya">Hibiya Line</option>
-                <option value="ginza">Ginza Line</option>
-            </select><br><br>
-            <br>
 
-            <input id="inputButton" type="submit" value="Add" />
-        </form>
+        {% block body %}
+            <form id="addInputsCommuterPasses" method="POST">
+                <label>Passenger Email: </label>  <input type="text" name="passenger_email" placeholder="Optional (NULLable)" />    <br>
+                <label>Cost Paid:    </label>  <input type="number" name="cost" />          <br>
+                <label>Start Date:   </label>  <input type="date" name="start_date" />      <br>
+                <label>End Date:     </label>  <input type="date" name="end_date" />        <br><br><br>
+                <label id="dropDownLabel" for="trainline">Trainline Access:</label>
+                <select id="dropDownSelect" name="trainline" id="trainline">
+
+                    {% for trainline in Commuter_Passes[1] %}
+                        <option value="{{trainline.trainline_id}}">{{trainline.trainline_company}}</option>
+                    {% endfor %}
+
+                </select>
+                <br><br>
+
+
+                <input id="inputButton" type="submit" value="Add" />
+            </form>
+        {% endblock %}
+
     </div>
     <br>
     <br>
@@ -146,7 +153,7 @@
 
         <thead>
             <tr>
-                {% for key in Commuter_Passes[0].keys() %}
+                {% for key in Commuter_Passes[0][0].keys() %}
 
                     <th>{{ key }}</th>
 
@@ -155,7 +162,7 @@
         </thead>
 
         <tbody>
-            {% for commuter_pass in Commuter_Passes %}
+            {% for commuter_pass in Commuter_Passes[0] %}
 
                 <tr>
                     {% for key in commuter_pass.keys() %}

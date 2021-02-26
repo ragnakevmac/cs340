@@ -83,16 +83,20 @@
     <h2>Add a Passenger</h2>
 
     <div class="container">
-        <form id="addInputsPassengers">
-            <label>Last Name:  </label>    <input type="text" name="last_name" />    <br>
-            <label>First Name: </label>    <input type="text" name="first_name" />   <br>
-            <label>Birthdate:  </label>    <input type="date" name="birthdate" />    <br>
-            <label>Occupation: </label>    <input type="text" name="occupation" />   <br>
-            <label>Email:      </label>    <input type="text" name="email" />        <br>
-            <br>
 
-            <input id="inputButton" type="submit" value="Add" />
-        </form>
+        {% block body %}
+            <form id="addInputsPassengers" method="POST">
+                <label>First Name: </label>    <input type="text" name="first_name" />   <br>
+                <label>Last Name:  </label>    <input type="text" name="last_name" />    <br>
+                <label>Birthdate:  </label>    <input type="date" name="birthdate" />    <br>
+                <label>Occupation: </label>    <input type="text" name="occupation" />   <br>
+                <label>Email:      </label>    <input type="text" name="email" />        <br>
+                <br>
+
+                <input id="inputButton" type="submit" value="Add" />
+            </form>
+        {% endblock %}
+
     </div>
     <br>
     <br>

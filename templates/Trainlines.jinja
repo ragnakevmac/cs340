@@ -63,11 +63,15 @@
 
         <h2>Register a Company Train Line</h2>
 
-        <form id="addInputsTrainlines">
-            Trainline Name:     <input type="text" name="trainline" />
-    
-            <input type="submit" value="Add" />
-        </form>
+
+        {% block body %}
+            <form id="addInputsTrainlines" method="POST">
+                Trainline Name:     <input type="text" name="trainline" />
+        
+                <input type="submit" value="Add" />
+            </form>
+        {% endblock %}
+
         <br>
         <br>
     

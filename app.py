@@ -1,4 +1,4 @@
-from flask import Flask, render_template, json # add `json`
+from flask import Flask, render_template, request, redirect, json # add `json`
 from waitress import serve
 import os
 import database.db_connector as db
@@ -25,6 +25,26 @@ def root():
 
 @app.route('/passengers', methods = ['GET', 'POST', 'PUT', 'DELETE'])
 def passengers():
+    
+
+    if request.method == 'POST':
+        form = request.form
+        first_name = form['first_name']
+        last_name = form['last_name']
+        birthdate = form['birthdate']
+        occupation = form['occupation']
+        email = form['email']
+
+
+
+        query_insert = '''INSERT INTO Passengers (first_name, last_name, birthdate, occupation, email) VALUES (%s, %s, %s, %s, %s)'''
+        data_insert = [first_name, last_name, birthdate, occupation, email]
+
+        cursor_insert = db.execute_query(db_connection = db_connection, query = query_insert, query_params = data_insert)
+
+        return redirect("/passengers")
+
+
 
     query = '''SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS "Last Name", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email"  FROM Passengers where occupation = "Student";'''
 
@@ -36,6 +56,37 @@ def passengers():
 
 @app.route('/commuter-passes', methods = ['GET', 'POST', 'PUT', 'DELETE'])
 def commuter_passes():
+
+
+    if request.method == 'POST':
+        form = request.form
+
+        
+        email = form['passenger_email']
+        cost = form['cost']
+        start_date = form['start_date']
+        end_date = form['end_date']
+        trainline_id = int(form['trainline'])
+
+        passenger_id = None
+        if email != '':
+            query_passenger = '''SELECT passenger_id FROM Passengers WHERE email = "''' + email + '''";'''
+            cursor = db.execute_query(db_connection = db_connection, query = query_passenger)
+            results = list(cursor.fetchall())
+            if results != []:
+                passenger_id = int(results[0]['passenger_id'])
+        
+
+
+        query_insert = '''INSERT INTO Commuter_Passes (cost, start_date, end_date, passenger_id, trainline_id) VALUES (%s, %s, %s, %s, %s)'''
+        data_insert = [cost, start_date, end_date, passenger_id, trainline_id]
+
+        cursor_insert = db.execute_query(db_connection = db_connection, query = query_insert, query_params = data_insert)
+
+        return redirect("/commuter-passes")
+
+
+
 
     query = '''SELECT d1.commuter_pass_id AS "Commuter Pass ID", d1.cost AS "Cost Paid", d1.start_date AS "Start Date", d1.end_date AS "End Date", d3.trainline_company AS "Trainline Access", 
         d3.trainline_id AS "Trainline ID", d2.email AS "Passenger's Email", d2.passenger_id AS "Passenger's ID" from
@@ -51,13 +102,37 @@ def commuter_passes():
         order by d1.commuter_pass_id;'''
 
     cursor = db.execute_query(db_connection = db_connection, query = query)
-    results = cursor.fetchall()
+    results_one = cursor.fetchall()
+
+
+    query_trainline = '''SELECT trainline_id, trainline_company FROM Trainlines;'''
+    cursor_trainline = db.execute_query(db_connection = db_connection, query = query_trainline)
+    results_trainline = cursor_trainline.fetchall()
+
+    results = [results_one, results_trainline]
     return render_template("Commuter_Passes.jinja", Commuter_Passes = results)
 
 
 
 @app.route('/trainlines', methods = ['GET', 'POST', 'PUT', 'DELETE'])
 def trainlines():
+    
+
+    if request.method == 'POST':
+        form = request.form
+        trainline_company = form['trainline']
+
+        query_insert = '''INSERT INTO Trainlines (trainline_company) VALUES (%s)'''
+        data_insert = [trainline_company]
+
+        cursor_insert = db.execute_query(db_connection = db_connection, query = query_insert, query_params = data_insert)
+
+        return redirect("/trainlines")
+
+
+        
+
+
 
     query = '''SELECT tl.trainline_id AS "Trainline ID", tl.trainline_company AS "Trainline Name", IFNULL(COUNT(x.trainline_id), 0) AS "Number of Active Commuters" from
         Trainlines tl
@@ -93,6 +168,21 @@ def stations():
 def prefectures():
 
 
+    if request.method == 'POST':
+        form = request.form
+        prefecture_name = form['prefecture']
+
+        query_insert = '''INSERT INTO Prefectures (prefecture_name) VALUES (%s)'''
+        data_insert = [prefecture_name]
+
+        cursor_insert = db.execute_query(db_connection = db_connection, query = query_insert, query_params = data_insert)
+
+        return redirect("/prefectures")
+
+
+
+
+
     query_one = '''SELECT prefecture_id AS "Prefecture ID", prefecture_name AS "Prefecture Name" from Prefectures;'''
 
     cursor_one = db.execute_query(db_connection = db_connection, query = query_one)
@@ -113,6 +203,7 @@ def prefectures():
 
     cursor_two = db.execute_query(db_connection = db_connection, query = query_two)
     results_two = cursor_two.fetchall()
+
 
 
     results = [results_one, results_two]

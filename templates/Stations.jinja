@@ -64,22 +64,26 @@
         
         <h2>Register a Station</h2>
 
-        <form id="addInputsStations">
-            Station Name:     <input type="text" name="station" /> <br><br>
 
-            <label for="prefecture">Prefecture Jurisdiction:</label>
-            <select name="prefecture" id="prefecture">
-              <option value="tokyo">Tokyo</option>
-              <option value="kanagawa">Kanagawa</option>
-              <option value="chiba">Chiba</option>
-              <option value="saitama">Saitama</option>
-              <option value="gunma">Gunma</option>
-              <option value="tochigi">Tochigi</option>
-              <option value="ibaraki">Ibaraki</option>
-            </select><br><br>
-    
-            <input type="submit" value="Add" />
-        </form>
+        {% block body %}
+            <form id="addInputsStations" method="POST">
+                Station Name:     <input type="text" name="station" /> <br><br>
+
+                <label for="prefecture">Prefecture Jurisdiction:</label>
+                <select name="prefecture" id="prefecture">
+                <option value="tokyo">Tokyo</option>
+                <option value="kanagawa">Kanagawa</option>
+                <option value="chiba">Chiba</option>
+                <option value="saitama">Saitama</option>
+                <option value="gunma">Gunma</option>
+                <option value="tochigi">Tochigi</option>
+                <option value="ibaraki">Ibaraki</option>
+                </select><br><br>
+        
+                <input type="submit" value="Add" />
+            </form>
+        {% endblock %}
+
         <br>
         <br>
     

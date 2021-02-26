@@ -64,11 +64,15 @@
         
         <h2>Add a Prefecture in Japan</h2>
 
-        <form id="addInputsPrefecture">
-            Prefecture Name:     <input type="text" name="prefecture" /> 
-    
-            <input type="submit" value="Add" />
-        </form>
+        {% block body %}
+            <form id="addInputsPrefecture" method="POST">
+                Prefecture Name:     <input type="text" name="prefecture" /> 
+        
+                <input type="submit" value="Add" />
+            </form>
+        {% endblock %}
+
+
         <br>
         <br>
     
