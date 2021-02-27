@@ -84,7 +84,7 @@
 
     <div class="container">
 
-        {% block body %}
+        {# {% block body %}
             <form id="addInputsPassengers" method="POST">
                 <label>First Name: </label>    <input type="text" name="first_name" />   <br>
                 <label>Last Name:  </label>    <input type="text" name="last_name" />    <br>
@@ -93,9 +93,9 @@
                 <label>Email:      </label>    <input type="text" name="email" />        <br>
                 <br>
 
-                <input id="inputButton" type="submit" value="Add" />
+                <input id="inputButton" type="submit" value="Add" name="btn1"/>
             </form>
-        {% endblock %}
+        {% endblock %} #}
 
     </div>
     <br>
@@ -103,26 +103,46 @@
 
 
 
-    <h2>Search Passengers</h2>
+    <h2>Filter Passengers</h2>
+
+    <div class="container2">
+
+        {% block occupation %}
+            <form id="searchPassengers" method="POST">
+
+                <label id="dropDownLabel" for="occupation">By Occupation:</label>
+                <select id="dropDownSelect" name="occupation" id="occupation">
+                    
+                    {% for occupation in Passengers[1] %}
+                        <option value="{{occupation.occupation}}">{{occupation.occupation}}</option>
+                    {% endfor %}
+
+                </select>
+                <br>
+                <br>
 
 
-    {% block occupation %}
-        <form id="searchPassengers" method="POST" action="/get-passengers">
-            <label id="dropDownLabel" for="occupation">By Occupation:</label>
-            <select id="dropDownSelect" name="occupation" id="occupation">
+                <input id="inputButton" type="submit" value="Search" name="btn2" />
+                
+            </form>
+        {% endblock %}
 
-                {% for occupation in Passengers[1] %}
-                    <option value="{{occupation.occupation}}">{{occupation.occupation}}</option>
-                {% endfor %}
-
-            </select>
-            <br>
-            <br>
+    </div>
 
 
-            <input id="inputButton" type="submit" value="Search" />
-        </form>
-    {% endblock %}
+
+
+
+        {# {% block occupation %}
+            <form id="addInputsPassengers" method="POST">
+            
+                <label>By Occupation: </label>    <input type="text" name="occupation" placeholder="Student" />   <br>
+
+                <br>
+
+                <input id="inputButton" type="submit" value="Filter" />
+            </form>
+        {% endblock %} #}
 
     <br>
 

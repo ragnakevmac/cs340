@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, json # add `json`
+from flask import Flask, render_template, request, url_for, redirect, json # add `json`
 from waitress import serve
 import os
 import database.db_connector as db
@@ -29,7 +29,19 @@ def root():
 
 
 @app.route('/passengers', methods = ['GET', 'POST', 'PUT', 'DELETE'])
-def passengers():
+def passengers(occupation = 'Student'):
+
+
+    # if request.method == 'POST':
+    #     occupation = request.form['occupation']
+    #     return redirect(url_for("occupation", occupation = occupation))
+    # else:
+    #     return render_template("Passengers.jinja")
+
+
+
+
+
 
     query_occupation = '''SELECT occupation FROM Passengers GROUP BY occupation;'''
 
@@ -40,20 +52,45 @@ def passengers():
 
 
     if request.method == 'POST':
-        form = request.form
-        first_name = form['first_name']
-        last_name = form['last_name']
-        birthdate = form['birthdate']
-        occupation = form['occupation']
-        email = form['email']
 
 
-        query_insert = '''INSERT INTO Passengers (first_name, last_name, birthdate, occupation, email) VALUES (%s, %s, %s, %s, %s)'''
-        data_insert = [first_name, last_name, birthdate, occupation, email]
+        # if request.form['btn1'] == 'Add':
+        #     form = request.form
+        #     first_name = form['first_name']
+        #     last_name = form['last_name']
+        #     birthdate = form['birthdate']
+        #     occupation = form['occupation']
+        #     email = form['email']
 
-        cursor_insert = db.execute_query(db_connection = db_connection, query = query_insert, query_params = data_insert)
 
-        return redirect("/passengers")
+        #     query_insert = '''INSERT INTO Passengers (first_name, last_name, birthdate, occupation, email) VALUES (%s, %s, %s, %s, %s)'''
+        #     data_insert = [first_name, last_name, birthdate, occupation, email]
+
+        #     cursor_insert = db.execute_query(db_connection = db_connection, query = query_insert, query_params = data_insert)
+
+        #     return redirect("/passengers")
+        
+
+        if request.form['btn2'] == 'Search':
+            print(request.form['action'])
+
+        
+    # elif request.form['btn2'] == 'Search':
+    #     if request.method == 'POST':
+    #         print(request.form['occupation'])
+    #     # form = request.form
+    #     # occupation = str(form['occupation'])
+
+    #     # return redirect(url_for('passenger_occupation', occupation = occupation))
+
+
+
+    #     # query = '''SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS "Last Name", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email" FROM Passengers where occupation = "''' + occupation + '''";'''
+
+    #     # cursor = db.execute_query(db_connection = db_connection, query = query)
+    #     # results_one = cursor.fetchall()
+
+    #     return redirect("/passengers")
 
 
 
@@ -61,10 +98,13 @@ def passengers():
     # query = '''SELECT last_name AS "Last Name", first_name AS "First Name", passenger_id AS "Passenger ID", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email" FROM Passengers ORDER BY last_name'''
 
 
-    occupation = "Student"
+    # occupation = "Student"
 
     query = '''SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS "Last Name", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email" FROM Passengers where occupation = "''' + occupation + '''";'''
 
+
+
+    # query = '''SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS "Last Name", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email" FROM Passengers'''
 
     cursor = db.execute_query(db_connection = db_connection, query = query)
     results_one = cursor.fetchall()
@@ -76,7 +116,9 @@ def passengers():
     return render_template("Passengers.jinja", Passengers = results)
 
 
-
+@app.route('/<occupation>')
+def passenger_occupation(occupation):
+    return f"<h1>{occupation}</h1>"
 
 
 

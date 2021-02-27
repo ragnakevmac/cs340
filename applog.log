@@ -2264,3 +2264,261 @@ MySQLdb._exceptions.OperationalError: (2006, 'MySQL server has gone away')
 [2021-02-26 16:22:09 -0800] [5427] [INFO] Handling signal: term
 [2021-02-26 16:22:09 -0800] [6216] [INFO] Worker exiting (pid: 6216)
 [2021-02-26 16:22:10 -0800] [5427] [INFO] Shutting down: Master
+[2021-02-27 06:18:47 -0800] [2406] [INFO] Starting gunicorn 20.0.4
+[2021-02-27 06:18:47 -0800] [2406] [INFO] Listening at: http://0.0.0.0:2077 (2406)
+[2021-02-27 06:18:47 -0800] [2406] [INFO] Using worker: sync
+[2021-02-27 06:18:47 -0800] [2409] [INFO] Booting worker with pid: 2409
+Executing SELECT tl.trainline_id AS "Trainline ID", tl.trainline_company AS "Trainline Name", IFNULL(COUNT(x.trainline_id), 0) AS "Number of Active Commuters" from
+        Trainlines tl
+        LEFT JOIN
+        (select d3.trainline_id, d3.trainline_company, d1.start_date, d1.end_date from
+        (SELECT cp.commuter_pass_id, cp.start_date, cp.end_date, cp.trainline_id from Commuter_Passes cp
+        where cp.start_date < now() AND now() < cp.end_date) d1
+        LEFT JOIN
+        (select tl.trainline_id, tl.trainline_company from Trainlines tl) as d3
+        on d3.trainline_id = d1.trainline_id) as x
+        on tl.trainline_id = x.trainline_id
+        group by tl.trainline_id; with ()
+Executing SELECT occupation FROM Passengers GROUP BY occupation; with ()
+Executing SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS "Last Name", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email" FROM Passengers where occupation = "Student"; with ()
+Executing SELECT occupation FROM Passengers GROUP BY occupation; with ()
+Executing SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS "Last Name", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email" FROM Passengers where occupation = "Student"; with ()
+Executing SELECT tl.trainline_id AS "Trainline ID", tl.trainline_company AS "Trainline Name", IFNULL(COUNT(x.trainline_id), 0) AS "Number of Active Commuters" from
+        Trainlines tl
+        LEFT JOIN
+        (select d3.trainline_id, d3.trainline_company, d1.start_date, d1.end_date from
+        (SELECT cp.commuter_pass_id, cp.start_date, cp.end_date, cp.trainline_id from Commuter_Passes cp
+        where cp.start_date < now() AND now() < cp.end_date) d1
+        LEFT JOIN
+        (select tl.trainline_id, tl.trainline_company from Trainlines tl) as d3
+        on d3.trainline_id = d1.trainline_id) as x
+        on tl.trainline_id = x.trainline_id
+        group by tl.trainline_id; with ()
+Executing SELECT st.station_id AS "Station ID", st.station_name AS "Station Name", pf.prefecture_name AS "Prefecture Jurisdiction", pf.prefecture_id AS "Prefecture ID"
+        FROM Stations st INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id; with ()
+Executing SELECT prefecture_id AS "Prefecture ID", prefecture_name AS "Prefecture Name" from Prefectures; with ()
+Executing SELECT fq.passenger_id AS "Passenger ID", fq.first_name AS "First Name", fq.last_name AS "Last Name", fq.birthdate AS "Birthdate", fq.occupation AS "Occupation", fq.email AS "Email"
+        FROM 
+        (SELECT pa.passenger_id, pa.first_name, pa.last_name, pa.birthdate, pa.occupation, pa.email, pf.prefecture_name
+        FROM Passengers pa 
+        INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.passenger_id
+        INNER JOIN Trainlines tl ON cp.trainline_id = tl.trainline_id
+        INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
+        INNER JOIN Stations st ON ts.station_id = st.station_id
+        INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
+        AS fq 
+        WHERE fq.prefecture_name = "Tokyo Prefecture"; with ()
+Executing SELECT occupation FROM Passengers GROUP BY occupation; with ()
+Executing SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS "Last Name", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email" FROM Passengers where occupation = "Student"; with ()
+Executing SELECT occupation FROM Passengers GROUP BY occupation; with ()
+Executing SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS "Last Name", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email" FROM Passengers where occupation = "Student"; with ()
+Executing SELECT occupation FROM Passengers GROUP BY occupation; with ()
+[2021-02-27 06:42:54,745] ERROR in app: Exception on /passengers [GET]
+Traceback (most recent call last):
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/app.py", line 48, in passengers
+    cursor_occupation = db.execute_query(db_connection = db_connection, query = query_occupation)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/database/db_connector.py", line 44, in execute_query
+    cursor.execute(query, query_params)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.OperationalError: (2006, 'MySQL server has gone away')
+Executing SELECT occupation FROM Passengers GROUP BY occupation; with ()
+[2021-02-27 06:43:00,934] ERROR in app: Exception on /passengers [GET]
+Traceback (most recent call last):
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/app.py", line 48, in passengers
+    cursor_occupation = db.execute_query(db_connection = db_connection, query = query_occupation)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/database/db_connector.py", line 44, in execute_query
+    cursor.execute(query, query_params)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.OperationalError: (2006, 'MySQL server has gone away')
+Executing SELECT occupation FROM Passengers GROUP BY occupation; with ()
+[2021-02-27 06:43:17,059] ERROR in app: Exception on /passengers [GET]
+Traceback (most recent call last):
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/app.py", line 48, in passengers
+    cursor_occupation = db.execute_query(db_connection = db_connection, query = query_occupation)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/database/db_connector.py", line 44, in execute_query
+    cursor.execute(query, query_params)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.OperationalError: (2006, 'MySQL server has gone away')
+Executing SELECT d1.commuter_pass_id AS "Commuter Pass ID", d1.cost AS "Cost Paid", d1.start_date AS "Start Date", d1.end_date AS "End Date", d3.trainline_company AS "Trainline Access", 
+        d3.trainline_id AS "Trainline ID", d2.email AS "Passenger's Email", d2.passenger_id AS "Passenger's ID" from
+        (SELECT cp.commuter_pass_id, cp.cost, cp.start_date, cp.end_date, cp.passenger_id, 
+        cp.trainline_id from Commuter_Passes cp) d1
+        LEFT JOIN
+        (select pa.email, pa.passenger_id from Passengers pa) as d2
+        on d1.passenger_id = d2.passenger_id
+        INNER JOIN
+        (select tl.trainline_id, tl.trainline_company from Trainlines tl) as d3
+        on d3.trainline_id = d1.trainline_id
+        where d1.start_date < now() AND d1.end_date > now()
+        order by d1.commuter_pass_id; with ()
+[2021-02-27 06:43:19,221] ERROR in app: Exception on /commuter-passes [GET]
+Traceback (most recent call last):
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/app.py", line 177, in commuter_passes
+    cursor = db.execute_query(db_connection = db_connection, query = query)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/database/db_connector.py", line 44, in execute_query
+    cursor.execute(query, query_params)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.OperationalError: (2006, 'MySQL server has gone away')
+Executing SELECT tl.trainline_id AS "Trainline ID", tl.trainline_company AS "Trainline Name", IFNULL(COUNT(x.trainline_id), 0) AS "Number of Active Commuters" from
+        Trainlines tl
+        LEFT JOIN
+        (select d3.trainline_id, d3.trainline_company, d1.start_date, d1.end_date from
+        (SELECT cp.commuter_pass_id, cp.start_date, cp.end_date, cp.trainline_id from Commuter_Passes cp
+        where cp.start_date < now() AND now() < cp.end_date) d1
+        LEFT JOIN
+        (select tl.trainline_id, tl.trainline_company from Trainlines tl) as d3
+        on d3.trainline_id = d1.trainline_id) as x
+        on tl.trainline_id = x.trainline_id
+        group by tl.trainline_id; with ()
+[2021-02-27 06:43:21,724] ERROR in app: Exception on /trainlines [GET]
+Traceback (most recent call last):
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/app.py", line 223, in trainlines
+    cursor = db.execute_query(db_connection = db_connection, query = query)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/database/db_connector.py", line 44, in execute_query
+    cursor.execute(query, query_params)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.OperationalError: (2006, 'MySQL server has gone away')
+Executing SELECT st.station_id AS "Station ID", st.station_name AS "Station Name", pf.prefecture_name AS "Prefecture Jurisdiction", pf.prefecture_id AS "Prefecture ID"
+        FROM Stations st INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id; with ()
+[2021-02-27 06:43:24,165] ERROR in app: Exception on /stations [GET]
+Traceback (most recent call last):
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/app.py", line 238, in stations
+    cursor = db.execute_query(db_connection = db_connection, query = query)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/database/db_connector.py", line 44, in execute_query
+    cursor.execute(query, query_params)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.OperationalError: (2006, 'MySQL server has gone away')
+Executing SELECT tl.trainline_id AS "Trainline ID", tl.trainline_company AS "Trainline Name", st.station_name AS "Station Name", st.station_id AS "Station ID"
+        FROM Trainlines tl INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
+        INNER JOIN Stations st ON ts.station_id = st.station_id
+        ORDER BY tl.trainline_id; with ()
+[2021-02-27 06:43:26,485] ERROR in app: Exception on /trainlines-and-stations [GET]
+Traceback (most recent call last):
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/app.py", line 304, in trainlines_and_stations
+    cursor_one = db.execute_query(db_connection = db_connection, query = query_one)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/database/db_connector.py", line 44, in execute_query
+    cursor.execute(query, query_params)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/nfs/stak/users/macandok/CS340/PROJECT-FLASK/cs340/venv/lib64/python3.6/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.OperationalError: (2006, 'MySQL server has gone away')
+[2021-02-27 06:43:50 -0800] [2406] [INFO] Handling signal: term
+[2021-02-27 06:43:50 -0800] [2409] [INFO] Worker exiting (pid: 2409)
+[2021-02-27 06:43:50 -0800] [2406] [INFO] Shutting down: Master
