@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passengers</title>
+
+    <style>
+        th, td { border: 1px solid black; padding: 10px;}
+        button, input {padding: 10px;}
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+        }
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        h1, h2, h3 {text-align: center;}
+
+        body {
+            text-align: center;
+            background-color: lightblue;
+            font-family: Verdana, sans-serif;
+        }
+        table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .container form  label {
+            width: 100px;
+            display: inline-block;
+            text-align: left;
+            margin: 2px;
+        }
+
+        .container form  input {
+            width: 200px;
+            display: inline-block;
+            text-align: left;
+            margin: 2px
+        }
+
+        #inputButton {
+            text-align: center;
+            width: 80px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="tab">
+        <a href="/index"> <button class="home">Home</button> </a>
+        <a href="/Passengers"> <button>Passengers</button> </a>
+        <a href="/Commuter_Passes"> <button>Commuter Passes</button> </a>
+        <a href="/Trainlines"> <button>Train Lines</button> </a>
+        <a href="/Stations"> <button>Stations</button> </a>
+        <a href="/Prefectures"> <button>Prefectures</button> </a>
+        <a href="/Trainlines_and_Stations"> <button>Trainlines and Stations</button> </a>
+    </div>
+
+    <h1>Passengers</h1>
+    <br>
+
+    <h2>Add a Passenger</h2>
+
+    <div class="container">
+        <form  method="post" action="/Passengers">
+            <label>Last Name:    </label> <input type="text" name="last_name"/><br>
+            <label>First Name:   </label> <input type="text" name="first_name"/><br>
+            <label>Birthdate:    </label> <input type="date" id="start" name="birthdate" min="1900-01-01" max="2022-01-01"/><br>
+            <label>Occupation:   </label> <input type="text" name="occupation"/><br>
+            <label>Email:        </label> <input type="text" name="email"/><br>
+            <br>
+            <input type="submit" name="btn" value="Submit">
+        </form>
+    </div>
+
+    <br>
+    <br>
+
+    <h2>Search for Passengers</h2>
+
+    <form method="post" action="/Passengers_Search">
+        By Occupation: <input type="text" name="occupation" placeholder="Student">
+        <input type="submit" name="action" value="Search">
+    </form>
+    <br>
+
+    <h3>Search Results</h3>
+
+	<table border='1'>
+	    <thead>
+	    	<th>Passenger ID</th>
+            	<th>First Name</th>
+            	<th>Last Name</th>
+            	<th>Birthdate</th>
+            	<th>Occupation</th>
+            	<th>Email</th>
+	    </thead>
+	    <tbody>
+	      {% for r in rows %}
+	      <tr>
+	        <td> {{ r[0] }}</td>
+	        <td> {{ r[1] }}</td>
+	        <td> {{ r[2] }}</td>
+	        <td> {{ r[3] }}</td>
+	        <td> {{ r[4] }}</td>
+	        <td> {{ r[5] }}</td>
+		<td> <input type='button' name='Update' value='Update' onclick="window.location = '/update_people/{{r[4]}}'"> </td>
+	        <td> <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_people/{{r[4]}}'"> </td>
+	      </tr>
+	      {% endfor %}
+	    </tbody>
+	</table>
+
+    <br>
+    <br>
+</body>
+</html>
+
