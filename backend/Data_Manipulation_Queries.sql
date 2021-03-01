@@ -1,8 +1,5 @@
--- get all passengers by occupation
-SELECT passenger_id AS "Passenger ID", first_name AS "First Name", last_name AS "Last Name", birthdate AS "Birthdate", occupation AS "Occupation", email AS "Email"  FROM Passengers where occupation = :occupation_input;
-
-
-
+-- get all passengers by occupatio
+SELECT passenger_id, first_name, last_name, birthdate, occupation, email FROM Passengers where occupation = :occupation_input;
 
 
 -- get all of active commuters passes (not expired) (and including those with null passenger IDs)
@@ -18,8 +15,6 @@ INNER JOIN
 on d3.trainline_id = d1.trainline_id
 where d1.start_date < now() AND d1.end_date > now()
 order by d1.commuter_pass_id;
-
-
 
 
 
@@ -68,10 +63,7 @@ SELECT * from Prefectures;
 
 
 -- get all passengers who can come to or might have been to the selected prefecture via their commuter passes
-SELECT fq.passenger_id AS "Passenger ID", fq.first_name AS "First Name", fq.last_name AS "Last Name", fq.birthdate AS "Birthdate", fq.occupation AS "Occupation", fq.email AS "Email"
- 
- FROM 
- 
+SELECT fq.passenger_id, fq.first_name, fq.last_name, fq.birthdate, fq.occupation, fq.email FROM 
  (SELECT pa.passenger_id, pa.first_name, pa.last_name, pa.birthdate, pa.occupation, pa.email, pf.prefecture_name
  FROM Passengers pa 
  INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.passenger_id
@@ -80,7 +72,6 @@ SELECT fq.passenger_id AS "Passenger ID", fq.first_name AS "First Name", fq.last
  INNER JOIN Stations st ON ts.station_id = st.station_id
  INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
  AS fq 
- 
  WHERE fq.prefecture_name = :prefecture_name_input;
  
 
