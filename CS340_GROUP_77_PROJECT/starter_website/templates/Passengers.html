@@ -60,7 +60,11 @@
     </style>
 </head>
 
-<body>
+
+
+
+
+ <body>
 
     <div class="tab">
         <a href="/index"> <button class="home">Home</button> </a>
@@ -95,8 +99,19 @@
     <h2>Search for Passengers</h2>
 
     <form method="post" action="/Passengers_Search">
-        By Occupation: <input type="text" name="occupation" placeholder="Student">
-        <input type="submit" name="action" value="Search">
+        <label id="dropDownLabel" for="occupation">By Occupation:</label>
+        <select id="dropDownSelect" name="occupation" id="occupation">
+            
+            {% for r in rows[1] %}
+                <option value="{{r[0]}}">{{r[0]}}</option>
+            {% endfor %}
+
+        </select>
+        <br>
+        <br>
+
+
+        <input id="inputButton" type="submit" value="Search" name="btn2" />
     </form>
     <br>
 
@@ -112,7 +127,7 @@
             	<th>Email</th>
 	    </thead>
 	    <tbody>
-	      {% for r in rows %}
+	      {% for r in rows[0] %}
 	      <tr>
 	        <td> {{ r[0] }}</td>
 	        <td> {{ r[1] }}</td>
@@ -130,5 +145,13 @@
     <br>
     <br>
 </body>
+
+
+
+
+
+
+
+
 </html>
 

@@ -12,6 +12,9 @@ def index():
     return render_template('index.html', title='Home')
 
 
+
+
+
 @webapp.route('/Passengers', methods=['POST', 'GET'])
 def passengers():
 
@@ -29,11 +32,23 @@ def passengers():
         execute_query(db_connection, query, data)
         return redirect('/Passengers')
 
+
+
     elif request.method == 'GET':
-        query = """SELECT passenger_id, first_name, last_name, birthdate, occupation, email 
+
+        query1_showall = """SELECT passenger_id, first_name, last_name, birthdate, occupation, email 
             FROM Passengers;"""
-        result = execute_query(db_connection, query).fetchall()
-        return render_template('Passengers.html', rows=result)
+        result1_showall = execute_query(db_connection, query1_showall).fetchall()
+
+
+        query2_dropdown = """SELECT occupation FROM Passengers GROUP BY occupation;"""
+        result2_dropdown = execute_query(db_connection, query2_dropdown).fetchall()
+
+
+
+        results = [result1_showall, result2_dropdown]
+        return render_template('Passengers.html', rows=results)
+
 
 
 @webapp.route('/Passengers_Search', methods=['POST', 'GET'])
@@ -42,13 +57,32 @@ def passengers_search():
     db_connection = connect_to_database()
 
     if request.method == 'POST':
+
         occupation = request.form['occupation']
-        query = """SELECT passenger_id, first_name, last_name, birthdate, occupation, email 
+
+    
+
+        query1_filter = """SELECT passenger_id, first_name, last_name, birthdate, occupation, email 
             FROM Passengers WHERE occupation = %s;"""
-        data = [occupation,]
-        result = execute_query(db_connection, query, data).fetchall()
-        return render_template('Passengers.html', rows=result)
+        data1_filter = [occupation]
+        result1_filter = execute_query(db_connection, query1_filter, data1_filter).fetchall()
+
+
+        query2_dropdown = """SELECT occupation FROM Passengers  GROUP BY occupation;"""
+        result2_dropdown = execute_query(db_connection, query2_dropdown).fetchall()
+
+
+
+        results = [result1_filter, result2_dropdown]
+        return render_template('Passengers.html', rows=results)
             
+
+
+
+
+
+
+
 
 @webapp.route('/Commuter_Passes', methods=['POST', 'GET'])
 def commuter_passes():
