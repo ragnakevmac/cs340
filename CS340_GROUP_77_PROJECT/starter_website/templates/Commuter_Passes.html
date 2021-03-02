@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commuter Passes</title>
+
+    <style>
+        th, td { border: 1px solid black; padding: 10px;}
+        button, input {padding: 10px;}
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+        }
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        h1 {text-align: center;}
+            
+
+        body {
+            background-color: lightblue;
+            font-family: Verdana, sans-serif;
+        }
+
+
+        body {text-align: center;}
+        table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .container form  label {
+            width: 200px;
+            display: inline-block;
+            text-align: left;
+            margin: 2px;
+        }
+
+        .container form  input {
+            width: 200px;
+            display: inline-block;
+            text-align: left;
+            margin: 2px
+        }
+
+        #inputButton {
+            text-align: center;
+            width: 80px;
+        }
+
+        #inputButton1 {
+            text-align: center;
+            width: 80px;
+        }
+
+        #inputButton2 {
+            text-align: center;
+            width: 80px;
+        }
+
+        #dropDownLabel {
+            width: 135px;
+            text-align: left;
+        }
+
+        #dropDownSelect {
+
+            text-align: right;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="tab">
+        <a href="/index"> <button class="home">Home</button> </a>
+        <a href="/Passengers"> <button>Passengers</button> </a>
+        <a href="/Commuter_Passes"> <button>Commuter Passes</button> </a>
+        <a href="/Trainlines"> <button>Train Lines</button> </a>
+        <a href="/Stations"> <button>Stations</button> </a>
+        <a href="/Prefectures"> <button>Prefectures</button> </a>
+        <a href="/Trainlines_and_Stations"> <button>Trainlines and Stations</button> </a>
+    </div>
+
+    <h1>Commuter Passes</h1>
+    <br>
+
+
+    <h2>Add a Commuter Pass</h2>
+
+    <div class="container">
+        <form id="addInputsCommuterPasses" method="post">
+            <label>Passenger Email:  </label>  <input type="text" name="email" placeholder="Optional (NULLable)"/> <br>
+            <label>Cost Paid:        </label>  <input type="number" name="cost" />  <br>
+            <label>Start Date:       </label>  <input type="date" name="start_date" min="2021-01-01" max="2023-01-01"/>  <br>
+            <label>End Date:         </label>  <input type="date" name="end_date" min="2021-01-01" max="2023-01-01"/>    <br><br>
+            <label id="dropDownLabel" for="trainline">Trainline Access:</label>
+            <select name="trainline" id="trainline">
+              <option value=1>Yamanote Line</option>
+              <option value=2>Hibiya Line</option>
+              <option value=3>Ginza Line</option>
+              <option value=4>Yokosuka Line</option>
+              <option value=5>Tokaido Line</option>
+              <option value=6>Nambu Line</option>
+              <option value=7>Narita Line</option>
+              <option value=8>Negishi Line</option>
+              <option value=9>Ito Line</option>
+              <option value=10>Ome Line</option>
+              <option value=11>Yokohama Line</option>
+              <option value=12>Shonan-Shinjuku Line</option>
+            </select><br>
+            <br>
+            <input id="inputButton" type="submit" value="Add" />
+        </form>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <h2>List of All Active Commuter Passes (not expired) including NULL Passengers:</h2>
+          
+	<table border='1'>
+        <thead>
+                <th>Commuter Pass ID</th>
+                <th>Cost Paid</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Trainline Access</th>
+                <th>Trainline ID</th>
+                <th>Passenger's Email</th>
+                <th>Passenger's ID</th>
+          </thead>
+          <tbody>
+              {% for r in rows %}
+              <tr>
+                <td> {{ r[0] }}</td>
+                <td> {{ r[1] }}</td>
+                <td> {{ r[2] }}</td>
+                <td> {{ r[3] }}</td>
+                <td> {{ r[4] }}</td>
+                <td> {{ r[5] }}</td>
+                <td> {{ r[6] }}</td>
+		<td> {{ r[7] }}</td>
+		<td> <input type='button' name='Update' value='Update' onclick="window.location = '/update_people/{{r[4]}}'"> </td>
+                <td> <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_people/{{r[4]}}'"> </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+
+    <br>
+    <br>
+</body>
+</html>
+

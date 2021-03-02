@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Stations</title>
+
+        <style>
+            th, td { border: 1px solid black; padding: 10px;}
+            button, input {padding: 10px;}
+            .tab {
+                overflow: hidden;
+                border: 1px solid #ccc;
+                background-color: #f1f1f1;
+            }
+            .tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+            }
+            .tab button:hover {
+                background-color: #ddd;
+            }
+            h1 {text-align: center;}
+
+        
+            body {
+                text-align: center;
+                background-color: lightblue;
+                font-family: Verdana, sans-serif;
+            }
+
+            table {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+        <div class="tab">
+            <a href="/index"> <button class="home">Home</button> </a>
+            <a href="/Passengers"> <button>Passengers</button> </a>
+            <a href="/Commuter_Passes"> <button>Commuter Passes</button> </a>
+            <a href="/Trainlines"> <button>Train Lines</button> </a>
+            <a href="/Stations"> <button>Stations</button> </a>
+            <a href="/Prefectures"> <button>Prefectures</button> </a>
+            <a href="/Trainlines_and_Stations"> <button>Trainlines and Stations</button> </a>
+        </div>
+
+
+        <h1>Stations</h1>
+        <br>
+        
+        <h2>Register a Station</h2>
+
+        <form method="post">
+            Station Name:     <input type="text" name="station" /> <br><br>
+
+            <label for="prefecture">Prefecture Jurisdiction:</label>
+            <select name="prefecture" id="prefecture">
+              <option value=1>Tokyo</option>
+              <option value=2>Kanagawa</option>
+              <option value=3>Chiba</option>
+              <option value=4>Saitama</option>
+              <option value=5>Gunma</option>
+              <option value=6>Tochigi</option>
+              <option value=7>Ibaraki</option>
+            </select><br><br>
+            <input type="submit" value="Add" />
+        </form>
+        <br>
+        <br>
+    
+        <h3>Registered Stations and their Prefecture Jurisdiction:</h3>
+     
+   	<table border='1'>
+	    <thead>
+	    	<th>Station ID</th>
+            	<th>Station Name</th>
+            	<th>Prefecture Jurisdiction</th>
+            	<th>Prefecture ID</th>
+	    </thead>
+	    <tbody>
+	      {% for r in rows %}
+	      <tr>
+	        <td> {{ r[0] }}</td>
+	        <td> {{ r[1] }}</td>
+	        <td> {{ r[2] }}</td>
+	        <td> {{ r[3] }}</td>
+		<td> <input type='button' name='Update' value='Update' onclick="window.location = '/update_people/{{r[4]}}'"> </td>
+	        <td> <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_people/{{r[4]}}'"> </td>
+	      </tr>
+	      {% endfor %}
+	    </tbody>
+	</table>
+    
+    <br>
+    <br>
+    </body>
+</html>
+
