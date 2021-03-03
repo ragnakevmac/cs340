@@ -12,6 +12,9 @@ def index():
     return render_template('index.html', title='Home')
 
 
+
+
+
 @webapp.route('/Passengers', methods=['POST', 'GET'])
 def passengers():
 
@@ -29,11 +32,23 @@ def passengers():
         execute_query(db_connection, query, data)
         return redirect('/Passengers')
 
+
+
     elif request.method == 'GET':
-        query = """SELECT passenger_id, first_name, last_name, birthdate, occupation, email 
+
+        query1_showall = """SELECT passenger_id, first_name, last_name, birthdate, occupation, email 
             FROM Passengers;"""
-        result = execute_query(db_connection, query).fetchall()
-        return render_template('Passengers.html', rows=result)
+        result1_showall = execute_query(db_connection, query1_showall).fetchall()
+
+
+        query2_dropdown = """SELECT occupation FROM Passengers GROUP BY occupation;"""
+        result2_dropdown = execute_query(db_connection, query2_dropdown).fetchall()
+
+
+
+        results = [result1_showall, result2_dropdown]
+        return render_template('Passengers.html', rows=results)
+
 
 
 @webapp.route('/Passengers_Search', methods=['POST', 'GET'])
@@ -42,13 +57,31 @@ def passengers_search():
     db_connection = connect_to_database()
 
     if request.method == 'POST':
+
         occupation = request.form['occupation']
-        query = """SELECT passenger_id, first_name, last_name, birthdate, occupation, email 
+
+    
+
+        query1_filter = """SELECT passenger_id, first_name, last_name, birthdate, occupation, email 
             FROM Passengers WHERE occupation = %s;"""
-        data = [occupation,]
-        result = execute_query(db_connection, query, data).fetchall()
-        return render_template('Passengers.html', rows=result)
+        data1_filter = [occupation]
+        result1_filter = execute_query(db_connection, query1_filter, data1_filter).fetchall()
+
+
+        query2_dropdown = """SELECT occupation FROM Passengers  GROUP BY occupation;"""
+        result2_dropdown = execute_query(db_connection, query2_dropdown).fetchall()
+
+
+
+        results = [result1_filter, result2_dropdown]
+        return render_template('Passengers.html', rows=results)
             
+
+
+
+
+
+
 
 @webapp.route('/Commuter_Passes', methods=['POST', 'GET'])
 def commuter_passes():
@@ -56,19 +89,33 @@ def commuter_passes():
     db_connection = connect_to_database()
 
     if request.method == 'POST':
+
         em = request.form['email']
-        cost = request.form['cost']
+        cos = request.form['cost']
         st = request.form['start_date']
         ed = request.form['end_date']
-        tl = request.form['trainline']
-        query = """INSERT INTO Commuter_Passes (cost, start_date, end_date, trainline_id) 
-            VALUES (%s, %s, %s, %s);"""
-        data = [int(cost), st, ed, int(tl),]
+        tid = request.form['trainline']
+
+        pid = None
+        if em != '':
+            query_passenger = """SELECT passenger_id FROM Passengers WHERE email = %s GROUP BY passenger_id;"""
+            data_passenger_em = [em]
+            pid_fetch = list(execute_query(db_connection, query_passenger, data_passenger_em).fetchall())
+            print("PRINT!!!!!!!!!!!!!!!!!!!!", pid_fetch)
+            if pid_fetch != []:
+                pid = int(pid_fetch[0][0])
+
+
+        query = """INSERT INTO Commuter_Passes (cost, start_date, end_date, passenger_id, trainline_id) 
+            VALUES (%s, %s, %s, %s, %s);"""
+
+        data = [int(cos), st, ed, pid, int(tid)]
         execute_query(db_connection, query, data)
         return redirect('/Commuter_Passes')
 
+
     else:
-        query = """select d1.commuter_pass_id, d1.cost, d1.start_date, d1.end_date, d3.trainline_company, 
+        query1_show = """select d1.commuter_pass_id, d1.cost, d1.start_date, d1.end_date, d3.trainline_company, 
     	d3.trainline_id, d2.email, d2.passenger_id from
     	(SELECT cp.commuter_pass_id, cp.cost, cp.start_date, cp.end_date, cp.passenger_id, 
     	cp.trainline_id from Commuter_Passes cp) d1
@@ -78,10 +125,23 @@ def commuter_passes():
     	INNER JOIN
     	(select tl.trainline_id, tl.trainline_company from Trainlines tl) as d3
     	on d3.trainline_id = d1.trainline_id
-    	where d1.start_date < now() AND d1.end_date > now()
+    	where d1.start_date <= now() AND d1.end_date >= now()
     	order by d1.commuter_pass_id;"""
-        result = execute_query(db_connection, query).fetchall()
-        return render_template('Commuter_Passes.html', rows=result)
+        result1_show = execute_query(db_connection, query1_show).fetchall()
+
+        query2_dropdown_tl = """SELECT trainline_id, trainline_company FROM Trainlines GROUP BY trainline_id;"""
+        result2_dropdown_tl = execute_query(db_connection, query2_dropdown_tl).fetchall()
+
+        query3_dropdown_em = """SELECT email FROM Passengers;"""
+        result3_dropdown_em = execute_query(db_connection, query3_dropdown_em).fetchall()
+
+        results = [result1_show, result2_dropdown_tl, result3_dropdown_em]
+        return render_template('Commuter_Passes.html', rows=results)
+
+
+
+
+
 
 
 @webapp.route('/Trainlines', methods=['POST', 'GET'])
@@ -92,7 +152,7 @@ def Trainlines():
         print('Add new trainline')
         trainline = request.form['trainline']
         query = '''INSERT INTO Trainlines (trainline_company) VALUES (%s)'''
-        datat = [trainline,]
+        datat = [trainline]
         execute_query(db_connection, query, datat)
         return redirect('/Trainlines')
 
@@ -110,6 +170,12 @@ def Trainlines():
         result = execute_query(db_connection, query).fetchall()
         return render_template('Trainlines.html', rows=result)
 
+
+
+
+
+
+
 @webapp.route('/Stations', methods=['POST', 'GET'])
 def Stations():
     db_connection = connect_to_database()
@@ -124,11 +190,23 @@ def Stations():
         return redirect('/Stations')
 
     else:
-        query = """SELECT st.station_id AS "Station ID", st.station_name AS "Station Name", 
+        query1_show = """SELECT st.station_id AS "Station ID", st.station_name AS "Station Name", 
     	pf.prefecture_name AS "Prefecture Jurisdiction", pf.prefecture_id AS "Prefecture ID"
-    	FROM Stations st INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id; """
-        result = execute_query(db_connection, query).fetchall()
-        return render_template('Stations.html', rows=result)
+    	FROM Stations st INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id;"""
+        result1_show = execute_query(db_connection, query1_show).fetchall()
+
+        query2_dropdown_pr = """SELECT prefecture_id, prefecture_name FROM Prefectures GROUP BY prefecture_id;"""
+        result2_dropdown_pr = execute_query(db_connection, query2_dropdown_pr).fetchall()
+
+
+        results = [result1_show, result2_dropdown_pr]
+        return render_template('Stations.html', rows=results)
+
+
+
+
+
+
 
 @webapp.route('/Prefectures', methods=['POST', 'GET'])
 def Prefectures():
@@ -137,13 +215,14 @@ def Prefectures():
     if request.method == 'POST':
         p = request.form['prefecture']
         query = """INSERT INTO Prefectures (Prefecture_name) VALUES (%s)"""
-        data = [p,]
+        data = [p]
         execute_query(db_connection, query, data)
         return redirect('/Prefectures')
     else:
-        query = """SELECT * from Prefectures;"""
-        result = execute_query(db_connection, query).fetchall()
-        query2 = """SELECT fq.passenger_id AS "Passenger ID", fq.first_name AS "First Name", fq.last_name AS "Last Name",
+        query1_show_pr = """SELECT * from Prefectures;"""
+        result1_show_pr = execute_query(db_connection, query1_show_pr).fetchall()
+
+        query2_show_pa = """SELECT fq.passenger_id AS "Passenger ID", fq.first_name AS "First Name", fq.last_name AS "Last Name",
     	fq.birthdate AS "Birthdate", fq.occupation AS "Occupation", fq.email AS "Email"
     	 FROM 
     	 (SELECT pa.passenger_id, pa.first_name, pa.last_name, pa.birthdate,
@@ -154,9 +233,16 @@ def Prefectures():
     	 INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
     	 INNER JOIN Stations st ON ts.station_id = st.station_id
     	 INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
-    	 AS fq;"""
-        result2 = execute_query(db_connection, query2).fetchall()
-        return render_template('Prefectures.html', rows=result, rows2=result2)
+    	 AS fq GROUP BY passenger_id;"""
+        result2_show_pa = execute_query(db_connection, query2_show_pa).fetchall()
+
+        query3_dropdown_pr = """SELECT prefecture_id, prefecture_name FROM Prefectures GROUP BY prefecture_id;"""
+        result3_dropdown_pr = execute_query(db_connection, query3_dropdown_pr).fetchall()
+
+
+        results = [result1_show_pr, result2_show_pa, result3_dropdown_pr]
+        return render_template('Prefectures.html', rows=results)
+
 
 
 @webapp.route('/Prefectures_Search', methods=['POST', 'GET'])
@@ -164,11 +250,11 @@ def prefectures_search():
     db_connection = connect_to_database()
 
     if request.method == 'POST':
-        query = """SELECT * from Prefectures;"""
-        result = execute_query(db_connection, query).fetchall()
+        query1_show_pr = """SELECT * from Prefectures;"""
+        result1_show_pr = execute_query(db_connection, query1_show_pr).fetchall()
         
         prefecture = request.form['prefecture']
-        query = """SELECT fq.passenger_id, fq.first_name, fq.last_name, fq.birthdate, fq.occupation, fq.email FROM 
+        query2_show_pa = """SELECT fq.passenger_id, fq.first_name, fq.last_name, fq.birthdate, fq.occupation, fq.email FROM 
         (SELECT pa.passenger_id, pa.first_name, pa.last_name, pa.birthdate, pa.occupation, pa.email, pf.prefecture_name
         FROM Passengers pa 
         INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.passenger_id
@@ -177,28 +263,47 @@ def prefectures_search():
         INNER JOIN Stations st ON ts.station_id = st.station_id
         INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
         AS fq 
-        WHERE fq.prefecture_name = %s;"""
-        data = [prefecture,]
-        result2 = execute_query(db_connection, query, data).fetchall()
-        return render_template('Prefectures.html', rows=result, rows2=result2)
+        WHERE fq.prefecture_name = %s GROUP BY passenger_id;"""
+        data = [prefecture]
+        result2_show_pa = execute_query(db_connection, query2_show_pa, data).fetchall()
+
+        query3_dropdown_pr = """SELECT prefecture_id, prefecture_name FROM Prefectures GROUP BY prefecture_id;"""
+        result3_dropdown_pr = execute_query(db_connection, query3_dropdown_pr).fetchall()
+
+
+        results = [result1_show_pr, result2_show_pa, result3_dropdown_pr]
+        return render_template('Prefectures.html', rows=results)
 
     else:
-        query = """SELECT * from Prefectures;"""
-        result = execute_query(db_connection, query).fetchall()
-        query2 = """SELECT fq.passenger_id AS "Passenger ID", fq.first_name AS "First Name", fq.last_name AS "Last Name",
-        fq.birthdate AS "Birthdate", fq.occupation AS "Occupation", fq.email AS "Email"
-         FROM 
-         (SELECT pa.passenger_id, pa.first_name, pa.last_name, pa.birthdate,
-         pa.occupation, pa.email, pf.prefecture_name
-         FROM Passengers pa 
-         INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.passenger_id
-         INNER JOIN Trainlines tl ON cp.trainline_id = tl.trainline_id
-         INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
-         INNER JOIN Stations st ON ts.station_id = st.station_id
-         INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
-         AS fq;"""
-        result2 = execute_query(db_connection, query2).fetchall()
-        return render_template('Prefectures.html', rows=result, rows2=result2)
+        query1_show_pr = """SELECT * from Prefectures;"""
+        result1_show_pr = execute_query(db_connection, query1_show_pr).fetchall()
+
+        query2_show_pa = """SELECT fq.passenger_id AS "Passenger ID", fq.first_name AS "First Name", fq.last_name AS "Last Name",
+    	fq.birthdate AS "Birthdate", fq.occupation AS "Occupation", fq.email AS "Email"
+    	 FROM 
+    	 (SELECT pa.passenger_id, pa.first_name, pa.last_name, pa.birthdate,
+    	 pa.occupation, pa.email, pf.prefecture_name
+    	 FROM Passengers pa 
+    	 INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.passenger_id
+    	 INNER JOIN Trainlines tl ON cp.trainline_id = tl.trainline_id
+    	 INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
+    	 INNER JOIN Stations st ON ts.station_id = st.station_id
+    	 INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
+    	 AS fq GROUP BY passenger_id;"""
+        result2_show_pa = execute_query(db_connection, query2_show_pa).fetchall()
+
+        query3_dropdown_pr = """SELECT prefecture_id, prefecture_name FROM Prefectures GROUP BY prefecture_id;"""
+        result3_dropdown_pr = execute_query(db_connection, query3_dropdown_pr).fetchall()
+
+
+        results = [result1_show_pr, result2_show_pa, result3_dropdown_pr]
+        return render_template('Prefectures.html', rows=results)
+
+
+
+
+
+
 
 
 @webapp.route('/Trainlines_and_Stations', methods=['POST', 'GET'])
@@ -219,37 +324,124 @@ def Trainlines_and_Stations():
     	FROM Trainlines tl INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
     	INNER JOIN Stations st ON ts.station_id = st.station_id; """
         result = execute_query(db_connection, query).fetchall()
-        return render_template('Trainlines_and_Stations.html', rows=result)
+            
+        query_dropdown_tl = """SELECT trainline_id, trainline_company FROM Trainlines GROUP BY trainline_id;"""
+        result_dropdown_tl = execute_query(db_connection, query_dropdown_tl).fetchall()
+
+        query_dropdown_st = """SELECT station_id, station_name FROM Stations GROUP BY station_id;"""
+        result_dropdown_st = execute_query(db_connection, query_dropdown_st).fetchall()
+
+        dropdown = [result_dropdown_tl, result_dropdown_st]
+        header = ["trainline", "Trainline ID", "Trainline", "Station", "Station ID"]
+        return render_template('Trainlines_and_Stations.html', rows=result, header=header, dropdown=dropdown)
+
 
 
 @webapp.route('/Trainlines_and_Stations_Search', methods=['POST', 'GET'])
 def trainlines_and_stations_search():
     db_connection = connect_to_database()
 
-
     if request.method == 'POST':
         if request.form["ts"] == "trainlines":
+
             query = """SELECT tl.trainline_id, tl.trainline_company, st.station_name, st.station_id
             FROM Trainlines tl INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
             INNER JOIN Stations st ON ts.station_id = st.station_id
             ORDER BY tl.trainline_id;"""
             result = execute_query(db_connection, query).fetchall()
-            return render_template('Trainlines_and_Stations.html', rows=result)
 
-        else:
-            query = """SELECT tl.trainline_id, tl.trainline_company, st.station_name, st.station_id
+            query_dropdown_tl = """SELECT trainline_id, trainline_company FROM Trainlines GROUP BY trainline_id;"""
+            result_dropdown_tl = execute_query(db_connection, query_dropdown_tl).fetchall()
+
+            query_dropdown_st = """SELECT station_id, station_name FROM Stations GROUP BY station_id;"""
+            result_dropdown_st = execute_query(db_connection, query_dropdown_st).fetchall()
+
+            dropdown = [result_dropdown_tl, result_dropdown_st]
+            header = ["trainline", "Trainline ID", "Trainline", "Station", "Station ID"]
+            return render_template('Trainlines_and_Stations.html', rows=result, header=header, dropdown=dropdown)
+
+        if request.form["ts"] == "stations":
+            query = """SELECT st.station_id, st.station_name, tl.trainline_company, tl.trainline_id
             FROM Trainlines tl INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
             INNER JOIN Stations st ON ts.station_id = st.station_id
             ORDER BY st.station_id;"""
             result = execute_query(db_connection, query).fetchall()
-            return render_template('Trainlines_and_Stations.html', rows=result)
+            
+            query_dropdown_tl = """SELECT trainline_id, trainline_company FROM Trainlines GROUP BY trainline_id;"""
+            result_dropdown_tl = execute_query(db_connection, query_dropdown_tl).fetchall()
+
+            query_dropdown_st = """SELECT station_id, station_name FROM Stations GROUP BY station_id;"""
+            result_dropdown_st = execute_query(db_connection, query_dropdown_st).fetchall()
+
+            dropdown = [result_dropdown_tl, result_dropdown_st]
+            header = ["station", "Station ID", "Station", "Trainline", "Trainline ID"]
+            return render_template('Trainlines_and_Stations.html', rows=result, header=header, dropdown=dropdown)
 
     else:
         query = """SELECT tl.trainline_id, tl.trainline_company, st.station_name, st.station_id
         FROM Trainlines tl INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
         INNER JOIN Stations st ON ts.station_id = st.station_id; """
         result = execute_query(db_connection, query).fetchall()
-        return render_template('Trainlines_and_Stations.html', rows=result)
+    
+        query_dropdown_tl = """SELECT trainline_id, trainline_company FROM Trainlines GROUP BY trainline_id;"""
+        result_dropdown_tl = execute_query(db_connection, query_dropdown_tl).fetchall()
+
+        query_dropdown_st = """SELECT station_id, station_name FROM Stations GROUP BY station_id;"""
+        result_dropdown_st = execute_query(db_connection, query_dropdown_st).fetchall()
+
+        dropdown = [result_dropdown_tl, result_dropdown_st]
+        header = ["trainline", "Trainline ID", "Trainline", "Station", "Station ID"]
+        return render_template('Trainlines_and_Stations.html', rows=result, header=header, dropdown=dropdown)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------
 

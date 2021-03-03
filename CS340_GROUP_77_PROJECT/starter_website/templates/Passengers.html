@@ -54,13 +54,17 @@
 
         #inputButton {
             text-align: center;
-            width: 80px;
+            width: 70px;
         }
 
     </style>
 </head>
 
-<body>
+
+
+
+
+ <body>
 
     <div class="tab">
         <a href="/index"> <button class="home">Home</button> </a>
@@ -79,28 +83,39 @@
 
     <div class="container">
         <form  method="post" action="/Passengers">
-            <label>Last Name:    </label> <input type="text" name="last_name"/><br>
             <label>First Name:   </label> <input type="text" name="first_name"/><br>
+            <label>Last Name:    </label> <input type="text" name="last_name"/><br>
             <label>Birthdate:    </label> <input type="date" id="start" name="birthdate" min="1900-01-01" max="2022-01-01"/><br>
             <label>Occupation:   </label> <input type="text" name="occupation"/><br>
             <label>Email:        </label> <input type="text" name="email"/><br>
             <br>
-            <input type="submit" name="btn" value="Submit">
+            <input type="submit" name="btn" value="Submit" id="inputButton">
         </form>
     </div>
 
     <br>
     <br>
 
-    <h2>Search for Passengers</h2>
+    <h2>Filter Passengers</h2>
 
     <form method="post" action="/Passengers_Search">
-        By Occupation: <input type="text" name="occupation" placeholder="Student">
-        <input type="submit" name="action" value="Search">
+        <label id="dropDownLabel" for="occupation">By Occupation:</label>
+        <select id="dropDownSelect" name="occupation" id="occupation">
+            
+            {% for r in rows[1] %}
+                <option value="{{r[0]}}">{{r[0]}}</option>
+            {% endfor %}
+
+        </select>
+        <br>
+        <br>
+
+
+        <input id="inputButton" type="submit" value="Filter" name="btn2" />
     </form>
     <br>
 
-    <h3>Search Results</h3>
+    <h3>Results</h3>
 
 	<table border='1'>
 	    <thead>
@@ -112,7 +127,7 @@
             	<th>Email</th>
 	    </thead>
 	    <tbody>
-	      {% for r in rows %}
+	      {% for r in rows[0] %}
 	      <tr>
 	        <td> {{ r[0] }}</td>
 	        <td> {{ r[1] }}</td>
@@ -130,5 +145,13 @@
     <br>
     <br>
 </body>
+
+
+
+
+
+
+
+
 </html>
 

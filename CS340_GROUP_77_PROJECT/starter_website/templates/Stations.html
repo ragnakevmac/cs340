@@ -66,13 +66,9 @@
 
             <label for="prefecture">Prefecture Jurisdiction:</label>
             <select name="prefecture" id="prefecture">
-              <option value=1>Tokyo</option>
-              <option value=2>Kanagawa</option>
-              <option value=3>Chiba</option>
-              <option value=4>Saitama</option>
-              <option value=5>Gunma</option>
-              <option value=6>Tochigi</option>
-              <option value=7>Ibaraki</option>
+                {% for r in rows[1] %}
+                    <option value="{{r[0]}}">{{r[1]}}</option>
+                {% endfor %}
             </select><br><br>
             <input type="submit" value="Add" />
         </form>
@@ -89,7 +85,7 @@
             	<th>Prefecture ID</th>
 	    </thead>
 	    <tbody>
-	      {% for r in rows %}
+	      {% for r in rows[0] %}
 	      <tr>
 	        <td> {{ r[0] }}</td>
 	        <td> {{ r[1] }}</td>

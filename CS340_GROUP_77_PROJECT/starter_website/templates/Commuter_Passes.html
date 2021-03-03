@@ -55,6 +55,13 @@
             margin: 2px
         }
 
+        .container form  select {
+            width: 200px;
+            display: inline-block;
+            text-align: left;
+            margin: 2px
+        }
+
         #inputButton {
             text-align: center;
             width: 80px;
@@ -70,19 +77,20 @@
             width: 80px;
         }
 
-        #dropDownLabel {
+        .dropDownLabel {
             width: 135px;
             text-align: left;
         }
 
-        #dropDownSelect {
-
+        .dropDownSelect {
             text-align: right;
         }
 
     </style>
 
 </head>
+
+
 
 
 <body>
@@ -105,25 +113,33 @@
 
     <div class="container">
         <form id="addInputsCommuterPasses" method="post">
-            <label>Passenger Email:  </label>  <input type="text" name="email" placeholder="Optional (NULLable)"/> <br>
+            <!-- <label>(Connect to a) <br> Passenger Email:  </label>  <input type="text" name="email" placeholder="Optional (NULLable)"/> <br> -->
             <label>Cost Paid:        </label>  <input type="number" name="cost" />  <br>
             <label>Start Date:       </label>  <input type="date" name="start_date" min="2021-01-01" max="2023-01-01"/>  <br>
             <label>End Date:         </label>  <input type="date" name="end_date" min="2021-01-01" max="2023-01-01"/>    <br><br>
-            <label id="dropDownLabel" for="trainline">Trainline Access:</label>
-            <select name="trainline" id="trainline">
-              <option value=1>Yamanote Line</option>
-              <option value=2>Hibiya Line</option>
-              <option value=3>Ginza Line</option>
-              <option value=4>Yokosuka Line</option>
-              <option value=5>Tokaido Line</option>
-              <option value=6>Nambu Line</option>
-              <option value=7>Narita Line</option>
-              <option value=8>Negishi Line</option>
-              <option value=9>Ito Line</option>
-              <option value=10>Ome Line</option>
-              <option value=11>Yokohama Line</option>
-              <option value=12>Shonan-Shinjuku Line</option>
+
+
+            <label class="dropDownLabel" for="email">Passenger Email:</label>
+            <select class="dropDownSelect" name="email" id="email">
+
+                <option value="">NULL - Unregistered Email</option>
+              {% for r in rows[2] %}
+                {% if r[0] != '' %}
+                    <option value="{{r[0]}}">{{r[0]}}</option>
+                {% endif %}
+              {% endfor %}
+
             </select><br>
+
+
+            <label class="dropDownLabel" for="trainline">Trainline Access:</label>
+            <select class="dropDownSelect" name="trainline" id="trainline">
+              {% for r in rows[1] %}
+                <option value="{{r[0]}}">{{r[1]}}</option>
+              {% endfor %}
+            </select><br>
+
+
             <br>
             <input id="inputButton" type="submit" value="Add" />
         </form>
@@ -146,16 +162,31 @@
                 <th>Passenger's ID</th>
           </thead>
           <tbody>
-              {% for r in rows %}
-              <tr>
-                <td> {{ r[0] }}</td>
-                <td> {{ r[1] }}</td>
-                <td> {{ r[2] }}</td>
-                <td> {{ r[3] }}</td>
-                <td> {{ r[4] }}</td>
-                <td> {{ r[5] }}</td>
-                <td> {{ r[6] }}</td>
-		<td> {{ r[7] }}</td>
+              {% for r in rows[0] %}
+
+                {% if r[6] == None %}
+                    <tr>
+                        <td> {{ r[0] }}</td>
+                        <td> {{ r[1] }}</td>
+                        <td> {{ r[2] }}</td>
+                        <td> {{ r[3] }}</td>
+                        <td> {{ r[4] }}</td>
+                        <td> {{ r[5] }}</td>
+                        <td> NULL</td>
+                        <td> NULL</td>
+
+                {% else %}    
+                    <tr>
+                        <td> {{ r[0] }}</td>
+                        <td> {{ r[1] }}</td>
+                        <td> {{ r[2] }}</td>
+                        <td> {{ r[3] }}</td>
+                        <td> {{ r[4] }}</td>
+                        <td> {{ r[5] }}</td>
+                        <td> {{ r[6] }}</td>
+                        <td> {{ r[7] }}</td>
+                {% endif %}
+
 		<td> <input type='button' name='Update' value='Update' onclick="window.location = '/update_people/{{r[4]}}'"> </td>
                 <td> <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_people/{{r[4]}}'"> </td>
               </tr>
@@ -166,5 +197,13 @@
     <br>
     <br>
 </body>
+
+
+
+
+
+
+
+
 </html>
 
