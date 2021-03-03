@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Stations</title>
+        <title>Train Lines</title>
 
         <style>
             th, td { border: 1px solid black; padding: 10px;}
@@ -27,8 +27,7 @@
                 background-color: #ddd;
             }
             h1 {text-align: center;}
-
-        
+            
             body {
                 text-align: center;
                 background-color: lightblue;
@@ -41,6 +40,7 @@
             }
 
         </style>
+
     </head>
 
     <body>
@@ -55,51 +55,29 @@
             <a href="/Trainlines_and_Stations"> <button>Trainlines and Stations</button> </a>
         </div>
 
-
-        <h1>Stations</h1>
+        <h1>Train Lines</h1>
         <br>
-        
-        <h2>Register a Station</h2>
 
-        <form method="post">
-            Station Name:     <input type="text" name="station" /> <br><br>
+        <h2>Train Line Update</h2>
 
-            <label for="prefecture">Prefecture Jurisdiction:</label>
-            <select name="prefecture" id="prefecture">
-                {% for r in rows[1] %}
-                    <option value="{{r[0]}}">{{r[1]}}</option>
-                {% endfor %}
-            </select><br><br>
-            <input type="submit" value="Add" />
-        </form>
-        <br>
-        <br>
-    
-        <h3>Registered Stations and their Prefecture Jurisdiction:</h3>
-     
-   	<table border='1'>
-	    <thead>
-	    	<th>Station ID</th>
-            	<th>Station Name</th>
-            	<th>Prefecture Jurisdiction</th>
-            	<th>Prefecture ID</th>
-	    </thead>
-	    <tbody>
-	      {% for r in rows[0] %}
-	      <tr>
-	        <td> {{ r[0] }}</td>
-	        <td> {{ r[1] }}</td>
-	        <td> {{ r[2] }}</td>
-	        <td> {{ r[3] }}</td>
-		    <td> <input type='button' name='Update' value='Update' onclick="window.location = '/Stations_Update/{{r[0]}}'"> </td>
-	        <td> <input type='button' name='Delete' value='Delete' onclick="window.location = '/Stations_Delete/{{r[0]}}'"> </td>
-	      </tr>
-	      {% endfor %}
-	    </tbody>
-	</table>
-    
+        <form method="post" action="/Trainlines_Update/{{rows[0]}}">
+            Trainline Name:     <input type="text" name="trainline" value="{{rows[1]}}"/> 
+            <input type="submit" value="Update"/>
+        </form>      
+
+
     <br>
     <br>
     </body>
 </html>
+
+
+
+
+
+
+
+
+
+
 
