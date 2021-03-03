@@ -176,7 +176,6 @@ def Trainlines():
 
 
 
-
 @webapp.route('/Stations', methods=['POST', 'GET'])
 def Stations():
     db_connection = connect_to_database()
@@ -208,6 +207,7 @@ def Stations():
 
 
 
+
 @webapp.route('/Prefectures', methods=['POST', 'GET'])
 def Prefectures():
     db_connection = connect_to_database()
@@ -233,7 +233,7 @@ def Prefectures():
     	 INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
     	 INNER JOIN Stations st ON ts.station_id = st.station_id
     	 INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
-    	 AS fq;"""
+    	 AS fq GROUP BY passenger_id;"""
         result2_show_pa = execute_query(db_connection, query2_show_pa).fetchall()
 
         query3_dropdown_pr = """SELECT prefecture_id, prefecture_name FROM Prefectures GROUP BY prefecture_id;"""
@@ -242,6 +242,7 @@ def Prefectures():
 
         results = [result1_show_pr, result2_show_pa, result3_dropdown_pr]
         return render_template('Prefectures.html', rows=results)
+
 
 
 @webapp.route('/Prefectures_Search', methods=['POST', 'GET'])
@@ -262,7 +263,7 @@ def prefectures_search():
         INNER JOIN Stations st ON ts.station_id = st.station_id
         INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
         AS fq 
-        WHERE fq.prefecture_name = %s;"""
+        WHERE fq.prefecture_name = %s GROUP BY passenger_id;"""
         data = [prefecture]
         result2_show_pa = execute_query(db_connection, query2_show_pa, data).fetchall()
 
@@ -288,7 +289,7 @@ def prefectures_search():
     	 INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
     	 INNER JOIN Stations st ON ts.station_id = st.station_id
     	 INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
-    	 AS fq;"""
+    	 AS fq GROUP BY passenger_id;"""
         result2_show_pa = execute_query(db_connection, query2_show_pa).fetchall()
 
         query3_dropdown_pr = """SELECT prefecture_id, prefecture_name FROM Prefectures GROUP BY prefecture_id;"""
@@ -335,10 +336,10 @@ def Trainlines_and_Stations():
         return render_template('Trainlines_and_Stations.html', rows=result, header=header, dropdown=dropdown)
 
 
+
 @webapp.route('/Trainlines_and_Stations_Search', methods=['POST', 'GET'])
 def trainlines_and_stations_search():
     db_connection = connect_to_database()
-
 
     if request.method == 'POST':
         if request.form["ts"] == "trainlines":
