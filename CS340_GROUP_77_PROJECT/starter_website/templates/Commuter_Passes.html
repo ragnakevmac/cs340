@@ -85,6 +85,8 @@
 </head>
 
 
+
+
 <body>
 
     <div class="tab">
@@ -105,25 +107,22 @@
 
     <div class="container">
         <form id="addInputsCommuterPasses" method="post">
-            <label>Passenger Email:  </label>  <input type="text" name="email" placeholder="Optional (NULLable)"/> <br>
+            <label>(Connect to a) <br> Passenger Email:  </label>  <input type="text" name="email" placeholder="Optional (NULLable)"/> <br>
             <label>Cost Paid:        </label>  <input type="number" name="cost" />  <br>
             <label>Start Date:       </label>  <input type="date" name="start_date" min="2021-01-01" max="2023-01-01"/>  <br>
             <label>End Date:         </label>  <input type="date" name="end_date" min="2021-01-01" max="2023-01-01"/>    <br><br>
             <label id="dropDownLabel" for="trainline">Trainline Access:</label>
+
+
             <select name="trainline" id="trainline">
-              <option value=1>Yamanote Line</option>
-              <option value=2>Hibiya Line</option>
-              <option value=3>Ginza Line</option>
-              <option value=4>Yokosuka Line</option>
-              <option value=5>Tokaido Line</option>
-              <option value=6>Nambu Line</option>
-              <option value=7>Narita Line</option>
-              <option value=8>Negishi Line</option>
-              <option value=9>Ito Line</option>
-              <option value=10>Ome Line</option>
-              <option value=11>Yokohama Line</option>
-              <option value=12>Shonan-Shinjuku Line</option>
+
+              {% for r in rows[1] %}
+                <option value="{{r[0]}}">{{r[1]}}</option>
+              {% endfor %}
+
             </select><br>
+
+
             <br>
             <input id="inputButton" type="submit" value="Add" />
         </form>
@@ -146,7 +145,7 @@
                 <th>Passenger's ID</th>
           </thead>
           <tbody>
-              {% for r in rows %}
+              {% for r in rows[0] %}
               <tr>
                 <td> {{ r[0] }}</td>
                 <td> {{ r[1] }}</td>
@@ -166,5 +165,13 @@
     <br>
     <br>
 </body>
+
+
+
+
+
+
+
+
 </html>
 

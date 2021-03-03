@@ -83,26 +83,39 @@ def passengers_search():
 
 
 
-
 @webapp.route('/Commuter_Passes', methods=['POST', 'GET'])
 def commuter_passes():
 
     db_connection = connect_to_database()
 
     if request.method == 'POST':
+
         em = request.form['email']
-        cost = request.form['cost']
+        cos = request.form['cost']
         st = request.form['start_date']
         ed = request.form['end_date']
-        tl = request.form['trainline']
-        query = """INSERT INTO Commuter_Passes (cost, start_date, end_date, trainline_id) 
-            VALUES (%s, %s, %s, %s);"""
-        data = [int(cost), st, ed, int(tl),]
+        tid = request.form['trainline']
+
+        pid = None
+        if em != '':
+            query_passenger = """SELECT passenger_id FROM Passengers WHERE email = %s GROUP BY passenger_id;"""
+            data_passenger_em = [em]
+            pid_fetch = list(execute_query(db_connection, query_passenger, data_passenger_em).fetchall())
+            print("PRINT!!!!!!!!!!!!!!!!!!!!", pid_fetch)
+            if pid_fetch != []:
+                pid = int(pid_fetch[0][0])
+
+
+        query = """INSERT INTO Commuter_Passes (cost, start_date, end_date, passenger_id, trainline_id) 
+            VALUES (%s, %s, %s, %s, %s);"""
+
+        data = [int(cos), st, ed, pid, int(tid)]
         execute_query(db_connection, query, data)
         return redirect('/Commuter_Passes')
 
+
     else:
-        query = """select d1.commuter_pass_id, d1.cost, d1.start_date, d1.end_date, d3.trainline_company, 
+        query1_show = """select d1.commuter_pass_id, d1.cost, d1.start_date, d1.end_date, d3.trainline_company, 
     	d3.trainline_id, d2.email, d2.passenger_id from
     	(SELECT cp.commuter_pass_id, cp.cost, cp.start_date, cp.end_date, cp.passenger_id, 
     	cp.trainline_id from Commuter_Passes cp) d1
@@ -112,10 +125,21 @@ def commuter_passes():
     	INNER JOIN
     	(select tl.trainline_id, tl.trainline_company from Trainlines tl) as d3
     	on d3.trainline_id = d1.trainline_id
-    	where d1.start_date < now() AND d1.end_date > now()
+    	where d1.start_date <= now() AND d1.end_date >= now()
     	order by d1.commuter_pass_id;"""
-        result = execute_query(db_connection, query).fetchall()
-        return render_template('Commuter_Passes.html', rows=result)
+        result1_show = execute_query(db_connection, query1_show).fetchall()
+
+        query2_dropdown = """SELECT trainline_id, trainline_company FROM Trainlines GROUP BY trainline_id;"""
+        result2_dropdown = execute_query(db_connection, query2_dropdown).fetchall()
+
+
+        results = [result1_show, result2_dropdown]
+        return render_template('Commuter_Passes.html', rows=results)
+
+
+
+
+
 
 
 @webapp.route('/Trainlines', methods=['POST', 'GET'])
