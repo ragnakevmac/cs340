@@ -55,6 +55,13 @@
             margin: 2px
         }
 
+        .container form  select {
+            width: 200px;
+            display: inline-block;
+            text-align: left;
+            margin: 2px
+        }
+
         #inputButton {
             text-align: center;
             width: 80px;
@@ -70,13 +77,12 @@
             width: 80px;
         }
 
-        #dropDownLabel {
+        .dropDownLabel {
             width: 135px;
             text-align: left;
         }
 
-        #dropDownSelect {
-
+        .dropDownSelect {
             text-align: right;
         }
 
@@ -107,19 +113,30 @@
 
     <div class="container">
         <form id="addInputsCommuterPasses" method="post">
-            <label>(Connect to a) <br> Passenger Email:  </label>  <input type="text" name="email" placeholder="Optional (NULLable)"/> <br>
+            <!-- <label>(Connect to a) <br> Passenger Email:  </label>  <input type="text" name="email" placeholder="Optional (NULLable)"/> <br> -->
             <label>Cost Paid:        </label>  <input type="number" name="cost" />  <br>
             <label>Start Date:       </label>  <input type="date" name="start_date" min="2021-01-01" max="2023-01-01"/>  <br>
             <label>End Date:         </label>  <input type="date" name="end_date" min="2021-01-01" max="2023-01-01"/>    <br><br>
-            <label id="dropDownLabel" for="trainline">Trainline Access:</label>
 
 
-            <select name="trainline" id="trainline">
+            <label class="dropDownLabel" for="email">Passenger Email:</label>
+            <select class="dropDownSelect" name="email" id="email">
 
+                <option value="">NULL - Unregistered Email</option>
+              {% for r in rows[2] %}
+                {% if r[0] != '' %}
+                    <option value="{{r[0]}}">{{r[0]}}</option>
+                {% endif %}
+              {% endfor %}
+
+            </select><br>
+
+
+            <label class="dropDownLabel" for="trainline">Trainline Access:</label>
+            <select class="dropDownSelect" name="trainline" id="trainline">
               {% for r in rows[1] %}
                 <option value="{{r[0]}}">{{r[1]}}</option>
               {% endfor %}
-
             </select><br>
 
 
@@ -146,15 +163,30 @@
           </thead>
           <tbody>
               {% for r in rows[0] %}
-              <tr>
-                <td> {{ r[0] }}</td>
-                <td> {{ r[1] }}</td>
-                <td> {{ r[2] }}</td>
-                <td> {{ r[3] }}</td>
-                <td> {{ r[4] }}</td>
-                <td> {{ r[5] }}</td>
-                <td> {{ r[6] }}</td>
-		<td> {{ r[7] }}</td>
+
+                {% if r[6] == None %}
+                    <tr>
+                        <td> {{ r[0] }}</td>
+                        <td> {{ r[1] }}</td>
+                        <td> {{ r[2] }}</td>
+                        <td> {{ r[3] }}</td>
+                        <td> {{ r[4] }}</td>
+                        <td> {{ r[5] }}</td>
+                        <td> NULL</td>
+                        <td> NULL</td>
+
+                {% else %}    
+                    <tr>
+                        <td> {{ r[0] }}</td>
+                        <td> {{ r[1] }}</td>
+                        <td> {{ r[2] }}</td>
+                        <td> {{ r[3] }}</td>
+                        <td> {{ r[4] }}</td>
+                        <td> {{ r[5] }}</td>
+                        <td> {{ r[6] }}</td>
+                        <td> {{ r[7] }}</td>
+                {% endif %}
+
 		<td> <input type='button' name='Update' value='Update' onclick="window.location = '/update_people/{{r[4]}}'"> </td>
                 <td> <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_people/{{r[4]}}'"> </td>
               </tr>

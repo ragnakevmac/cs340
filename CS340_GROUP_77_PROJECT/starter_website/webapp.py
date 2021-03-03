@@ -129,11 +129,13 @@ def commuter_passes():
     	order by d1.commuter_pass_id;"""
         result1_show = execute_query(db_connection, query1_show).fetchall()
 
-        query2_dropdown = """SELECT trainline_id, trainline_company FROM Trainlines GROUP BY trainline_id;"""
-        result2_dropdown = execute_query(db_connection, query2_dropdown).fetchall()
+        query2_dropdown_tl = """SELECT trainline_id, trainline_company FROM Trainlines GROUP BY trainline_id;"""
+        result2_dropdown_tl = execute_query(db_connection, query2_dropdown_tl).fetchall()
 
+        query3_dropdown_em = """SELECT email FROM Passengers;"""
+        result3_dropdown_em = execute_query(db_connection, query3_dropdown_em).fetchall()
 
-        results = [result1_show, result2_dropdown]
+        results = [result1_show, result2_dropdown_tl, result3_dropdown_em]
         return render_template('Commuter_Passes.html', rows=results)
 
 
