@@ -76,7 +76,7 @@
                 	<th>Prefecture Name</th>
     	    </thead>
     	    <tbody>
-    	      {% for r in rows %}
+    	      {% for r in rows[0] %}
     	      <tr>
     	        <td> {{ r[0] }}</td>
     	        <td> {{ r[1] }}</td>
@@ -94,13 +94,9 @@
             List all the Passengers who can come to or might have been to
             <label for="prefecture"></label>
             <select name="prefecture">
-              <option value="Tokyo Prefecture">Tokyo</option>
-              <option value="Kanagawa Prefecture">Kanagawa</option>
-              <option value="Chiba Prefecture">Chiba</option>
-              <option value="Saitama Prefecture">Saitama</option>
-              <option value="Gunma Prefecture">Gunma</option>
-              <option value="Tochigi Prefecture">Tochigi</option>
-              <option value="Ibaraki Prefecture">Ibaraki</option>
+                {% for r in rows[2] %}
+                    <option value="{{r[1]}}">{{r[1]}}</option>
+                {% endfor %}
             </select>
             <input type="submit" name="action" value="Search">
             via their Commuter Passes. 
@@ -117,7 +113,7 @@
             	<th>Email</th>
 	    </thead>
 	    <tbody>
-	      {% for r in rows2 %}
+	      {% for r in rows[1] %}
 	      <tr>
 	        <td> {{ r[0] }}</td>
 	        <td> {{ r[1] }}</td>

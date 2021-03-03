@@ -86,33 +86,16 @@
         <form action="/Trainlines_and_Stations" method="post">                      
             <label for="trainline">Choose a Trainline:</label>
             <select name="trainline" id="trainline">
-              <option value=1>Yamanote Line</option>
-              <option value=2>Hibiya Line</option>
-              <option value=3>Ginza Line</option>
-              <option value=4>Yokosuka Line</option>
-              <option value=5>Tokaido Line</option>
-              <option value=6>Nambu Line</option>
-              <option value=7>Narita Line</option>
-              <option value=8>Negishi Line</option>
-              <option value=9>Ito Line</option>
-              <option value=10>Ome Line</option>
-              <option value=11>Yokohama Line</option>
-              <option value=12>Shonan-Shinjuku Line</option>
+                {% for r in dropdown[0] %}
+                    <option value="{{r[0]}}">{{r[1]}}</option>
+                {% endfor %}
             </select>
             <br>
             <label for="station">Choose a Station:</label>
             <select name="station" id="station">
-              <option value=1>Maihama Station</option>
-              <option value=2>Shinjuku Station</option>
-              <option value=3>Yokohama Station</option>
-              <option value=4>Ikebukuro Station</option>
-              <option value=5>Tokyo Station</option>
-              <option value=6>Shinagawa Station</option>
-              <option value=7>Shibuya Station</option>
-              <option value=8>Shimbashi Station</option>
-              <option value=9>Omiya Station</option>
-              <option value=10>Akihabara Station</option>
-              <option value=11>Kita-Senju Station</option>
+                {% for r in dropdown[1] %}
+                    <option value="{{r[0]}}">{{r[1]}}</option>
+                {% endfor %}
             </select>
             <br><br>
             <input type="submit" value="Add a Relationship" />
@@ -129,28 +112,55 @@
                 <input type="radio" name="ts" value="stations">
                 <label for="station">Station</label><br><br>
             </div>
-            <input type="submit" name="action" value="sort"/>
+            <input type="submit" name="action" value="Sort"/>
         </form>
         <br>
 
       <table border='1'>
-	    <thead>
-	    	<th>Trainline ID</th>
-            	<th>Trainline Name</th>
-            	<th>Sation Name</th>
-            	<th>Station ID</th>
+
+
+        {% if header[0] == 'trainline' %}
+            <thead>
+                <th>{{header[1]}}</th>
+                <th>{{header[2]}}</th>
+                <th>{{header[3]}}</th>
+                <th>{{header[4]}}</th>
             </thead>
-	    <tbody>
-	      {% for r in rows %}
-	      <tr>
-	        <td> {{ r[0] }}</td>
-	        <td> {{ r[1] }}</td>
-	        <td> {{ r[2] }}</td>
-	        <td> {{ r[3] }}</td>
-	        <td> <input type='button' name='Delete' value='Delete this Relationship' onclick="window.location = '/delete_people/{{r[4]}}'"> </td>
-	      </tr>
-	      {% endfor %}
-	    </tbody>
+            <tbody>
+                {% for r in rows %}
+                    <tr>
+                        <td> {{ r[0] }}</td>
+                        <td> {{ r[1] }}</td>
+                        <td> {{ r[2] }}</td>
+                        <td> {{ r[3] }}</td>
+                        <td> <input type='button' name='Delete' value='Delete this Relationship' onclick="window.location = '/delete_people/{{r[4]}}'"> </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        {% endif %}
+
+
+        {% if header[0] == 'station' %}
+            <thead>
+                <th>{{header[1]}}</th>
+                <th>{{header[2]}}</th>
+                <th>{{header[3]}}</th>
+                <th>{{header[4]}}</th>
+            </thead>
+            <tbody>
+                {% for r in rows %}
+                    <tr>
+                        <td> {{ r[0] }}</td>
+                        <td> {{ r[1] }}</td>
+                        <td> {{ r[2] }}</td>
+                        <td> {{ r[3] }}</td>
+                        <td> <input type='button' name='Delete' value='Delete this Relationship' onclick="window.location = '/delete_people/{{r[4]}}'"> </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        {% endif %}
+
+
 	</table>
     
     <br>
