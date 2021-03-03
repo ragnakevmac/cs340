@@ -59,47 +59,29 @@
         <h1>Stations</h1>
         <br>
         
-        <h2>Register a Station</h2>
+        <h2>Station Update</h2>
 
-        <form method="post">
-            Station Name:     <input type="text" name="station" /> <br><br>
+        <form method="post" action="/Stations_Update/{{rows[0][0]}}">
+            Station Name:     <input type="text" name="station" value="{{rows[0][1]}}"/> <br><br>
 
             <label for="prefecture">Prefecture Jurisdiction:</label>
             <select name="prefecture" id="prefecture">
+                <option value="{{rows[0][3]}}">{{rows[0][2]}}</option>
                 {% for r in rows[1] %}
                     <option value="{{r[0]}}">{{r[1]}}</option>
                 {% endfor %}
             </select><br><br>
-            <input type="submit" value="Add" />
+            <input type="submit" value="Update" />
         </form>
-        <br>
-        <br>
-    
-        <h3>Registered Stations and their Prefecture Jurisdiction:</h3>
-     
-   	<table border='1'>
-	    <thead>
-	    	<th>Station ID</th>
-            	<th>Station Name</th>
-            	<th>Prefecture Jurisdiction</th>
-            	<th>Prefecture ID</th>
-	    </thead>
-	    <tbody>
-	      {% for r in rows[0] %}
-	      <tr>
-	        <td> {{ r[0] }}</td>
-	        <td> {{ r[1] }}</td>
-	        <td> {{ r[2] }}</td>
-	        <td> {{ r[3] }}</td>
-		    <td> <input type='button' name='Update' value='Update' onclick="window.location = '/Stations_Update/{{r[0]}}'"> </td>
-	        <td> <input type='button' name='Delete' value='Delete' onclick="window.location = '/Stations_Delete/{{r[0]}}'"> </td>
-	      </tr>
-	      {% endfor %}
-	    </tbody>
-	</table>
     
     <br>
     <br>
     </body>
 </html>
+
+
+
+
+
+
 

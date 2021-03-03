@@ -54,17 +54,13 @@
 
         #inputButton {
             text-align: center;
-            width: 70px;
+            width: 80px;
         }
 
     </style>
 </head>
 
-
-
-
-
- <body>
+<body>
 
     <div class="tab">
         <a href="/index"> <button class="home">Home</button> </a>
@@ -79,72 +75,22 @@
     <h1>Passengers</h1>
     <br>
 
-    <h2>Add a Passenger</h2>
+    <h2>Passenger Update</h2>
 
     <div class="container">
-        <form  method="post" action="/Passengers">
-            <label>First Name:   </label> <input type="text" name="first_name"/><br>
-            <label>Last Name:    </label> <input type="text" name="last_name"/><br>
-            <label>Birthdate:    </label> <input type="date" id="start" name="birthdate" min="1900-01-01" max="2022-01-01"/><br>
-            <label>Occupation:   </label> <input type="text" name="occupation"/><br>
-            <label>Email:        </label> <input type="text" name="email"/><br>
+        <form  method="post" action="/Passengers_Update/{{person[0]}}">
+            <label>Last Name:    </label> <input type="text" name="last_name" value="{{person[2]}}"/><br>
+            <label>First Name:   </label> <input type="text" name="first_name" value="{{person[1]}}"/><br>
+            <label>Birthdate:    </label> <input type="date" id="start" name="birthdate" min="1900-01-01" max="2022-01-01" value="{{person[3]}}"/><br>
+            <label>Occupation:   </label> <input type="text" name="occupation" value="{{person[4]}}"/><br>
+            <label>Email:        </label> <input type="text" name="email" value="{{person[5]}}"/><br>
             <br>
-            <input type="submit" name="btn" value="Submit" id="inputButton">
+            <input type="submit" name="update" value="Update">
         </form>
     </div>
 
     <br>
     <br>
-
-    <h2>Filter Passengers</h2>
-
-    <form method="post" action="/Passengers_Search">
-        <label id="dropDownLabel" for="occupation">By Occupation:</label>
-        <select id="dropDownSelect" name="occupation" id="occupation">
-            
-            {% for r in rows[1] %}
-                <option value="{{r[0]}}">{{r[0]}}</option>
-            {% endfor %}
-
-        </select>
-        <br>
-        <br>
-
-
-        <input id="inputButton" type="submit" value="Filter" name="btn2" />
-    </form>
-    <br>
-
-    <h3>Results</h3>
-
-	<table border='1'>
-	    <thead>
-	    	<th>Passenger ID</th>
-            	<th>First Name</th>
-            	<th>Last Name</th>
-            	<th>Birthdate</th>
-            	<th>Occupation</th>
-            	<th>Email</th>
-	    </thead>
-	    <tbody>
-	      {% for r in rows[0] %}
-	      <tr>
-	        <td> {{ r[0] }}</td>
-	        <td> {{ r[1] }}</td>
-	        <td> {{ r[2] }}</td>
-	        <td> {{ r[3] }}</td>
-	        <td> {{ r[4] }}</td>
-	        <td> {{ r[5] }}</td>
-		    <td> <input type='button' name='Update' value='Update' onclick="window.location = '/Passengers_Update/{{r[0]}}'"> </td>
-	        <td> <input type='button' name='Delete' value='Delete' onclick="window.location = '/Passengers_Delete/{{r[0]}}'"> </td>
-	      </tr>
-	      {% endfor %}
-	    </tbody>
-	</table>
-
-    <br>
-    <br>
 </body>
-
 </html>
 
