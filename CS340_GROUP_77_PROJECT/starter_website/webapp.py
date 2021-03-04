@@ -26,9 +26,10 @@ def passengers():
         em = request.form['email']
 
         # Prevents duplication during registration
-        get_emails = """SELECT email FROM Passengers;"""
-        em_list = execute_query(db_connection, get_emails).fetchall()
-        if [em in em_list]:
+        query_u = """SELECT email FROM Passengers where email = %s;"""
+        data_u = [em]
+        result_u = execute_query(db_connection, query_u, data_u).fetchall()
+        if result_u != ():
             return render_template('Passengers_Unique.html')
 
 
@@ -99,6 +100,19 @@ def passengers_update(id):
         birthdate = request.form['birthdate']
         occupation = request.form['occupation']
         email = request.form['email']
+
+        # Prevents duplication during registration
+        query_u = """SELECT email FROM Passengers where email = %s;"""
+        data_u = [email]
+        result_u = execute_query(db_connection, query_u, data_u).fetchall()
+
+        query_u_em = """SELECT email FROM Passengers where passenger_id = %s;"""
+        data_u_em = [passenger_id]
+        result_u_em = execute_query(db_connection, query_u_em, data_u_em).fetchall()
+
+        if result_u != () and result_u_em[0][0] != email:
+            return render_template('Passengers_Unique.html')
+
 
         query = "UPDATE Passengers SET first_name = %s, last_name = %s, birthdate = %s, occupation = %s,  email = %s WHERE passenger_id = %s"
         data = [first_name, last_name, birthdate, occupation, email, int(passenger_id),]
@@ -347,6 +361,14 @@ def trainlines_update(id):
         
         tid = id
         trainline = request.form['trainline']
+
+        # Prevents duplication during registration
+        query_u = """SELECT trainline_company FROM Trainlines where trainline_company = %s;"""
+        data_u = [trainline]
+        result_u = execute_query(db_connection, query_u, data_u).fetchall()
+        if result_u != ():
+            return render_template('Trainlines_Unique.html')
+
         query = """UPDATE Trainlines SET trainline_company = %s WHERE trainline_id = %s"""
         data = [trainline, int(tid)]
         execute_query(db_connection, query, data)
@@ -394,7 +416,7 @@ def Stations():
     else:
         query1_show = """SELECT st.station_id AS "Station ID", st.station_name AS "Station Name", 
     	pf.prefecture_name AS "Prefecture Jurisdiction", pf.prefecture_id AS "Prefecture ID"
-    	FROM Stations st INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id;"""
+    	FROM Stations st INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id ORDER BY station_id;"""
         result1_show = execute_query(db_connection, query1_show).fetchall()
 
         query2_dropdown_pr = """SELECT prefecture_id, prefecture_name FROM Prefectures GROUP BY prefecture_id;"""
@@ -431,6 +453,19 @@ def stations_update(id):
 
         s = request.form['station']
         p = request.form['prefecture']
+
+        # Prevents duplication during registration
+        query_u = """SELECT station_name FROM Stations where station_name = %s;"""
+        data_u = [s]
+        result_u = execute_query(db_connection, query_u, data_u).fetchall()
+
+        query_u_id = """SELECT station_id FROM Stations where station_name = %s;"""
+        data_u_id = [s]
+        result_u_id = execute_query(db_connection, query_u_id, data_u_id).fetchall()
+
+        if result_u != () and result_u_id[0][0] != id:
+            return render_template('Stations_Unique.html')
+        
         query = """UPDATE Stations SET station_name = %s, prefecture_id = %s WHERE station_id = %s"""
         data = [s, int(p), id]
         execute_query(db_connection, query, data)
@@ -576,6 +611,14 @@ def prefectures_update(id):
 
         prid = id
         prefecture = request.form['prefecture']
+
+        # Prevents duplication during registration
+        query_u = """SELECT prefecture_name FROM Prefectures where prefecture_name = %s;"""
+        data_u = [prefecture]
+        result_u = execute_query(db_connection, query_u, data_u).fetchall()
+        if result_u != ():
+            return render_template('Prefectures_Unique.html')
+
         query = """UPDATE Prefectures SET prefecture_name = %s WHERE prefecture_id = %s"""
         data = [prefecture, int(prid)]
         execute_query(db_connection, query, data)
