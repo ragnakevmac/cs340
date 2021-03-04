@@ -24,6 +24,14 @@ def passengers():
         bth = request.form['birthdate']
         op = request.form['occupation']
         em = request.form['email']
+
+        # Prevents duplication during registration
+        get_emails = """SELECT email FROM Passengers;"""
+        em_list = execute_query(db_connection, get_emails).fetchall()
+        if [em in em_list]:
+            return render_template('Passengers_Unique.html')
+
+
         query = """INSERT INTO Passengers (first_name, last_name, birthdate, occupation, email) 
             VALUES (%s, %s, %s, %s, %s);"""
         data = [fn, ln, bth, op, em,]
@@ -252,6 +260,14 @@ def Trainlines():
     if request.method == 'POST':
         print('Add new trainline')
         trainline = request.form['trainline']
+
+        # Prevents duplication during registration
+        get_tls = """SELECT trainline_company FROM Trainlines;"""
+        tls_list = execute_query(db_connection, get_tls).fetchall()
+        if [trainline in tls_list]:
+            return render_template('Trainlines_Unique.html')
+
+
         query = '''INSERT INTO Trainlines (trainline_company) VALUES (%s)'''
         datat = [trainline]
         execute_query(db_connection, query, datat)
@@ -327,6 +343,15 @@ def Stations():
     if request.method == 'POST':
         s = request.form['station']
         p = request.form['prefecture']
+
+        # Prevents duplication during registration
+        get_sts = """SELECT station_name FROM Stations;"""
+        sts_list = execute_query(db_connection, get_sts).fetchall()
+        if [s in sts_list]:
+            return render_template('Stations_Unique.html')
+
+
+
         query = """INSERT INTO Stations (station_name, prefecture_id) VALUES 
 		 (%s, %s);"""
         data = [s, int(p),]
@@ -404,6 +429,16 @@ def Prefectures():
 
     if request.method == 'POST':
         p = request.form['prefecture']
+        
+        # Prevents duplication during registration
+        get_prs = """SELECT prefecture_name FROM Prefectures;"""
+        prs_list = execute_query(db_connection, get_prs).fetchall()
+        if [p in prs_list]:
+            return render_template('Prefectures_Unique.html')
+
+
+
+
         query = """INSERT INTO Prefectures (Prefecture_name) VALUES (%s)"""
         data = [p]
         execute_query(db_connection, query, data)
@@ -541,6 +576,15 @@ def Trainlines_and_Stations():
     if request.method == 'POST':
         tl = request.form['trainline']
         st = request.form['station']
+
+        # Prevents duplication during registration
+        query = """SELECT trainline_id, station_id FROM Trainlines_and_Stations where trainline_id = %s AND station_id = %s;"""
+        data = [tl, st]
+        result = execute_query(db_connection, query, data).fetchall()
+        if result != ():
+            return render_template('Trainlines_and_Stations_Unique.html')
+
+
         query = """INSERT INTO Trainlines_and_Stations (trainline_id, station_id) VALUES 
     	 (%s, %s);"""
         data = [int(tl), int(st),]
