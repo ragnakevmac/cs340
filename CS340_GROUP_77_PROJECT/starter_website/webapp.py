@@ -154,7 +154,39 @@ def commuter_passes():
 
 
     else:
-        query1_show = """select d1.commuter_pass_id, d1.cost, d1.start_date, d1.end_date, d3.trainline_company, 
+        query1_showall = """select d1.commuter_pass_id, d1.cost, d1.start_date, d1.end_date, d3.trainline_company, 
+    	d3.trainline_id, d2.email, d2.passenger_id from
+    	(SELECT cp.commuter_pass_id, cp.cost, cp.start_date, cp.end_date, cp.passenger_id, 
+    	cp.trainline_id from Commuter_Passes cp) d1
+    	LEFT JOIN
+    	(select pa.email, pa.passenger_id from Passengers pa) as d2
+    	on d1.passenger_id = d2.passenger_id
+    	INNER JOIN
+    	(select tl.trainline_id, tl.trainline_company from Trainlines tl) as d3
+    	on d3.trainline_id = d1.trainline_id
+        order by d1.commuter_pass_id;"""
+        result1_showall = execute_query(db_connection, query1_showall).fetchall()
+
+        query2_dropdown_tl = """SELECT trainline_id, trainline_company FROM Trainlines GROUP BY trainline_id;"""
+        result2_dropdown_tl = execute_query(db_connection, query2_dropdown_tl).fetchall()
+
+        query3_dropdown_em = """SELECT email FROM Passengers;"""
+        result3_dropdown_em = execute_query(db_connection, query3_dropdown_em).fetchall()
+
+        results = [result1_showall, result2_dropdown_tl, result3_dropdown_em]
+        return render_template('Commuter_Passes.html', rows=results)
+
+
+
+
+@webapp.route('/Commuter_Passes_Search', methods=['POST', 'GET'])
+def commuter_passes_search():
+
+    db_connection = connect_to_database()
+
+    if request.method == 'POST':
+
+        query1_filter = """select d1.commuter_pass_id, d1.cost, d1.start_date, d1.end_date, d3.trainline_company, 
     	d3.trainline_id, d2.email, d2.passenger_id from
     	(SELECT cp.commuter_pass_id, cp.cost, cp.start_date, cp.end_date, cp.passenger_id, 
     	cp.trainline_id from Commuter_Passes cp) d1
@@ -166,7 +198,7 @@ def commuter_passes():
     	on d3.trainline_id = d1.trainline_id
     	where d1.start_date <= now() AND d1.end_date >= now()
     	order by d1.commuter_pass_id;"""
-        result1_show = execute_query(db_connection, query1_show).fetchall()
+        result1_filter = execute_query(db_connection, query1_filter).fetchall()
 
         query2_dropdown_tl = """SELECT trainline_id, trainline_company FROM Trainlines GROUP BY trainline_id;"""
         result2_dropdown_tl = execute_query(db_connection, query2_dropdown_tl).fetchall()
@@ -174,8 +206,9 @@ def commuter_passes():
         query3_dropdown_em = """SELECT email FROM Passengers;"""
         result3_dropdown_em = execute_query(db_connection, query3_dropdown_em).fetchall()
 
-        results = [result1_show, result2_dropdown_tl, result3_dropdown_em]
+        results = [result1_filter, result2_dropdown_tl, result3_dropdown_em]
         return render_template('Commuter_Passes.html', rows=results)
+
 
 
 
@@ -187,7 +220,7 @@ def commuter_passes_update(id):
     
     if request.method == 'GET':
         
-        query1_show = """select d1.commuter_pass_id, d1.cost, d1.start_date, d1.end_date, d3.trainline_company, 
+        query1_showall = """select d1.commuter_pass_id, d1.cost, d1.start_date, d1.end_date, d3.trainline_company, 
         d3.trainline_id, d2.email, d2.passenger_id from
         (SELECT cp.commuter_pass_id, cp.cost, cp.start_date, cp.end_date, cp.passenger_id, 
         cp.trainline_id from Commuter_Passes cp) d1
@@ -197,9 +230,8 @@ def commuter_passes_update(id):
         INNER JOIN
         (select tl.trainline_id, tl.trainline_company from Trainlines tl) as d3
         on d3.trainline_id = d1.trainline_id
-        where d1.start_date <= now() AND d1.end_date >= now()
         AND d1.commuter_pass_id = %s"""  % (id)
-        result1_show = execute_query(db_connection, query1_show).fetchone()
+        result1_showall = execute_query(db_connection, query1_showall).fetchone()
 
         query2_dropdown_tl = """SELECT trainline_id, trainline_company FROM Trainlines GROUP BY trainline_id;"""
         result2_dropdown_tl = execute_query(db_connection, query2_dropdown_tl).fetchall()
@@ -207,7 +239,7 @@ def commuter_passes_update(id):
         query3_dropdown_em = """SELECT email FROM Passengers;"""
         result3_dropdown_em = execute_query(db_connection, query3_dropdown_em).fetchall()
 
-        results = [result1_show, result2_dropdown_tl, result3_dropdown_em]
+        results = [result1_showall, result2_dropdown_tl, result3_dropdown_em]
         return render_template('Commuter_Passes_Update.html', rows=results)
 
 
