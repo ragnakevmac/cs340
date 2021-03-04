@@ -395,6 +395,9 @@ def stations_delete(id):
 
 
 
+
+
+
 @webapp.route('/Prefectures', methods=['POST', 'GET'])
 def Prefectures():
     db_connection = connect_to_database()
@@ -429,21 +432,6 @@ def Prefectures():
 
         results = [result1_show_pr, result2_show_pa, result3_dropdown_pr]
         return render_template('Prefectures.html', rows=results)
-
-
-
-
-@webapp.route('/Prefectures_Delete/<int:id>')
-def prefectures_delete(id):
-
-    db_connection = connect_to_database()
-
-    query = "DELETE FROM Prefectures WHERE prefecture_id = %s"
-    data = [id,]
-
-    result = execute_query(db_connection, query, data)
-    return redirect('/Prefectures')
-
 
 
 
@@ -519,11 +507,29 @@ def prefectures_update(id):
 
     if request.method == 'POST':
 
-        p = request.form['prefecture']
+        prid = id
+        prefecture = request.form['prefecture']
         query = """UPDATE Prefectures SET prefecture_name = %s WHERE prefecture_id = %s"""
-        data = [s, id]
+        data = [prefecture, int(prid)]
         execute_query(db_connection, query, data)
         return redirect('/Prefectures')
+
+
+
+
+@webapp.route('/Prefectures_Delete/<int:id>')
+def prefectures_delete(id):
+
+    db_connection = connect_to_database()
+
+    query = "DELETE FROM Prefectures WHERE prefecture_id = %s"
+    data = [id,]
+
+    result = execute_query(db_connection, query, data)
+    return redirect('/Prefectures')
+
+
+
 
 
 
