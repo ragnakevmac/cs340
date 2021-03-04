@@ -715,16 +715,22 @@ def ts_delete(id):
 
 
 
-# @webapp.route('/delete_relationship2/<int:id>')
-# def ts_delete2(id):
 
-#     db_connection = connect_to_database()
 
-#     query = "DELETE FROM Trainlines_and_Stations WHERE station_id = %s"
-#     data = [id,]
 
-#     result = execute_query(db_connection, query, data)
-#     return redirect('/Trainlines_and_Stations')
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
