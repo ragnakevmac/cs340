@@ -122,12 +122,26 @@
             <label class="dropDownLabel" for="email">Passenger Email:</label>
             <select class="dropDownSelect" name="email" id="email">
 
-            <option value="{{rows[0][6]}}">{{rows[0][6]}}</option>
-              {% for r in rows[2] %}
-                {% if r[0] != '' %}
-                    <option value="{{r[0]}}">{{r[0]}}</option>
-                {% endif %}
-              {% endfor %}
+            {% if rows[0][6] == None %}
+
+                <option value="">NULL - Unregistered Email</option>
+                {% for r in rows[2] %}
+                    {% if r[0] != '' and r[0] != rows[0][6] %}
+                        <option value="{{r[0]}}">{{r[0]}}</option>
+                    {% endif %}
+                {% endfor %}
+
+            {% else %}
+
+                <option value="{{rows[0][6]}}">{{rows[0][6]}}</option>
+                <option value="">NULL - Unregistered Email</option>
+                {% for r in rows[2] %}
+                    {% if r[0] != '' and r[0] != rows[0][6] %}
+                        <option value="{{r[0]}}">{{r[0]}}</option>
+                    {% endif %}
+                {% endfor %}
+
+            {% endif %}
 
             </select><br>
 
@@ -137,7 +151,9 @@
 
             <option value="{{rows[0][5]}}">{{rows[0][4]}}</option>
               {% for r in rows[1] %}
-                <option value="{{r[0]}}">{{r[1]}}</option>
+                {% if r[0] != rows[0][5] %}
+                    <option value="{{r[0]}}">{{r[1]}}</option>
+                {% endif %}
               {% endfor %}
             </select><br>
 

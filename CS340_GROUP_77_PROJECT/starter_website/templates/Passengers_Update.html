@@ -79,13 +79,13 @@
 
     <div class="container">
         <form  method="post" action="/Passengers_Update/{{person[0]}}">
-            <label>Last Name:    </label> <input type="text" name="last_name" value="{{person[2]}}"/><br>
             <label>First Name:   </label> <input type="text" name="first_name" value="{{person[1]}}"/><br>
+            <label>Last Name:    </label> <input type="text" name="last_name" value="{{person[2]}}"/><br>
             <label>Birthdate:    </label> <input type="date" id="start" name="birthdate" min="1900-01-01" max="2022-01-01" value="{{person[3]}}"/><br>
             <label>Occupation:   </label> <input type="text" name="occupation" value="{{person[4]}}"/><br>
             <label>Email:        </label> <input type="text" name="email" value="{{person[5]}}"/><br>
             <br>
-            <input type="submit" name="update" value="Update">
+            <input id="inputButton" type="submit" name="update" value="Update">
         </form>
     </div>
 
