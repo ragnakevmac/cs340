@@ -294,9 +294,10 @@ def Trainlines():
         trainline = request.form['trainline']
 
         # Prevents duplication during registration
-        get_tls = """SELECT trainline_company FROM Trainlines;"""
-        tls_list = execute_query(db_connection, get_tls).fetchall()
-        if [trainline in tls_list]:
+        query_u = """SELECT trainline_company FROM Trainlines where trainline_company = %s;"""
+        data_u = [trainline]
+        result_u = execute_query(db_connection, query_u, data_u).fetchall()
+        if result_u != ():
             return render_template('Trainlines_Unique.html')
 
 
@@ -377,11 +378,11 @@ def Stations():
         p = request.form['prefecture']
 
         # Prevents duplication during registration
-        get_sts = """SELECT station_name FROM Stations;"""
-        sts_list = execute_query(db_connection, get_sts).fetchall()
-        if [s in sts_list]:
+        query_u = """SELECT station_name FROM Stations where station_name = %s;"""
+        data_u = [s]
+        result_u = execute_query(db_connection, query_u, data_u).fetchall()
+        if result_u != ():
             return render_template('Stations_Unique.html')
-
 
 
         query = """INSERT INTO Stations (station_name, prefecture_id) VALUES 
@@ -461,17 +462,16 @@ def Prefectures():
 
     if request.method == 'POST':
         p = request.form['prefecture']
-        
+
         # Prevents duplication during registration
-        get_prs = """SELECT prefecture_name FROM Prefectures;"""
-        prs_list = execute_query(db_connection, get_prs).fetchall()
-        if [p in prs_list]:
+        query_u = """SELECT prefecture_name FROM Prefectures where prefecture_name = %s;"""
+        data_u = [p]
+        result_u = execute_query(db_connection, query_u, data_u).fetchall()
+        if result_u != ():
             return render_template('Prefectures_Unique.html')
 
 
-
-
-        query = """INSERT INTO Prefectures (Prefecture_name) VALUES (%s)"""
+        query = """INSERT INTO Prefectures (prefecture_name) VALUES (%s)"""
         data = [p]
         execute_query(db_connection, query, data)
         return redirect('/Prefectures')
@@ -624,9 +624,9 @@ def Trainlines_and_Stations():
         return redirect('/Trainlines_and_Stations')
 
     else:
-        query = """SELECT tl.trainline_id, tl.trainline_company, st.station_name, st.station_id
+        query = """SELECT ts.trainline_and_station_id, tl.trainline_id, tl.trainline_company, st.station_name, st.station_id
     	FROM Trainlines tl INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
-    	INNER JOIN Stations st ON ts.station_id = st.station_id; """
+    	INNER JOIN Stations st ON ts.station_id = st.station_id ORDER BY tl.trainline_id;; """
         result = execute_query(db_connection, query).fetchall()
             
         query_dropdown_tl = """SELECT trainline_id, trainline_company FROM Trainlines GROUP BY trainline_id;"""
@@ -649,7 +649,7 @@ def trainlines_and_stations_search():
     if request.method == 'POST':
         if request.form["ts"] == "trainlines":
 
-            query = """SELECT tl.trainline_id, tl.trainline_company, st.station_name, st.station_id
+            query = """SELECT ts.trainline_and_station_id, tl.trainline_id, tl.trainline_company, st.station_name, st.station_id
             FROM Trainlines tl INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
             INNER JOIN Stations st ON ts.station_id = st.station_id
             ORDER BY tl.trainline_id;"""
@@ -666,7 +666,7 @@ def trainlines_and_stations_search():
             return render_template('Trainlines_and_Stations.html', rows=result, header=header, dropdown=dropdown)
 
         if request.form["ts"] == "stations":
-            query = """SELECT st.station_id, st.station_name, tl.trainline_company, tl.trainline_id
+            query = """SELECT ts.trainline_and_station_id, st.station_id, st.station_name, tl.trainline_company, tl.trainline_id
             FROM Trainlines tl INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
             INNER JOIN Stations st ON ts.station_id = st.station_id
             ORDER BY st.station_id;"""
@@ -683,7 +683,7 @@ def trainlines_and_stations_search():
             return render_template('Trainlines_and_Stations.html', rows=result, header=header, dropdown=dropdown)
 
     else:
-        query = """SELECT tl.trainline_id, tl.trainline_company, st.station_name, st.station_id
+        query = """SELECT ts.trainline_and_station_id, tl.trainline_id, tl.trainline_company, st.station_name, st.station_id
         FROM Trainlines tl INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
         INNER JOIN Stations st ON ts.station_id = st.station_id; """
         result = execute_query(db_connection, query).fetchall()
@@ -701,12 +701,12 @@ def trainlines_and_stations_search():
 
 
 
-@webapp.route('/delete_relationship1/<int:id>')
+@webapp.route('/delete_relationship/<int:id>')
 def ts_delete(id):
 
     db_connection = connect_to_database()
 
-    query = "DELETE FROM Trainlines_and_Stations WHERE trainline_id = %s"
+    query = "DELETE FROM Trainlines_and_Stations WHERE trainline_and_station_id = %s"
     data = [id,]
 
     result = execute_query(db_connection, query, data)
@@ -715,16 +715,16 @@ def ts_delete(id):
 
 
 
-@webapp.route('/delete_relationship2/<int:id>')
-def ts_delete2(id):
+# @webapp.route('/delete_relationship2/<int:id>')
+# def ts_delete2(id):
 
-    db_connection = connect_to_database()
+#     db_connection = connect_to_database()
 
-    query = "DELETE FROM Trainlines_and_Stations WHERE station_id = %s"
-    data = [id,]
+#     query = "DELETE FROM Trainlines_and_Stations WHERE station_id = %s"
+#     data = [id,]
 
-    result = execute_query(db_connection, query, data)
-    return redirect('/Trainlines_and_Stations')
+#     result = execute_query(db_connection, query, data)
+#     return redirect('/Trainlines_and_Stations')
 
 
 
