@@ -19,11 +19,14 @@ def passengers():
     db_connection = connect_to_database()
 
     if request.method == 'POST':
-        ln = request.form['last_name']
         fn = request.form['first_name']
+        ln = request.form['last_name']
         bth = request.form['birthdate']
         op = request.form['occupation']
         em = request.form['email']
+
+        if fn == '' or ln == '' or bth == '' or op == '' or em == '':
+            return "<h1>All inputs for Passenger are required!</h1>"
 
         # Prevents duplication during registration
         query_u = """SELECT email FROM Passengers where email = %s;"""
@@ -60,13 +63,20 @@ def passengers_search():
     db_connection = connect_to_database()
 
     if request.method == 'POST':
-
         occupation = request.form['occupation']
 
-        query1_filter = """SELECT passenger_id, first_name, last_name, birthdate, occupation, email 
-            FROM Passengers WHERE occupation = %s;"""
-        data1_filter = [occupation]
-        result1_filter = execute_query(db_connection, query1_filter, data1_filter).fetchall()
+
+        if occupation == 'showall':
+            query1_filter = """SELECT passenger_id, first_name, last_name, birthdate, occupation, email 
+            FROM Passengers"""
+            result1_filter = execute_query(db_connection, query1_filter).fetchall()
+
+        else:
+            query1_filter = """SELECT passenger_id, first_name, last_name, birthdate, occupation, email 
+                FROM Passengers WHERE occupation = %s;"""
+            data1_filter = [occupation]
+            result1_filter = execute_query(db_connection, query1_filter, data1_filter).fetchall()
+
 
         query2_dropdown = """SELECT occupation FROM Passengers  GROUP BY occupation;"""
         result2_dropdown = execute_query(db_connection, query2_dropdown).fetchall()
@@ -100,6 +110,9 @@ def passengers_update(id):
         birthdate = request.form['birthdate']
         occupation = request.form['occupation']
         email = request.form['email']
+
+        if first_name == '' or last_name == '' or birthdate == '' or occupation == '' or email == '':
+            return "<h1>All inputs for Passenger are required!</h1>"
 
         # Prevents duplication during registration
         query_u = """SELECT email FROM Passengers where email = %s;"""
@@ -148,6 +161,13 @@ def commuter_passes():
         st = request.form['start_date']
         ed = request.form['end_date']
         tid = request.form['trainline']
+
+        if cos == '':
+            return '<h1>Input required for cost! Or just put zero if unknown.</h1>'
+        if st == '':
+            return "<h1>Input required for start date! Or just enter today's date if unknown.</h1>"
+        if ed == '':
+            return "<h1>Input required for end date! Or just enter today's date if unknown.</h1>"
 
         pid = None
         if em != '':
@@ -221,7 +241,7 @@ def commuter_passes_search():
         result3_dropdown_em = execute_query(db_connection, query3_dropdown_em).fetchall()
 
         results = [result1_filter, result2_dropdown_tl, result3_dropdown_em]
-        return render_template('Commuter_Passes.html', rows=results)
+        return render_template('Commuter_Passes_Filter.html', rows=results)
 
 
 
@@ -265,6 +285,13 @@ def commuter_passes_update(id):
         ed = request.form['end_date']
         tid = request.form['trainline']
 
+        if cos == '':
+            return '<h1>Input required for cost! Or just put zero if unknown.</h1>'
+        if st == '':
+            return "<h1>Input required for start date! Or just enter today's date if unknown.</h1>"
+        if ed == '':
+            return "<h1>Input required for end date! Or just enter today's date if unknown.</h1>"
+
         pid = None
         if em != '':
             query_passenger = """SELECT passenger_id FROM Passengers WHERE email = %s GROUP BY passenger_id;"""
@@ -306,6 +333,9 @@ def Trainlines():
     if request.method == 'POST':
         print('Add new trainline')
         trainline = request.form['trainline']
+
+        if trainline == '':
+            return "<h1>Input for Trainline cannot be blank!</h1>"
 
         # Prevents duplication during registration
         query_u = """SELECT trainline_company FROM Trainlines where trainline_company = %s;"""
@@ -362,6 +392,9 @@ def trainlines_update(id):
         tid = id
         trainline = request.form['trainline']
 
+        if trainline == '':
+            return "<h1>Input for Trainline cannot be blank!</h1>"
+
         # Prevents duplication during registration
         query_u = """SELECT trainline_company FROM Trainlines where trainline_company = %s;"""
         data_u = [trainline]
@@ -398,6 +431,9 @@ def Stations():
     if request.method == 'POST':
         s = request.form['station']
         p = request.form['prefecture']
+
+        if s == '':
+            return "<h1>Input for Station cannot be blank!</h1>"
 
         # Prevents duplication during registration
         query_u = """SELECT station_name FROM Stations where station_name = %s;"""
@@ -454,6 +490,9 @@ def stations_update(id):
         s = request.form['station']
         p = request.form['prefecture']
 
+        if s == '':
+            return "<h1>Input for Station cannot be blank!</h1>"
+
         # Prevents duplication during registration
         query_u = """SELECT station_name FROM Stations where station_name = %s;"""
         data_u = [s]
@@ -497,6 +536,9 @@ def Prefectures():
 
     if request.method == 'POST':
         p = request.form['prefecture']
+
+        if p == '':
+            return "<h1>Input for Prefecture cannot be blank!</h1>"
 
         # Prevents duplication during registration
         query_u = """SELECT prefecture_name FROM Prefectures where prefecture_name = %s;"""
@@ -542,22 +584,36 @@ def prefectures_search():
     db_connection = connect_to_database()
 
     if request.method == 'POST':
+        prefecture = request.form['prefecture']
+
         query1_show_pr = """SELECT * from Prefectures;"""
         result1_show_pr = execute_query(db_connection, query1_show_pr).fetchall()
         
-        prefecture = request.form['prefecture']
-        query2_show_pa = """SELECT fq.passenger_id, fq.first_name, fq.last_name, fq.birthdate, fq.occupation, fq.email FROM 
-        (SELECT pa.passenger_id, pa.first_name, pa.last_name, pa.birthdate, pa.occupation, pa.email, pf.prefecture_name
-        FROM Passengers pa 
-        INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.passenger_id
-        INNER JOIN Trainlines tl ON cp.trainline_id = tl.trainline_id
-        INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
-        INNER JOIN Stations st ON ts.station_id = st.station_id
-        INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
-        AS fq 
-        WHERE fq.prefecture_name = %s GROUP BY passenger_id;"""
-        data = [prefecture]
-        result2_show_pa = execute_query(db_connection, query2_show_pa, data).fetchall()
+        if prefecture == 'all-pref':
+            query2_show_pa = """SELECT fq.passenger_id, fq.first_name, fq.last_name, fq.birthdate, fq.occupation, fq.email FROM 
+            (SELECT pa.passenger_id, pa.first_name, pa.last_name, pa.birthdate, pa.occupation, pa.email, pf.prefecture_name
+            FROM Passengers pa 
+            INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.passenger_id
+            INNER JOIN Trainlines tl ON cp.trainline_id = tl.trainline_id
+            INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
+            INNER JOIN Stations st ON ts.station_id = st.station_id
+            INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
+            AS fq GROUP BY passenger_id;"""
+            result2_show_pa = execute_query(db_connection, query2_show_pa).fetchall()
+
+        else:
+            query2_show_pa = """SELECT fq.passenger_id, fq.first_name, fq.last_name, fq.birthdate, fq.occupation, fq.email FROM 
+            (SELECT pa.passenger_id, pa.first_name, pa.last_name, pa.birthdate, pa.occupation, pa.email, pf.prefecture_name
+            FROM Passengers pa 
+            INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.passenger_id
+            INNER JOIN Trainlines tl ON cp.trainline_id = tl.trainline_id
+            INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
+            INNER JOIN Stations st ON ts.station_id = st.station_id
+            INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
+            AS fq 
+            WHERE fq.prefecture_name = %s GROUP BY passenger_id;"""
+            data = [prefecture]
+            result2_show_pa = execute_query(db_connection, query2_show_pa, data).fetchall()
 
         query3_dropdown_pr = """SELECT prefecture_id, prefecture_name FROM Prefectures GROUP BY prefecture_id;"""
         result3_dropdown_pr = execute_query(db_connection, query3_dropdown_pr).fetchall()
@@ -611,6 +667,9 @@ def prefectures_update(id):
 
         prid = id
         prefecture = request.form['prefecture']
+
+        if prefecture == '':
+            return "<h1>Input for Prefecture cannot be blank!</h1>"
 
         # Prevents duplication during registration
         query_u = """SELECT prefecture_name FROM Prefectures where prefecture_name = %s;"""

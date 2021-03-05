@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commuter Passes</title>
+
+    <style>
+        th, td { border: 1px solid black; padding: 10px;}
+        button, input {padding: 10px;}
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+        }
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        h1 {text-align: center;}
+            
+
+        body {
+            background-color: lightblue;
+            font-family: Verdana, sans-serif;
+        }
+
+
+        body {text-align: center;}
+        table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .container form  label {
+            width: 200px;
+            display: inline-block;
+            text-align: left;
+            margin: 2px;
+        }
+
+        .container form  input {
+            width: 200px;
+            display: inline-block;
+            text-align: left;
+            margin: 2px
+        }
+
+        .container form  select {
+            width: 200px;
+            display: inline-block;
+            text-align: left;
+            margin: 2px
+        }
+
+        #inputButton {
+            text-align: center;
+            width: 100px;
+        }
+
+        #inputButton1 {
+            text-align: center;
+            width: 80px;
+        }
+
+        #inputButton2 {
+            text-align: center;
+            width: 80px;
+        }
+
+        .dropDownLabel {
+            width: 135px;
+            text-align: left;
+        }
+
+        .dropDownSelect {
+            text-align: right;
+        }
+
+    </style>
+
+</head>
+
+
+
+
+<body>
+
+    <div class="tab">
+        <a href="/index"> <button class="home">Home</button> </a>
+        <a href="/Passengers"> <button>Passengers</button> </a>
+        <a href="/Commuter_Passes"> <button>Commuter Passes</button> </a>
+        <a href="/Trainlines"> <button>Train Lines</button> </a>
+        <a href="/Stations"> <button>Stations</button> </a>
+        <a href="/Prefectures"> <button>Prefectures</button> </a>
+        <a href="/Trainlines_and_Stations"> <button>Trainlines and Stations</button> </a>
+    </div>
+
+    <h1>Commuter Passes</h1>
+    <br>
+
+
+    <h2>Add a Commuter Pass</h2>
+
+    <div class="container">
+        <form action="/Commuter_Passes" id="addInputsCommuterPasses" method="post">
+            <!-- <label>(Connect to a) <br> Passenger Email:  </label>  <input type="text" name="email" placeholder="Optional (NULLable)"/> <br> -->
+            <label>Cost Paid:        </label>  <input type="number" name="cost" />  <br>
+            <label>Start Date:       </label>  <input type="date" name="start_date" min="2021-01-01" max="2023-01-01"/>  <br>
+            <label>End Date:         </label>  <input type="date" name="end_date" min="2021-01-01" max="2023-01-01"/>    <br><br>
+
+
+            <label class="dropDownLabel" for="email">Passenger Email:</label>
+            <select class="dropDownSelect" name="email" id="email">
+
+                <option value="">NULL - Unregistered Email</option>
+              {% for r in rows[2] %}
+                {% if r[0] != '' %}
+                    <option value="{{r[0]}}">{{r[0]}}</option>
+                {% endif %}
+              {% endfor %}
+
+            </select><br>
+
+
+            <label class="dropDownLabel" for="trainline">Trainline Access:</label>
+            <select class="dropDownSelect" name="trainline" id="trainline">
+              {% for r in rows[1] %}
+                <option value="{{r[0]}}">{{r[1]}}</option>
+              {% endfor %}
+            </select><br>
+
+
+            <br>
+            <input id="inputButton" type="submit" value="Add" />
+        </form>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <h2>Filter to All Active Commuter Passes (not expired) Only:</h2>
+    <form method="get" action="/Commuter_Passes">
+        <input id="inputButton" type="submit" value="Undo Filter" name="btn2" />
+    </form>
+    <br>
+          
+	<table border='1'>
+        <thead>
+                <th>Commuter Pass ID</th>
+                <th>Cost Paid</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Trainline Access</th>
+                <th>Trainline ID</th>
+                <th>Passenger's Email</th>
+                <th>Passenger's ID</th>
+          </thead>
+          <tbody>
+              {% for r in rows[0] %}
+
+                {% if r[6] == None %}
+                    <tr>
+                        <td> {{ r[0] }}</td>
+                        <td> {{ r[1] }}</td>
+                        <td> {{ r[2] }}</td>
+                        <td> {{ r[3] }}</td>
+                        <td> {{ r[4] }}</td>
+                        <td> {{ r[5] }}</td>
+                        <td> NULL</td>
+                        <td> NULL</td>
+
+                {% else %}    
+                    <tr>
+                        <td> {{ r[0] }}</td>
+                        <td> {{ r[1] }}</td>
+                        <td> {{ r[2] }}</td>
+                        <td> {{ r[3] }}</td>
+                        <td> {{ r[4] }}</td>
+                        <td> {{ r[5] }}</td>
+                        <td> {{ r[6] }}</td>
+                        <td> {{ r[7] }}</td>
+                {% endif %}
+
+		        <td> <input type='button' name='Update' value='Update' onclick="window.location = '/Commuter_Passes_Update/{{r[0]}}'"> </td>
+                <td> <input type='button' name='Delete' value='Delete' onclick="window.location = '/Commuter_Passes_Delete/{{r[0]}}'"> </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+
+    <br>
+    <br>
+</body>
+
+
+
+
+
+
+
+
+</html>
+

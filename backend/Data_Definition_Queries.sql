@@ -27,6 +27,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `Passengers`
 --
 
+
 DROP TABLE IF EXISTS `Passengers`;
 CREATE TABLE `Passengers` (
   `passenger_id` int(11) NOT NULL PRIMARY KEY auto_increment,
