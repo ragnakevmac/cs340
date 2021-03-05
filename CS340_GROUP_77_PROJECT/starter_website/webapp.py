@@ -221,7 +221,7 @@ def commuter_passes_search():
         result3_dropdown_em = execute_query(db_connection, query3_dropdown_em).fetchall()
 
         results = [result1_filter, result2_dropdown_tl, result3_dropdown_em]
-        return render_template('Commuter_Passes.html', rows=results)
+        return render_template('Commuter_Passes_Filter.html', rows=results)
 
 
 
