@@ -60,13 +60,20 @@ def passengers_search():
     db_connection = connect_to_database()
 
     if request.method == 'POST':
-
         occupation = request.form['occupation']
 
-        query1_filter = """SELECT passenger_id, first_name, last_name, birthdate, occupation, email 
-            FROM Passengers WHERE occupation = %s;"""
-        data1_filter = [occupation]
-        result1_filter = execute_query(db_connection, query1_filter, data1_filter).fetchall()
+
+        if occupation == 'showall':
+            query1_filter = """SELECT passenger_id, first_name, last_name, birthdate, occupation, email 
+            FROM Passengers"""
+            result1_filter = execute_query(db_connection, query1_filter).fetchall()
+
+        else:
+            query1_filter = """SELECT passenger_id, first_name, last_name, birthdate, occupation, email 
+                FROM Passengers WHERE occupation = %s;"""
+            data1_filter = [occupation]
+            result1_filter = execute_query(db_connection, query1_filter, data1_filter).fetchall()
+
 
         query2_dropdown = """SELECT occupation FROM Passengers  GROUP BY occupation;"""
         result2_dropdown = execute_query(db_connection, query2_dropdown).fetchall()

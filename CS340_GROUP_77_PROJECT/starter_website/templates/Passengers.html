@@ -102,6 +102,7 @@
         <label id="dropDownLabel" for="occupation">By Occupation:</label>
         <select id="dropDownSelect" name="occupation" id="occupation">
             
+            <option value="showall">Show All</option>
             {% for r in rows[1] %}
                 <option value="{{r[0]}}">{{r[0]}}</option>
             {% endfor %}
