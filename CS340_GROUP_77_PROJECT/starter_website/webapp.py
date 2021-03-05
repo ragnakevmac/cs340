@@ -19,11 +19,14 @@ def passengers():
     db_connection = connect_to_database()
 
     if request.method == 'POST':
-        ln = request.form['last_name']
         fn = request.form['first_name']
+        ln = request.form['last_name']
         bth = request.form['birthdate']
         op = request.form['occupation']
         em = request.form['email']
+
+        if fn == '' or ln == '' or bth == '' or op == '' or em == '':
+            return "<h1>All inputs for Passenger are required!</h1>"
 
         # Prevents duplication during registration
         query_u = """SELECT email FROM Passengers where email = %s;"""
@@ -108,6 +111,9 @@ def passengers_update(id):
         occupation = request.form['occupation']
         email = request.form['email']
 
+        if first_name == '' or last_name == '' or birthdate == '' or occupation == '' or email == '':
+            return "<h1>All inputs for Passenger are required!</h1>"
+
         # Prevents duplication during registration
         query_u = """SELECT email FROM Passengers where email = %s;"""
         data_u = [email]
@@ -155,6 +161,13 @@ def commuter_passes():
         st = request.form['start_date']
         ed = request.form['end_date']
         tid = request.form['trainline']
+
+        if cos == '':
+            return '<h1>Input required for cost! Or just put zero if unknown.</h1>'
+        if st == '':
+            return "<h1>Input required for start date! Or just enter today's date if unknown.</h1>"
+        if ed == '':
+            return "<h1>Input required for end date! Or just enter today's date if unknown.</h1>"
 
         pid = None
         if em != '':
@@ -272,6 +285,13 @@ def commuter_passes_update(id):
         ed = request.form['end_date']
         tid = request.form['trainline']
 
+        if cos == '':
+            return '<h1>Input required for cost! Or just put zero if unknown.</h1>'
+        if st == '':
+            return "<h1>Input required for start date! Or just enter today's date if unknown.</h1>"
+        if ed == '':
+            return "<h1>Input required for end date! Or just enter today's date if unknown.</h1>"
+
         pid = None
         if em != '':
             query_passenger = """SELECT passenger_id FROM Passengers WHERE email = %s GROUP BY passenger_id;"""
@@ -313,6 +333,9 @@ def Trainlines():
     if request.method == 'POST':
         print('Add new trainline')
         trainline = request.form['trainline']
+
+        if trainline == '':
+            return "<h1>Input for Trainline cannot be blank!</h1>"
 
         # Prevents duplication during registration
         query_u = """SELECT trainline_company FROM Trainlines where trainline_company = %s;"""
@@ -369,6 +392,9 @@ def trainlines_update(id):
         tid = id
         trainline = request.form['trainline']
 
+        if trainline == '':
+            return "<h1>Input for Trainline cannot be blank!</h1>"
+
         # Prevents duplication during registration
         query_u = """SELECT trainline_company FROM Trainlines where trainline_company = %s;"""
         data_u = [trainline]
@@ -405,6 +431,9 @@ def Stations():
     if request.method == 'POST':
         s = request.form['station']
         p = request.form['prefecture']
+
+        if s == '':
+            return "<h1>Input for Station cannot be blank!</h1>"
 
         # Prevents duplication during registration
         query_u = """SELECT station_name FROM Stations where station_name = %s;"""
@@ -461,6 +490,9 @@ def stations_update(id):
         s = request.form['station']
         p = request.form['prefecture']
 
+        if s == '':
+            return "<h1>Input for Station cannot be blank!</h1>"
+
         # Prevents duplication during registration
         query_u = """SELECT station_name FROM Stations where station_name = %s;"""
         data_u = [s]
@@ -504,6 +536,9 @@ def Prefectures():
 
     if request.method == 'POST':
         p = request.form['prefecture']
+
+        if p == '':
+            return "<h1>Input for Prefecture cannot be blank!</h1>"
 
         # Prevents duplication during registration
         query_u = """SELECT prefecture_name FROM Prefectures where prefecture_name = %s;"""
@@ -632,6 +667,9 @@ def prefectures_update(id):
 
         prid = id
         prefecture = request.form['prefecture']
+
+        if prefecture == '':
+            return "<h1>Input for Prefecture cannot be blank!</h1>"
 
         # Prevents duplication during registration
         query_u = """SELECT prefecture_name FROM Prefectures where prefecture_name = %s;"""
