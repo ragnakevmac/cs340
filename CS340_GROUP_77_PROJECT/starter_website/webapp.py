@@ -549,22 +549,36 @@ def prefectures_search():
     db_connection = connect_to_database()
 
     if request.method == 'POST':
+        prefecture = request.form['prefecture']
+
         query1_show_pr = """SELECT * from Prefectures;"""
         result1_show_pr = execute_query(db_connection, query1_show_pr).fetchall()
         
-        prefecture = request.form['prefecture']
-        query2_show_pa = """SELECT fq.passenger_id, fq.first_name, fq.last_name, fq.birthdate, fq.occupation, fq.email FROM 
-        (SELECT pa.passenger_id, pa.first_name, pa.last_name, pa.birthdate, pa.occupation, pa.email, pf.prefecture_name
-        FROM Passengers pa 
-        INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.passenger_id
-        INNER JOIN Trainlines tl ON cp.trainline_id = tl.trainline_id
-        INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
-        INNER JOIN Stations st ON ts.station_id = st.station_id
-        INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
-        AS fq 
-        WHERE fq.prefecture_name = %s GROUP BY passenger_id;"""
-        data = [prefecture]
-        result2_show_pa = execute_query(db_connection, query2_show_pa, data).fetchall()
+        if prefecture == 'all-pref':
+            query2_show_pa = """SELECT fq.passenger_id, fq.first_name, fq.last_name, fq.birthdate, fq.occupation, fq.email FROM 
+            (SELECT pa.passenger_id, pa.first_name, pa.last_name, pa.birthdate, pa.occupation, pa.email, pf.prefecture_name
+            FROM Passengers pa 
+            INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.passenger_id
+            INNER JOIN Trainlines tl ON cp.trainline_id = tl.trainline_id
+            INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
+            INNER JOIN Stations st ON ts.station_id = st.station_id
+            INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
+            AS fq GROUP BY passenger_id;"""
+            result2_show_pa = execute_query(db_connection, query2_show_pa).fetchall()
+
+        else:
+            query2_show_pa = """SELECT fq.passenger_id, fq.first_name, fq.last_name, fq.birthdate, fq.occupation, fq.email FROM 
+            (SELECT pa.passenger_id, pa.first_name, pa.last_name, pa.birthdate, pa.occupation, pa.email, pf.prefecture_name
+            FROM Passengers pa 
+            INNER JOIN Commuter_Passes cp ON pa.passenger_id = cp.passenger_id
+            INNER JOIN Trainlines tl ON cp.trainline_id = tl.trainline_id
+            INNER JOIN Trainlines_and_Stations ts ON tl.trainline_id = ts.trainline_id
+            INNER JOIN Stations st ON ts.station_id = st.station_id
+            INNER JOIN Prefectures pf ON st.prefecture_id = pf.prefecture_id) 
+            AS fq 
+            WHERE fq.prefecture_name = %s GROUP BY passenger_id;"""
+            data = [prefecture]
+            result2_show_pa = execute_query(db_connection, query2_show_pa, data).fetchall()
 
         query3_dropdown_pr = """SELECT prefecture_id, prefecture_name FROM Prefectures GROUP BY prefecture_id;"""
         result3_dropdown_pr = execute_query(db_connection, query3_dropdown_pr).fetchall()

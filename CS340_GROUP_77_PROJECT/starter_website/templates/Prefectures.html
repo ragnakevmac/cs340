@@ -38,6 +38,13 @@
                 margin-left: auto;
                 margin-right: auto;
             }
+            #btn-list {
+                margin-top: 5px;
+                width: 80px;
+                /* font-size: 12px;
+                padding-top: 5px;
+                padding-bottom: 5px; */
+            }
 
 
         </style>
@@ -94,12 +101,15 @@
             List all the Passengers who can come to or might have been to
             <label for="prefecture"></label>
             <select name="prefecture">
+
+                <option value="all-pref">All the Prefectures</option>
                 {% for r in rows[2] %}
                     <option value="{{r[1]}}">{{r[1]}}</option>
                 {% endfor %}
+
             </select>
-            <input type="submit" name="action" value="Search">
-            via their Commuter Passes. 
+            via their Commuter Passes. <br>
+            <input id="btn-list" type="submit" name="action" value="Search">
         </h3>
         </form>
 
