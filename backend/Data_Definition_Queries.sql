@@ -27,7 +27,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `Passengers`
 --
 
-
 DROP TABLE IF EXISTS `Passengers`;
 CREATE TABLE `Passengers` (
   `passenger_id` int(11) NOT NULL PRIMARY KEY auto_increment,
@@ -67,7 +66,7 @@ CREATE TABLE `Commuter_Passes` (
 
 	passenger_id int, 
 	FOREIGN KEY (passenger_id) REFERENCES Passengers (passenger_id)
-	ON UPDATE CASCADE ON DELETE CASCADE,
+	ON UPDATE CASCADE ON DELETE SET NULL,
 
 	trainline_id int NOT NULL,
 	FOREIGN KEY (trainline_id) REFERENCES Trainlines (trainline_id)
