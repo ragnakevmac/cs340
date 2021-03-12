@@ -124,7 +124,7 @@
 
             {% if rows[0][6] == None %}
 
-                <option value="">NULL - Unregistered Email</option>
+                <option value="">NULL - No Passenger Email</option>
                 {% for r in rows[2] %}
                     {% if r[0] != '' and r[0] != rows[0][6] %}
                         <option value="{{r[0]}}">{{r[0]}}</option>

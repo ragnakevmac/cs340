@@ -12,6 +12,15 @@ def index():
 
 
 
+def valid_chars_exist(input):
+    result = False
+    for i in range(len(input)):
+        if input[i] != ' ':
+            result = True
+
+    return result
+
+
 
 @webapp.route('/Passengers', methods=['POST', 'GET'])
 def passengers():
@@ -26,7 +35,16 @@ def passengers():
         em = request.form['email']
 
         if fn == '' or ln == '' or bth == '' or op == '' or em == '':
-            return "<h1>All inputs for Passenger are required!</h1>"
+            return "<body style='background-color: lightblue;'><h1>All inputs for Passenger are required!</h1></body>"
+
+        input_list = [fn, ln, bth, op, em]
+        for i in input_list:
+            if not valid_chars_exist(i):
+                return "<body style='background-color: lightblue;'><h1>All inputs for Passenger are required and cannot be blank or be all white spaces!</h1></body>"
+            if i[0] == ' ':
+                return "<body style='background-color: lightblue;'><h1>Input's first character cannot be a white space!</h1></body>"
+            if 'NULL' in i:
+                return '<body style="background-color: lightblue;"><h1>Input cannot contain the word "NULL"!</h1></body>'
 
         # Prevents duplication during registration
         query_u = """SELECT email FROM Passengers where email = %s;"""
@@ -112,7 +130,16 @@ def passengers_update(id):
         email = request.form['email']
 
         if first_name == '' or last_name == '' or birthdate == '' or occupation == '' or email == '':
-            return "<h1>All inputs for Passenger are required!</h1>"
+            return "<body style='background-color: lightblue;'><h1>All inputs for Passenger are required!</h1></body>"
+
+        input_list = [first_name, last_name, birthdate, occupation, email]
+        for i in input_list:
+            if not valid_chars_exist(i):
+                return "<body style='background-color: lightblue;'><h1>All inputs for Passenger are required and cannot be blank or be all white spaces!</h1></body>"
+            if i[0] == ' ':
+                return "<body style='background-color: lightblue;'><h1>Input's first character cannot be a white space!</h1></body>"
+            if 'NULL' in i:
+                return '<body style="background-color: lightblue;"><h1>Input cannot contain the word "NULL"!</h1></body>'
 
         # Prevents duplication during registration
         query_u = """SELECT email FROM Passengers where email = %s;"""
@@ -163,18 +190,24 @@ def commuter_passes():
         tid = request.form['trainline']
 
         if cos == '':
-            return '<h1>Input required for cost! Or just put zero if unknown.</h1>'
+            return '<body style="background-color: lightblue;"><h1>Input required for cost! Or just put zero if unknown.</h1></body>'
         if st == '':
-            return "<h1>Input required for start date! Or just enter today's date if unknown.</h1>"
+            return "<body style='background-color: lightblue;'><h1>Input required for start date! Or just enter today's date if unknown.</h1></body>"
         if ed == '':
-            return "<h1>Input required for end date! Or just enter today's date if unknown.</h1>"
+            return "<body style='background-color: lightblue;'><h1>Input required for end date! Or just enter today's date if unknown.</h1></body>"
+
+        input_list = [cos, st, ed]
+        for i in input_list:
+            if not valid_chars_exist(i):
+                return "<body style='background-color: lightblue;'><h1>All inputs for Commuter_Passes are required and cannot be blank!</h1></body>"
+            if i[0] == ' ':
+                return "<body style='background-color: lightblue;'><h1>Input's first character cannot be a white space!</h1></body>"
 
         pid = None
         if em != '':
             query_passenger = """SELECT passenger_id FROM Passengers WHERE email = %s GROUP BY passenger_id;"""
             data_passenger_em = [em]
             pid_fetch = list(execute_query(db_connection, query_passenger, data_passenger_em).fetchall())
-            print("PRINT!!!!!!!!!!!!!!!!!!!!", pid_fetch)
             if pid_fetch != []:
                 pid = int(pid_fetch[0][0])
 
@@ -286,18 +319,24 @@ def commuter_passes_update(id):
         tid = request.form['trainline']
 
         if cos == '':
-            return '<h1>Input required for cost! Or just put zero if unknown.</h1>'
+            return '<body style="background-color: lightblue;"><h1>Input required for cost! Or just put zero if unknown.</h1></body>'
         if st == '':
-            return "<h1>Input required for start date! Or just enter today's date if unknown.</h1>"
+            return "<body style='background-color: lightblue;'><h1>Input required for start date! Or just enter today's date if unknown.</h1></body>"
         if ed == '':
-            return "<h1>Input required for end date! Or just enter today's date if unknown.</h1>"
+            return "<body style='background-color: lightblue;'><h1>Input required for end date! Or just enter today's date if unknown.</h1></body>"
+
+        input_list = [cos, st, ed]
+        for i in input_list:
+            if not valid_chars_exist(i):
+                return "<body style='background-color: lightblue;'><h1>All inputs for Commuter_Passes are required and cannot be blank!</h1></body>"
+            if i[0] == ' ':
+                return "<body style='background-color: lightblue;'><h1>Input's first character cannot be a white space!</h1></body>"
 
         pid = None
         if em != '':
             query_passenger = """SELECT passenger_id FROM Passengers WHERE email = %s GROUP BY passenger_id;"""
             data_passenger_em = [em]
             pid_fetch = list(execute_query(db_connection, query_passenger, data_passenger_em).fetchall())
-            print("PRINT!!!!!!!!!!!!!!!!!!!!", pid_fetch)
             if pid_fetch != []:
                 pid = int(pid_fetch[0][0])
 
@@ -335,7 +374,16 @@ def Trainlines():
         trainline = request.form['trainline']
 
         if trainline == '':
-            return "<h1>Input for Trainline cannot be blank!</h1>"
+            return "<body style='background-color: lightblue;'><h1>Input for Trainline cannot be blank!</h1></body>"
+
+        input_list = [trainline]
+        for i in input_list:
+            if not valid_chars_exist(i):
+                return "<body style='background-color: lightblue;'><h1>Input for Trainline cannot be blank or be all white spaces!</h1></body>"
+            if i[0] == ' ':
+                return "<body style='background-color: lightblue;'><h1>Input's first character cannot be a white space!</h1></body>"
+            if 'NULL' in i:
+                return '<body style="background-color: lightblue;"><h1>Input cannot contain the word "NULL"!</h1></body>'
 
         # Prevents duplication during registration
         query_u = """SELECT trainline_company FROM Trainlines where trainline_company = %s;"""
@@ -393,7 +441,16 @@ def trainlines_update(id):
         trainline = request.form['trainline']
 
         if trainline == '':
-            return "<h1>Input for Trainline cannot be blank!</h1>"
+            return "<body style='background-color: lightblue;'><h1>Input for Trainline cannot be blank!</h1></body>"
+
+        input_list = [trainline]
+        for i in input_list:
+            if not valid_chars_exist(i):
+                return "<body style='background-color: lightblue;'><h1>Input for Trainline cannot be blank or be all white spaces!</h1></body>"
+            if i[0] == ' ':
+                return "<body style='background-color: lightblue;'><h1>Input's first character cannot be a white space!</h1></body>"
+            if 'NULL' in i:
+                return '<body style="background-color: lightblue;"><h1>Input cannot contain the word "NULL"!</h1></body>'
 
         # Prevents duplication during registration
         query_u = """SELECT trainline_company FROM Trainlines where trainline_company = %s;"""
@@ -433,7 +490,16 @@ def Stations():
         p = request.form['prefecture']
 
         if s == '':
-            return "<h1>Input for Station cannot be blank!</h1>"
+            return "<body style='background-color: lightblue;'><h1>Input for Station cannot be blank!</h1></body>"
+
+        input_list = [s]
+        for i in input_list:
+            if not valid_chars_exist(i):
+                return "<body style='background-color: lightblue;'><h1>Input for Station cannot be blank or be all white spaces!</h1></body>"
+            if i[0] == ' ':
+                return "<body style='background-color: lightblue;'><h1>Input's first character cannot be a white space!</h1></body>"
+            if 'NULL' in i:
+                return '<body style="background-color: lightblue;"><h1>Input cannot contain the word "NULL"!</h1></body>'
 
         # Prevents duplication during registration
         query_u = """SELECT station_name FROM Stations where station_name = %s;"""
@@ -491,7 +557,16 @@ def stations_update(id):
         p = request.form['prefecture']
 
         if s == '':
-            return "<h1>Input for Station cannot be blank!</h1>"
+            return "<body style='background-color: lightblue;'><h1>Input for Station cannot be blank!</h1></body>"
+
+        input_list = [s]
+        for i in input_list:
+            if not valid_chars_exist(i):
+                return "<body style='background-color: lightblue;'><h1>Input for Station cannot be blank or be all white spaces!</h1></body>"
+            if i[0] == ' ':
+                return "<body style='background-color: lightblue;'><h1>Input's first character cannot be a white space!</h1></body></body>"
+            if 'NULL' in i:
+                return '<body style="background-color: lightblue;"><h1>Input cannot contain the word "NULL"!</h1></body>'
 
         # Prevents duplication during registration
         query_u = """SELECT station_name FROM Stations where station_name = %s;"""
@@ -538,7 +613,16 @@ def Prefectures():
         p = request.form['prefecture']
 
         if p == '':
-            return "<h1>Input for Prefecture cannot be blank!</h1>"
+            return "<body style='background-color: lightblue;'><h1>Input for Prefecture cannot be blank!</h1></body>"
+
+        input_list = [p]
+        for i in input_list:
+            if not valid_chars_exist(i):
+                return "<body style='background-color: lightblue;'><h1>Input for Prefecture cannot be blank or be all white spaces!</h1></body>"
+            if i[0] == ' ':
+                return "<body style='background-color: lightblue;'><h1>Input's first character cannot be a white space!</h1></body></body>"
+            if 'NULL' in i:
+                return '<body style="background-color: lightblue;"><h1>Input cannot contain the word "NULL"!</h1></body>'
 
         # Prevents duplication during registration
         query_u = """SELECT prefecture_name FROM Prefectures where prefecture_name = %s;"""
@@ -669,7 +753,16 @@ def prefectures_update(id):
         prefecture = request.form['prefecture']
 
         if prefecture == '':
-            return "<h1>Input for Prefecture cannot be blank!</h1>"
+            return "<body style='background-color: lightblue;'><h1>Input for Prefecture cannot be blank!</h1></body>"
+
+        input_list = [prefecture]
+        for i in input_list:
+            if not valid_chars_exist(i):
+                return "<body style='background-color: lightblue;'><h1>Input for Prefecture cannot be blank or be all white spaces!</h1></body>"
+            if i[0] == ' ':
+                return "<body style='background-color: lightblue;'><h1>Input's first character cannot be a white space!</h1></body></body>"
+            if 'NULL' in i:
+                return '<body style="background-color: lightblue;"><h1>Input cannot contain the word "NULL"!</h1></body>'
 
         # Prevents duplication during registration
         query_u = """SELECT prefecture_name FROM Prefectures where prefecture_name = %s;"""
