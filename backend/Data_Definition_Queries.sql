@@ -27,6 +27,8 @@ SET time_zone = "+00:00";
 -- Table structure for table `Passengers`
 --
 
+SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS `Passengers`;
 CREATE TABLE `Passengers` (
   `passenger_id` int(11) NOT NULL PRIMARY KEY auto_increment,
@@ -37,6 +39,8 @@ CREATE TABLE `Passengers` (
   `email` varchar(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+SET foreign_key_checks = 1;
+
 
 -- --------------------------------------------------------
 
@@ -44,11 +48,15 @@ CREATE TABLE `Passengers` (
 -- Table structure for table `Trainlines`
 --
 
+SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS `Trainlines`;
 CREATE TABLE `Trainlines` (
   `trainline_id` int(11) NOT NULL PRIMARY KEY auto_increment,
   `trainline_company` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+SET foreign_key_checks = 1;
 
 
 -- --------------------------------------------------------
@@ -56,6 +64,8 @@ CREATE TABLE `Trainlines` (
 --
 -- Table structure for table `Commuter_Passes`
 --
+
+SET foreign_key_checks = 0;
 
 DROP TABLE IF EXISTS `Commuter_Passes`;
 CREATE TABLE `Commuter_Passes` (
@@ -74,6 +84,8 @@ CREATE TABLE `Commuter_Passes` (
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+SET foreign_key_checks = 1;
+
 
 -- --------------------------------------------------------
 
@@ -81,11 +93,15 @@ CREATE TABLE `Commuter_Passes` (
 -- Table structure for table `Prefectures`
 --
 
+SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS `Prefectures`;
 CREATE TABLE `Prefectures` (
   `prefecture_id` int(11) NOT NULL PRIMARY KEY auto_increment,
   `prefecture_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+SET foreign_key_checks = 1;
 
 
 -- --------------------------------------------------------
@@ -93,6 +109,8 @@ CREATE TABLE `Prefectures` (
 --
 -- Table structure for table `Stations`
 --
+
+SET foreign_key_checks = 0;
 
 DROP TABLE IF EXISTS `Stations`;
 CREATE TABLE `Stations` (
@@ -105,12 +123,16 @@ CREATE TABLE `Stations` (
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+SET foreign_key_checks = 1;
+
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `Trainlines_and_Stations`
 --
+
+SET foreign_key_checks = 0;
 
 DROP TABLE IF EXISTS `Trainlines_and_Stations`;
 CREATE TABLE `Trainlines_and_Stations` (
@@ -126,6 +148,8 @@ CREATE TABLE `Trainlines_and_Stations` (
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+SET foreign_key_checks = 1;
+
 
 
 
@@ -136,6 +160,8 @@ CREATE TABLE `Trainlines_and_Stations` (
 --
 -- Dumping data for table `Trainlines`
 --
+
+SET foreign_key_checks = 0;
 
 INSERT INTO `Trainlines` (`trainline_company`) VALUES
 ('Yamanote Line'),
@@ -151,10 +177,14 @@ INSERT INTO `Trainlines` (`trainline_company`) VALUES
 ('Yokohama Line'),
 ('Shonan-Shinjuku Line');
 
+SET foreign_key_checks = 1;
+
 
 --
 -- Dumping data for table `Prefectures`
 --
+
+SET foreign_key_checks = 0;
 
 INSERT INTO `Prefectures` (`prefecture_name`) VALUES
 ('Tokyo Prefecture'),
@@ -165,10 +195,14 @@ INSERT INTO `Prefectures` (`prefecture_name`) VALUES
 ('Tochigi Prefecture'),
 ('Ibaraki Prefecture');
 
+SET foreign_key_checks = 1;
+
 
 --
 -- Dumping data for table `Stations`
 --
+
+SET foreign_key_checks = 0;
 
 INSERT INTO `Stations` (`station_name`, `prefecture_id`) VALUES
 ('Maihama Station', (SELECT prefecture_id FROM Prefectures WHERE prefecture_name = 'Chiba Prefecture')),
@@ -183,10 +217,14 @@ INSERT INTO `Stations` (`station_name`, `prefecture_id`) VALUES
 ('Akihabara Station', (SELECT prefecture_id FROM Prefectures WHERE prefecture_name = 'Tokyo Prefecture')),
 ('Kita-Senju Station', (SELECT prefecture_id FROM Prefectures WHERE prefecture_name = 'Tokyo Prefecture'));
 
+SET foreign_key_checks = 1;
+
 
 --
 -- Dumping data for table `Passengers`
 --
+
+SET foreign_key_checks = 0;
 
 INSERT INTO `Passengers` (`first_name`, `last_name`, `birthdate`, `occupation`, `email`) VALUES
 ('John', 'Smith', '2020-03-20', 'Student', 'John_Smith@pmail.com'),
@@ -198,10 +236,14 @@ INSERT INTO `Passengers` (`first_name`, `last_name`, `birthdate`, `occupation`, 
 ("Pancho", "Villa", "1985-3-11", "Handyman", "Pancho_Villa@pmail.com"),
 ("Mario", "Bross", "1970-1-1", "Comedian", "Mario_Bross@pmail.com");
 
+SET foreign_key_checks = 1;
+
 
 --
 -- Dumping data for table `Commuter_Passes`
 --
+
+SET foreign_key_checks = 0;
 
 INSERT INTO `Commuter_Passes` (`cost`, `start_date`, `end_date`, `passenger_id`, `trainline_id`) VALUES
 ('100.00', '2020-01-10', '2021-11-11', (SELECT passenger_id FROM Passengers WHERE email = "Risa_Oribe@pmail.com"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yamanote Line")),
@@ -215,10 +257,14 @@ INSERT INTO `Commuter_Passes` (`cost`, `start_date`, `end_date`, `passenger_id`,
 ('33.00', "2031-02-20", "2032-03-20", (SELECT passenger_id FROM Passengers WHERE email = "Pancho_Villa@pmail.com"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Ome Line")),
 ('198.00', "2031-02-25", "2032-08-25", (SELECT passenger_id FROM Passengers WHERE email = "Mario_Bross@pmail.com"), (SELECT trainline_id FROM Trainlines WHERE trainline_company = "Shonan-Shinjuku Line"));
 
+SET foreign_key_checks = 1;
+
 
 --
 -- Dumping data for table `Trainlines_and_Stations`
 --
+
+SET foreign_key_checks = 0;
 
 INSERT INTO Trainlines_and_Stations (trainline_id, station_id) VALUES 
 ((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yamanote Line"), (SELECT station_id FROM Stations WHERE station_name = "Tokyo Station")),
@@ -226,6 +272,8 @@ INSERT INTO Trainlines_and_Stations (trainline_id, station_id) VALUES
 ((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Narita Line"), (SELECT station_id FROM Stations WHERE station_name = "Shinagawa Station")),
 ((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Shonan-Shinjuku Line"), (SELECT station_id FROM Stations WHERE station_name = "Shimbashi Station")),
 ((SELECT trainline_id FROM Trainlines WHERE trainline_company = "Yokohama Line"), (SELECT station_id FROM Stations WHERE station_name = "Yokohama Station"));
+
+SET foreign_key_checks = 1;
 
 
 
